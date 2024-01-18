@@ -16,10 +16,8 @@ int main() {
     for (int j = 0; j < 10; j++) {
       cout << j;
     }
-    dddddd dddddddd for (int k = 0; k < 10; k++) {
-
-      for ()
-        dd
+    for (int j = 0; j < 10; j++) {
+      cout << j;
     }
     return 0;
   }
