@@ -28,9 +28,8 @@ int main() {
     for (int j = 0; j < 10; j++) {
       cout << j;
     }
-    for (int j = 0; j < 10; j)
-      {
-        //joeyDD27
-      }
+    for (int j = 0; j < 10; j) {
+      // joeyDD27
+    }
   }
 }
