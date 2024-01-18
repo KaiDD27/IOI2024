@@ -20,5 +20,10 @@ int main() {
       cout << j;
     }
     cout << "test" << endl;
+    cout << "gitlens" << endl;
+
+    for (int j = 0; j < 10; j++) {
+      cout << j;
+    }
   }
 }
