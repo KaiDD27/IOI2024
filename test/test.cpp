@@ -29,7 +29,6 @@ int main() {
       cout << j;
     }
     for (int j = 0; j < 10; j) {
-      // joeyDD27
     }
   }
 }
