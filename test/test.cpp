@@ -16,7 +16,9 @@ int main() {
     for (int j = 0; j < 10; j++) {
       cout << j;
     }
-    for
+    ddd
+
+        for () dd
   }
   return 0;
 }
