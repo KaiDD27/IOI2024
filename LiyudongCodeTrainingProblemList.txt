@@ -1,0 +1,13 @@
+数组：
+leetcode #88 合并两个有序数组
+leetcode #283移动零
+leetcode #26 删除有序数组中的重复项
+
+链表：
+合并两个有序链表 https://leetcode-cn.com/problems/merge-two-sorted-lists/
+加一 https://leetcode-cn.com/problems/plus-one/
+反转链表 https://leetcode-cn.com/problems/reverse-linked-list/
+Leetcode #25 K个一组翻转链表
+邻值查找(选做) https://www.acwing.com/problem/content/description/138/
+环形链表（了解） https://leetcode-cn.com/problems/linked-list-cycle/
+环形链表 （了解）https://leetcode-cn.com/problems/linked-list-cycle-ii/
