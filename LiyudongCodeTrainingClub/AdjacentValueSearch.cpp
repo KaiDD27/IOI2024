@@ -16,41 +16,38 @@ struct ListNode {
   ListNode *next;
 };
 
-// ListNode[rk[idx]],val=num[rk[idx]]
-void createListNode(vector<ListNode *> &ptrNodes, const vector<int> &nums,
+void deleteNode(ListNode *curr) {
+  curr->prev->next = curr->next;
+  curr->next->prev = curr->prev;
+  delete curr;
+}
+
+ListNode *addNode(ListNode *node, int idx, const vector<int> &nums) {
+  ListNode *newNode = new ListNode();
+  newNode->val = nums[idx];
+  newNode->idx = idx;
+
+  newNode->prev = node;
+  newNode->next = node->next;
+
+  node->next = newNode;
+  newNode->next->prev = newNode;
+  return newNode;
+}
+
+// ListNode[rk[idx]],val=num[rk[idx]
+void createListNode(vector<ListNode *> &ptrNodes, const vector<int> nums,
                     const vector<int> &rk) {
   ListNode *minNode = new ListNode();
   ListNode *maxNode = new ListNode();
   minNode->val = nums[rk[1]] - static_cast<long long>(3 * 1e9);
   maxNode->val = nums[rk[N]] + static_cast<long long>(3 * 1e9);
+  minNode->next = maxNode;
+  maxNode->prev = minNode;
 
-  ptrNodes[rk[1]] = new ListNode();
-  ptrNodes[rk[1]]->val = nums[rk[1]];
-  ptrNodes[rk[1]]->idx = rk[1];
-
-  minNode->next = ptrNodes[rk[1]];
-  ptrNodes[rk[1]]->prev = minNode;
-
-  maxNode->prev = ptrNodes[rk[1]];
-  ptrNodes[rk[1]]->next = maxNode;
-
-  for (int i = 2; i <= N; i++) {
-    ptrNodes[rk[i]] = new ListNode();
-    ptrNodes[rk[i]]->val = nums[rk[i]];
-    ptrNodes[rk[i]]->idx = rk[i];
-
-    ptrNodes[rk[i]]->prev = ptrNodes[rk[i - 1]];
-    ptrNodes[rk[i]]->next = ptrNodes[rk[i - 1]]->next;
-
-    ptrNodes[rk[i - 1]]->next = ptrNodes[rk[i]];
-    ptrNodes[rk[i]]->next->prev = ptrNodes[rk[i]];
+  for (int i = 1; i <= N; i++) {
+    ptrNodes[rk[i]] = addNode(maxNode->prev, rk[i], nums);
   }
-}
-
-void deleteNode(ListNode *curr) {
-  curr->prev->next = curr->next;
-  curr->next->prev = curr->prev;
-  delete curr;
 }
 
 void getMinValAndIdxOfNums(vector<ListNode *> &ptrNodes,
@@ -69,6 +66,12 @@ void getMinValAndIdxOfNums(vector<ListNode *> &ptrNodes,
   }
 }
 
+/**
+ * The main function reads input values, creates a sorted index array,
+ * creates a linked list, and calculates the minimum value and index
+ * for each element in the array. Finally, it prints the minimum value
+ * and index for each element (starting from the second element) in the array.
+ */
 int main() {
 
   cin >> N;
