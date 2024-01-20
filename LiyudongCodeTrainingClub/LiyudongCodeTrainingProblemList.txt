@@ -11,3 +11,7 @@ Leetcode #25 K个一组翻转链表
 邻值查找(选做) https://www.acwing.com/problem/content/description/138/
 环形链表（了解） https://leetcode-cn.com/problems/linked-list-cycle/
 环形链表 （了解）https://leetcode-cn.com/problems/linked-list-cycle-ii/
+
+栈
+有效的括号 https://leetcode-cn.com/problems/valid-parentheses/
+https://leetcode-cn.com/problems/min-stack/   前缀最小值
