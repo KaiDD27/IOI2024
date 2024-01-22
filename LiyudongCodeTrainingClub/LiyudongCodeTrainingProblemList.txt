@@ -15,3 +15,6 @@ Leetcode #25 K个一组翻转链表
 栈
 有效的括号 https://leetcode-cn.com/problems/valid-parentheses/
 https://leetcode-cn.com/problems/min-stack/   前缀最小值
+逆波兰表达式求值 https://leetcode.cn/problems/evaluate-reverse-polish-notation/
+基本计算器2 https://leetcode.cn/problems/basic-calculator-ii/description/  
+基本计算器3 支持括号，支持正负数：把输入补零，就可以按照原有的逻辑处理了，而不用修改主要逻辑
