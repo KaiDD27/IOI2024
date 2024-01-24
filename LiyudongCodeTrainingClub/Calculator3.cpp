@@ -1,18 +1,16 @@
 /**
- * This code snippet represents a class named Solution. It contains several
- * member functions for evaluating Reverse Polish Notation (RPN) expressions and
- * calculating arithmetic expressions. The class has the following member
- * functions:
- * - evalRPN: This function takes a vector of strings representing RPN
- * expressions and evaluates them. It uses a stack to perform the calculations.
- * - calc: This function takes two operands and an operator as input and
- * performs the corresponding arithmetic operation.
- * - opPriority: This function takes a character representing an operator and
- * returns its priority level.
- * - calculate: This function takes a string representing an arithmetic
- * expression and converts it into RPN format. It then calls the evalRPN
- * function to evaluate the expression. The class also has two private stacks,
- * stackString and opStack, for storing operands and operators respectively.
+ * This code snippet demonstrates the usage of the Solution class to evaluate
+ * Reverse Polish Notation (RPN) expressions. The Solution class contains the
+ * following methods:
+ * - evalRPN: Evaluates the RPN expression using a stack and returns the result.
+ * - calc: Performs the arithmetic calculation based on the given operator and
+ * operands.
+ * - opPriority: Returns the priority level of the given operator.
+ * - calculate: Converts the infix expression to RPN and calls evalRPN to
+ * evaluate the expression.
+ *
+ * The main function creates an instance of the Solution class and calls the
+ * calculate method to evaluate different expressions.
  */
 #include <algorithm>
 #include <iostream>
@@ -26,6 +24,7 @@ class Solution {
 public:
   int evalRPN(vector<string> &tokens) {
     for (auto token : tokens) {
+      // cout << token << endl;
       if (token == "+" || token == "-" || token == "*" || token == "/") {
         long long y = stackString.top();
         stackString.pop();
@@ -35,10 +34,10 @@ public:
       } else {
         stackString.push(stoi(token)); // Replace atoi with stoi
       }
-      cout << stackString.top() << " ";
+      // cout << stackString.top() << " ";
     }
-    cout << endl;
-    return stackString.top();
+    // cout << endl;
+    return (int)stackString.top();
   }
   long long calc(long long x, long long y, string &token) {
     if (token == "+")
@@ -54,62 +53,84 @@ public:
   }
   // 如果不是运算符，则返回 0
   int opPriority(char c) {
-    if (c == '(')
-      return 1;
     if (c == '+' || c == '-')
-      return 2;
+      return 1;
     if (c == '*' || c == '/')
-      return 3;
+      return 2;
     return 0;
   }
   int calculate(string s) {
     vector<string> tokens;
+    s += " "; // 强制补了个空格在最后，则保证碰到空格就推入 tokens
     string strNum = "";
+    bool needAddZero = true;
     for (auto c : s) {
+      if (c == ' ') {
+        if (strNum != "") {
+          tokens.push_back(strNum);
+          strNum = "";
+        }
+        continue;
+      }
+      if (c >= '0' && c <= '9') {
+        strNum += c;
+        needAddZero = false;
+        continue;
+      }
+
+      if (c == '(') {
+        opStack.push(c);
+        needAddZero = true;
+        continue;
+      }
+
+      if (c == ')') {
+        needAddZero = false;
+        if (strNum != "") {
+          tokens.push_back(strNum);
+          strNum = "";
+        }
+        while (opStack.top() != '(') {
+          tokens.push_back(string(1, opStack.top()));
+          opStack.pop();
+        }
+        opStack.pop();
+      }
+
       int priLevel = opPriority(c);
       if (priLevel) {
-        tokens.push_back(strNum);
-        strNum = "";
-        if (opStack.empty()) {
-          opStack.push(c);
+        if (strNum != "") {
+          tokens.push_back(strNum);
+          strNum = "";
+        }
+        if ((c == '+' || c == '-') && needAddZero == true) {
+          tokens.push_back("0");
+        }
 
+        if (c == '+' || c == '-' || c == '*' || c == '/')
+          needAddZero = true;
+
+        if (opStack.empty() || opStack.top() == '(') {
+          opStack.push(c);
         } else {
           int priLevelStackTop = opPriority(opStack.top());
-          if (priLevelStackTop < priLevel) {
+          if (priLevel > priLevelStackTop) {
             opStack.push(c);
-          } else if (priLevelStackTop == priLevel) {
-
-            tokens.push_back(string(1, opStack.top()));
-            opStack.pop();
-            opStack.push(c);
-          } else {
-            while (!opStack.empty()) {
-
+          } else if (priLevel <= priLevelStackTop) {
+            while (!opStack.empty() && priLevel <= opPriority(opStack.top())) {
               tokens.push_back(string(1, opStack.top()));
               opStack.pop();
             }
-
             opStack.push(c);
           }
         }
-      } else {
-        if (c >= '0' && c <= '9')
-          strNum += c;
       }
     }
-    // 最后一个数
-    tokens.push_back(strNum);
-    strNum = "";
 
     while (!opStack.empty()) {
-      string sOp(1, opStack.top());
-      tokens.push_back(sOp);
+      tokens.push_back(string(1, opStack.top()));
       opStack.pop();
     }
-    for (auto ss : tokens) {
-      cout << ss << " ";
-    }
-    cout << endl;
     return evalRPN(tokens);
   }
 
@@ -120,6 +141,7 @@ private:
 
 int main() {
   Solution solution; // Instantiate an object of the Solution class
-  cout << solution.calculate("1+2*5/3+6/4*2")
-       << endl; // Call the calculate method on the object
+  string s;
+  cin >> s;
+  cout << solution.calculate(s) << endl;
 }
