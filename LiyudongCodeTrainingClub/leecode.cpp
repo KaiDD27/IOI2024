@@ -19,28 +19,28 @@ public:
       for (int j = 0; j < cols; j++) {
         height[j] = matrix[i][j] == '1' ? height[j] + 1 : 0;
       }
+      right = vector<int>(cols, cols);
+      left = vector<int>(cols, -1);
+
+      stk = stack<int>();
       for (int j = 0; j < cols; j++) {
-        while (!st.empty() && height[j] < height[st.top()]) {
-          right[st.top()] = j;
-          st.pop();
+        while (!stk.empty() && height[j] < height[stk.top()]) {
+          right[stk.top()] = j;
+          stk.pop();
         }
-        st.push(j);
+        stk.push(j);
       }
-      while (!st.empty()) {
-        right[st.top()] = cols;
-        st.pop();
-      }
+
+      stk = stack<int>();
+
       for (int j = cols - 1; j >= 0; j--) {
-        while (!st.empty() && height[j] <= height[st.top()]) {
-          left[st.top()] = j;
-          st.pop();
+        while (!stk.empty() && height[j] <= height[stk.top()]) {
+          left[stk.top()] = j;
+          stk.pop();
         }
-        st.push(j);
+        stk.push(j);
       }
-      while (!st.empty()) {
-        left[st.top()] = -1;
-        st.pop();
-      }
+
       for (int j = 0; j < cols; j++) {
         ans = max(ans, (right[j] - left[j] - 1) * height[j]);
       }
@@ -49,7 +49,7 @@ public:
   }
 
 private:
-  stack<int> st;
+  stack<int> stk;
 };
 
 int main() {
