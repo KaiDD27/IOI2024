@@ -19,6 +19,8 @@
 - [[单调栈]]
 	- 柱状图中最大的矩形 https://leetcode-cn.com/problems/largest-rectangle-in-histogram/
 	- 接雨水 https://leetcode-cn.com/problems/trapping-rain-water/
+	- P2866 [USACO06NOV] Bad Hair Day S https://www.luogu.com.cn/problem/P2866
+	- P1950 长方形 https://www.luogu.com.cn/problem/P1950
 - [[单调队列]]
 	- 单调队列题目代码套路：
 		- • for 每个元素
@@ -30,3 +32,5 @@
 	- 滑动窗口最大值 https://leetcode-cn.com/problems/sliding-window-maximum
 	- 设计循环双端队列 https://leetcode-cn.com/problems/design-circular-deque/
 	- 最大矩形 https://leetcode-cn.com/problems/maximal-rectangle/
+	- P2032 扫描(与滑动窗口最大值 基本一样) https://www.luogu.com.cn/problem/P2032
+	- P2216 [HAOI2007] 理想的正方形 https://www.luogu.com.cn/problem/P2216
