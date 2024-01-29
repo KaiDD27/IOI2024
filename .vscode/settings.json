@@ -29,7 +29,7 @@
     //   $fileNameWithoutExt: The base name of the code file being run without its extension
     /* ------ 编译、运行只有一个文件的cpp文件 ------ */
     // 注：路径中有空格不会出现问题
-    "cpp": "g++ $fullFileName -o $dir\"$fileNameWithoutExt\"\".out\" -W -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal   -O2 -std=c++17 && $dir\"$fileNameWithoutExt\"\".out\"",
+    "cpp": "g++ $fullFileName -o $dir\"$fileNameWithoutExt\"\".out\" -W -Wall -Wextra -Wshadow -Wno-sign-compare -Wno-conversion -Wfloat-equal   -O2 -std=c++17 && $dir\"$fileNameWithoutExt\"\".out\"",
     // 其中 $fullFileName 是绝对路径，是主文件
     // 自己决定是否加入 && rm $dir\"$fileNameWithoutExt\"\".out\"（也可以添加"files.exclude"）
     /* ------ 编译、运行多个cpp文件 ------ */
@@ -42,7 +42,7 @@
     //   更一般的，如果你链接的cpp文件不和主文件在一个目录下，需要从当前VSCode的工作目录补充相对路径从而形成绝对路径：
     //     $workspaceRoot\"relative/path/xxxx.cpp\"
     /* ------ 编译c文件 ------ */
-    "c": "gcc $fullFileName -o $dir\"$fileNameWithoutExt\"\".out\" -W -Wall -O2 -std=c17 && $dir\"$fileNameWithoutExt\"\".out\"",
+    "c": "gcc $fullFileName -o $dir\"$fileNameWithoutExt\"\".out\" -W -Wall -Wno-sign-compare -Wno-conversion -O2 -std=c17 && $dir\"$fileNameWithoutExt\"\".out\"",
     // "c": "gcc $fullFileName <file_to_link> -o $dir\"$fileNameWithoutExt\"\".out\" -W -Wall -O2 -std=c17 && $dir\"$fileNameWithoutExt\"\".out\"",
   },
   // Whether to clear previous output before each run (default is false):
