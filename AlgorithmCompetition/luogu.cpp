@@ -25,4 +25,5 @@ int main() {
     now = node;
   }
   now->next = head;
+  //
 }
