@@ -26,8 +26,6 @@
         "-Wno-sign-compare",
         "-Wno-conversion",
         "-Wfloat-equal",
-        "-Wduplicated-cond",
-        "-Wlogical-op",
         "${file}",
         "-o",
         "${fileDirname}/${fileBasenameNoExtension}.out"

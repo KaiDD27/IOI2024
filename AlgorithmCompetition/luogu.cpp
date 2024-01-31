@@ -1,29 +1,31 @@
-#include <cstddef>
 #include <iostream>
+#include <list>
 using namespace std;
-
-struct Node {
-  int data;
-  Node *next;
-};
 
 int main() {
   int n, m;
   cin >> n >> m;
-  Node *head, *prev, *node, *now;
-
-  head = new Node;
-  head->data = 1;
-  head->next = nullptr;
-  now = head;
-
-  for (int i = 2; i <= n; i++) {
-    node = new Node;
-    node->data = i;
-    node->next = nullptr;
-    now->next = node;
-    now = node;
+  list <int> nodes;
+  for(int i = 1;i<=n;i++)
+  {
+    nodes.push_back(i);
+  }  
+  auto  it = nodes.begin();
+  while(n-->1)
+  {
+    for(int i = 1;i<m;i++)
+    {
+      it++;
+      if(it ==nodes.end())
+        it = nodes.begin();  
+    }
+    cout << *it<< " ";
+    auto nextNode = next(it);
+    if(nextNode == nodes.end())
+      nextNode = nodes.begin();
+    nodes.erase(it);
+    it = nextNode;
   }
-  now->next = head;
-  //
+  cout << *it<<endl;
+  return 0;
 }
