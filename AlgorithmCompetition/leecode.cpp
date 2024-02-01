@@ -13,7 +13,8 @@ public:
         ListNode(int x) : val(x), next(nullptr) {}
         ListNode(int x, ListNode *next) : val(x), next(next) {}
     };
-    vector<int> reverseBookList(ListNode* head) {
+    vector<int> reverseBookList(ListNode* head)
+        {
       ListNode * prev = nullptr,*now = head,*next = head;
       while(now!=nullptr)
       {
