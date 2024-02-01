@@ -1,31 +1,52 @@
 #include <iostream>
 #include <list>
+#include <vector>
+
 using namespace std;
 
 int main() {
-  int n, m;
-  cin >> n >> m;
-  list <int> nodes;
-  for(int i = 1;i<=n;i++)
-  {
-    nodes.push_back(i);
-  }  
-  auto  it = nodes.begin();
-  while(n-->1)
-  {
-    for(int i = 1;i<m;i++)
-    {
-      it++;
-      if(it ==nodes.end())
-        it = nodes.begin();  
-    }
-    cout << *it<< " ";
-    auto nextNode = next(it);
-    if(nextNode == nodes.end())
-      nextNode = nodes.begin();
-    nodes.erase(it);
-    it = nextNode;
+  int N, M;
+  cin >> N;
+
+  vector<list<int>::iterator> pos(N + 1);
+  vector<bool> erase(N + 1, false);
+  list<int> lst;
+
+  for (int i = 1; i <= N; i++) {
+    lst.push_back(i);
+    pos[i] = prev(lst.end());
   }
-  cout << *it<<endl;
+
+  for (int i = 2; i <= N; i++) {
+    int target, prevOrNext;
+    cin >> target >> prevOrNext;
+    lst.erase(pos[i]);
+    if (prevOrNext == 0) {
+      lst.insert(pos[target], i);
+    } else {
+      auto nextPos = next(pos[target]);
+      if (nextPos == lst.end()) {
+        lst.push_back(i);
+      } else {
+        lst.insert(nextPos, i);
+      }
+    }
+    pos[i] = prev(pos[target]);
+  }
+
+  cin >> M;
+
+  while (M-- && !lst.empty()) {
+    int deleteId;
+    cin >> deleteId;
+    if (erase[deleteId] != true)
+      lst.erase(pos[deleteId]);
+    erase[deleteId] = true;
+  }
+
+  for (int num : lst) {
+    cout << num << " ";
+  }
+
   return 0;
 }
