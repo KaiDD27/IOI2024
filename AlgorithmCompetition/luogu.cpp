@@ -13,6 +13,8 @@ int main() {
     while (!myQueue.empty()) {
     }
   }
+  for (;;) {
+  }
 
   return 0;
 }
