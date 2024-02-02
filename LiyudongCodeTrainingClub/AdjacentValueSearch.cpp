@@ -73,7 +73,6 @@ void getMinValAndIdxOfNums(vector<ListNode *> &ptrNodes,
  * and index for each element (starting from the second element) in the array.
  */
 int main() {
-
   cin >> N;
   vector<int> nums(N + 1, 0);
   vector<int> rk(N + 1, 0);

@@ -1,5 +1,7 @@
+#include <array>
 #include <iostream>
 #include <queue>
+#include <set>
 using namespace std;
 
 int main() {
@@ -12,8 +14,6 @@ int main() {
     }
     while (!myQueue.empty()) {
     }
-  }
-  for (;;) {
   }
 
   return 0;
