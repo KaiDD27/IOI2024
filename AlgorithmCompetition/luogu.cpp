@@ -1,20 +1,8 @@
-#include <array>
+#include <algorithm>
+#include <deque>
 #include <iostream>
-#include <queue>
-#include <set>
 using namespace std;
 
-int main() {
-  int n, m;
-  cin >> n >> m;
-  queue<int> myQueue;
-  for (int i = 1; i <= n; i++) {
-    if (myQueue.empty()) {
-      cout << 0 << endl;
-    }
-    while (!myQueue.empty()) {
-    }
-  }
+const int INF = 1e5 + 6;
 
-  return 0;
-}
+int main() { return 0; }

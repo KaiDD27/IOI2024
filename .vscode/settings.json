@@ -196,7 +196,7 @@
     // 同时开启的任务数量
     "-j=12",
     // pch优化的位置(memory 或 disk，选择memory会增加内存开销，但会提升性能) 推荐在板子上使用disk
-    "--pch-storage=memory",
+    "--pch-storage=disk",
     // 启用这项时，补全函数时，将会给参数提供占位符，键入后按 Tab 可以切换到下一占位符，乃至函数末
     // 我选择禁用
     "--function-arg-placeholders=false",
