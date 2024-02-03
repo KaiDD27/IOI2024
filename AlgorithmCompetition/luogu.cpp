@@ -1,8 +1,22 @@
-#include <algorithm>
-#include <deque>
 #include <iostream>
+#include <queue>
+#include <vector>
 using namespace std;
+const int INFN = 100005;
+const int INFM = 305;
+int groupId[INFN] = {-1};
+vector<queue<int>> twoDQueue;
 
-const int INF = 1e5 + 6;
+int main() {
+  int n, m, T;
+  cin >> n >> m;
+  for (int i = 0; i < n; i++) {
+    cin >> groupId[i];
+  }
 
-int main() { return 0; }
+  for (int i = 1; i <= T; i++) {
+    string strOp;
+    int factorId;
+    cin >> strOp >> factorId;
+  }
+}

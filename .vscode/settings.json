@@ -164,7 +164,8 @@
 "C_Cpp.errorSquiggles": "disabled",
 "C_Cpp.intelliSenseEngineFallback": "disabled",
 "C_Cpp.intelliSenseEngine": "disabled",
-"clangd.path": "/usr/bin/clangd",
+"clangd.path": "/Users/dingkai/Library/Application Support/Code/User/globalStorage/llvm-vs-code-extensions.vscode-clangd/install/17.0.3/clangd_17.0.3/bin/clangd",
+"clang-format.assumeFilename": "./.clang-format", //使用工作区独立配置文件
 "clangd.arguments": [
     // compile_commands.json 生成文件夹
     "--compile-commands-dir=build",
@@ -201,7 +202,9 @@
     // 我选择禁用
     "--function-arg-placeholders=false",
     // compelie_commands.json 文件的目录位置(相对于工作区，由于 CMake 生成的该文件默认在 build 文件夹中，故设置为 build)
-   
+    "--clang-tidy", "--suggest-missing-includes", "--header-insertion=iwyu"
+
   ]
+  
   
 }
