@@ -4,7 +4,7 @@
 #include <set> // Include the <set> header
 
 using namespace std;
-
+int a[106];
 int main() {
   cout << "Hello, World!" << endl;
   set<int> mySet;
