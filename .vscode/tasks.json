@@ -28,7 +28,7 @@
         "-Wfloat-equal",
         "${file}",
         "-o",
-        "${fileDirname}/${fileBasenameNoExtension}.out"
+        "${fileDirname}/${fileBasenameNoExtension}.gout"
       ],
       // Defines to which execution group this task belongs to.
       // It supports "build" to add it to the build group and "test" to add it to the test group.

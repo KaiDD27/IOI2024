@@ -10,6 +10,8 @@ int main() {
   set<int> mySet;
   for (int i = 1; i <= 10; i++) {
   }
-
-  // 我来了
+  int birds;
+  int barreledWater
+      // i'mHere
+      iMHere
 }

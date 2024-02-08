@@ -25,7 +25,7 @@
       /* ------ Many debuggers support some of the following attributes: ------ */
       // executable or file to run when launching the debugger
       // ！！不要在程序和代码的路径及文件名中出现空格！！否则无法调试（我尝试解决这个问题，但真的无法解决）
-      "program": "${fileDirname}/${fileBasenameNoExtension}.out", // debug的对象(-g编译出来的二进制文件)，需要和.vscode/tasks.json中生成的可执行文件一致
+      "program": "${fileDirname}/${fileBasenameNoExtension}.gout", // debug的对象(-g编译出来的二进制文件)，需要和.vscode/tasks.json中生成的可执行文件一致
       // arguments passed to the program to debug
       "args": [], // 比如运行你的程序添加输入参数（argc/argv），需要在这里添加
       // Environment variables to add to the environment for the program
