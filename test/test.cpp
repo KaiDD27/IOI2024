@@ -1,17 +1,16 @@
+#include <algorithm>
 #include <iostream>
-#include <map>
-#include <queue>
-#include <set> // Include the <set> header
-
 using namespace std;
-int a[106];
 int main() {
-  cout << "Hello, World!" << endl;
-  set<int> mySet;
-  for (int i = 1; i <= 10; i++) {
+  cout << "introduction" << endl;
+  while (true) {
+    string strTmp;
+
+    cin >> strTmp;
+    ///////////////////////
+
+    cout << rand() % 4 << " " << rand() % 4 << endl;
+    cout << strTmp + "!!!!" << endl;
   }
-  int birds;
-  int barreledWater
-      // i'mHere
-      iMHere
+  return 0;
 }
