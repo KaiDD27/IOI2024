@@ -1,27 +1,16 @@
-#include <cmath>
 #include <iostream>
-#include <vector>
+#include <set>
+#include <string>
 
 using namespace std;
-void generateGrayCode(vector<string> &grayCode, int n) {
-  if (n == 1) {
-    grayCode.push_back("0");
-    grayCode.push_back("1");
-    return;
-  }
-  generateGrayCode(grayCode, n - 1);
-  int halfCnt = (int)pow(2, n - 1);
-  for (int i = halfCnt - 1; i >= 0; i--) {
-    grayCode.push_back("1" + grayCode[i]);
-    grayCode[i] = "0" + grayCode[i];
-  }
-}
+int numsP[25];
+void group1() {}
 int main() {
   int n;
   cin >> n;
-  vector<string> grayCode;
-  generateGrayCode(grayCode, n);
-  for (int i = 0; i < (int)pow(2, n); i++)
-    cout << grayCode[i] << endl;
+  for (int i = 1; i <= n; i++) {
+    cin >> numsP[i];
+  }
+
   return 0;
 }
