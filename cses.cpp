@@ -1,33 +1,96 @@
-#include <algorithm>
 #include <iostream>
-#include <set>
-#include <string>
-
 using namespace std;
-long long numsP[25];
-long long sum = 0;
-long long ans = 1000000000007;
-long long sumOfGroup1 = 0;
-int n;
-void calc(int j) {
-  if (sumOfGroup1 >= sum - sumOfGroup1) {
-    ans = min(ans, abs(2 * sumOfGroup1 - sum));
+
+const int PATH_LEN = 48; // length of all possible paths
+const int GRID_SIZE = 7;
+bool visited[GRID_SIZE][GRID_SIZE];
+
+int cnt = 0;
+string strStep;
+
+int empty(int y, int x) {
+  return y >= 0 && y <= GRID_SIZE - 1 && x >= 0 && x <= GRID_SIZE - 1 &&
+         !visited[y][x];
+}
+
+bool DeadEnd(int y, int x) {
+  if (!(x == 0 && y == GRID_SIZE - 1) &&
+      empty(y + 1, x) + empty(y - 1, x) + empty(y, x + 1) + empty(y, x - 1) ==
+          1)
+    return true;
+  return false;
+}
+
+void explorePath(int y, int x, int step = 0) {
+  // 终结条件
+  if (x == 0 && y == GRID_SIZE - 1) {
+    if (step == PATH_LEN)
+      cnt++;
     return;
   }
-  for (int i = 1; i <= n; i++) {
-    sumOfGroup1 += numsP[i];
-    calc(i + 1);
-    sumOfGroup1 -= numsP[i];
+
+  visited[y][x] = true;
+
+  char charStep = 'N';
+  if (charStep == 'N' && empty(y - 1, x)) {
+    if (DeadEnd(y - 1, x))
+      charStep = 'U';
   }
+  if (charStep == 'N' && empty(y + 1, x)) {
+    if (DeadEnd(y + 1, x))
+      charStep = 'D';
+  }
+  if (charStep == 'N' && empty(y, x - 1)) {
+    if (DeadEnd(y, x - 1))
+      charStep = 'L';
+  }
+  if (charStep == 'N' && empty(y, x + 1)) {
+    if (DeadEnd(y, x + 1))
+      charStep = 'R';
+  }
+  if (charStep == 'N')
+    charStep = strStep[step];
+  else if (strStep[step] != '?' && charStep != strStep[step]) {
+    visited[y][x] = false;
+    return;
+  }
+
+  if (charStep == '?' || charStep == 'U') {
+    if (empty(y - 1, x)) {
+      if (!(!empty(y - 2, x) && empty(y - 1, x - 1) && empty(y - 1, x + 1))) {
+        explorePath(y - 1, x, step + 1);
+      }
+    }
+  }
+  if (charStep == '?' || charStep == 'D') {
+    if (empty(y + 1, x)) {
+      if (!(!empty(y + 2, x) && empty(y + 1, x - 1) && empty(y + 1, x + 1))) {
+        explorePath(y + 1, x, step + 1);
+      }
+    }
+  }
+  if (charStep == '?' || charStep == 'L') {
+    if (empty(y, x - 1)) {
+      if (!(!empty(y, x - 2) && empty(y - 1, x - 1) && empty(y + 1, x - 1))) {
+        explorePath(y, x - 1, step + 1);
+      }
+    }
+  }
+  if (charStep == '?' || charStep == 'R') {
+    if (empty(y, x + 1)) {
+      if (!(!empty(y, x + 2) && empty(y - 1, x + 1) && empty(y + 1, x + 1))) {
+        explorePath(y, x + 1, step + 1);
+      }
+    }
+  }
+
+  visited[y][x] = false;
+  return;
 }
 
 int main() {
-  cin >> n;
-  for (int i = 1; i <= n; i++) {
-    cin >> numsP[i];
-    sum += numsP[i];
-  }
-  calc(0);
-  cout << ans << endl;
+  cin >> strStep;
+  explorePath(0, 0);
+  cout << cnt << endl;
   return 0;
 }
