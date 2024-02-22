@@ -1,59 +1,48 @@
 #include <iostream>
-#define ll long long
+#include <set>
 using namespace std;
-int cnt = 0;
-string strStep;
-bool visited[7][7];
-
-bool empty(int y, int x) {
-  return y >= 0 && y <= 6 && x >= 0 && x <= 6 && !visited[y][x];
-}
-
-void explorePath(int y, int x, int step = 0) {
-  if ((!empty(y + 1, x) && !empty(y - 1, x)) && empty(y, x - 1) &&
-      empty(y, x + 1))
-    return;
-  if ((!empty(y, x - 1) && !empty(y, x + 1)) && empty(y + 1, x) &&
-      empty(y - 1, x))
-    return;
-  // 终结条件
-  if (x == 0 && y == 6) {
-    if (step == 48)
-      cnt++;
-    return;
-  }
-
-  visited[y][x] = true;
-
-  if (strStep[step] == '?' || strStep[step] == 'U') {
-    if (empty(y - 1, x)) {
-      explorePath(y - 1, x, step + 1);
-    }
-  }
-  if (strStep[step] == '?' || strStep[step] == 'D') {
-    if (empty(y + 1, x)) {
-      explorePath(y + 1, x, step + 1);
-    }
-  }
-
-  if (strStep[step] == '?' || strStep[step] == 'L') {
-    if (empty(y, x - 1)) {
-      explorePath(y, x - 1, step + 1);
-    }
-  }
-  if (strStep[step] == '?' || strStep[step] == 'R') {
-    if (empty(y, x + 1)) {
-      explorePath(y, x + 1, step + 1);
-    }
-  }
-
-  visited[y][x] = false;
-  return;
-}
 
 int main() {
-  cin >> strStep;
-  explorePath(0, 0);
-  cout << cnt << endl;
+  ios::sync_with_stdio(false);
+  cin.tie(0);
+
+  int n, m;
+  cin >> n >> m;
+  int a[n + 1];
+  for (int i = 1; i <= n; i++) {
+    cin >> a[i];
+  }
+
+  set<int> s;
+  for (int i = 1; i <= n; i++) {
+    s.insert(a[i]);
+    if (s.find(a[i] - 1) == s.end()) {
+      s.erase(a[i]);
+    }
+  }
+
+  cout << s.size() << "\n";
+  while (m--) {
+    int i, j;
+    cin >> i >> j;
+    swap(a[i], a[j]);
+
+    // Update set for a[i]
+    if (a[i] < a[i - 1] && a[i] < a[i + 1]) {
+      s.insert(a[i]);
+    } else if (a[i] > a[i - 1] && a[i] > a[i + 1]) {
+      s.erase(a[i]);
+    }
+
+    // Update set for a[j]
+    if (a[j] < a[j - 1] && a[j] < a[j + 1]) {
+      s.insert(a[j]);
+    } else if (a[j] > a[j - 1] && a[j] > a[j + 1]) {
+      s.erase(a[j]);
+    }
+
+    cout << s.size() << "\n";
+  }
+
   return 0;
 }
