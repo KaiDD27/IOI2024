@@ -1,24 +1,33 @@
-#include <cmath>
+#include <bitset>
 #include <iostream>
 #include <vector>
 
 using namespace std;
-void generateGrayCode(vector<string> &grayCode, int n) {
-  if (n == 0)
-    return;
-  generateGrayCode(grayCode, n - 1);
-  int halfCnt = (int)pow(2, n - 1);
-  for (int i = 0; i < halfCnt; i++) {
-    grayCode[2 * halfCnt - 1 - i] = "1" + grayCode[i];
-    grayCode[i] = "0" + grayCode[i];
+
+vector<bitset<16>> result(1 << 16);
+
+void grayCode(int n) {
+  if (n == 1) {
+    result[0] = bitset<16>(0);
+    result[1] = bitset<16>(1);
+  } else {
+    grayCode(n - 1);
+    for (int i = 0; i < (1 << (n - 1)); ++i) {
+      result[(1 << n) - 1 - i] = result[i];
+      result[(1 << n) - 1 - i].set(n - 1);
+    }
   }
 }
+
 int main() {
   int n;
   cin >> n;
-  vector<string> grayCode((int)pow(2, n));
-  generateGrayCode(grayCode, n);
-  for (int i = 0; i < (int)pow(2, n); i++)
-    cout << grayCode[i] << endl;
+  grayCode(n);
+  for (int i = 0; i < (1 << n); ++i) {
+    for (int j = n - 1; j >= 0; --j) {
+      cout << result[i][j];
+    }
+    cout << endl;
+  }
   return 0;
 }
