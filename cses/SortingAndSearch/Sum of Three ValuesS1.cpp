@@ -21,30 +21,20 @@ int main() {
     cin >> a[i].first;
     a[i].second = i;
   }
+  // 尺取法，属于贪心策略，这题是求两个数之和的升级版
   sort(a.begin() + 1, a.end());
-  for (int i = 1; i <= n; i++) {
-    for (int j = i + 1; j <= n; j++) {
-      ll tmp = a[i].first + a[j].first;
-      if (tmp < x) {
-        sumOfTwo.push_back({tmp, a[i].second, a[j].second});
-      }
+  for (int i = 1; i <= n - 2; i++) {
+    int l = i + 1, r = n;
+    while (l < r) {
+      if (a[l].first + a[r].first == x - a[i].first) {
+        cout << a[i].second << " " << a[l].second << " " << a[r].second << endl;
+        return 0;
+      } else if (a[l].first + a[r].first < x - a[i].first)
+        l++;
+      else
+        r--;
     }
   }
-
-  /*
-  for (int i = 1; i <= n; i++) {
-    if (a[i] > x - 2)
-      continue;
-    auto range = mpAtoPos.equal_range(x - a[i]);
-    for (auto j = range.first; j != range.second;) {
-      if (j->second.first != i && j->second.second != i) {
-        cout << i << " " << j->second.first << " " << j->second.second << endl;
-        return 0;
-      } else {
-        ++j; // 移动到下一个键值对
-      }
-    }
-  }*/
   cout << "IMPOSSIBLE" << endl;
   return 0;
 }
