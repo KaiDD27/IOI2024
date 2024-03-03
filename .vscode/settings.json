@@ -28,7 +28,7 @@
     //   $fileNameWithoutExt: The base name of the code file being run without its extension
     /* ------ 编译、运行只有一个文件的cpp文件 ------ */
     // 注：路径中有空格不会出现问题
-    "cpp": "g++ $fullFileName -o $dir\"$fileNameWithoutExt\"\".gout\" -W -Wall -Wextra -Wshadow -Wno-sign-compare -Wno-conversion -Wfloat-equal   -O2 -std=c++17 && $dir\"$fileNameWithoutExt\"\".gout\"",
+    "cpp": "/opt/homebrew/bin/g++-13 $fullFileName -o $dir\"$fileNameWithoutExt\"\".gout\" -W -Wall -Wextra -Wshadow -Wno-sign-compare -Wno-conversion -Wfloat-equal   -O2 -std=c++17 && $dir\"$fileNameWithoutExt\"\".gout\"",
     // 其中 $fullFileName 是绝对路径，是主文件
     // 自己决定是否加入 && rm $dir\"$fileNameWithoutExt\"\".out\"（也可以添加"files.exclude"）
     /* ------ 编译、运行多个cpp文件 ------ */
@@ -163,8 +163,9 @@
 "C_Cpp.errorSquiggles": "disabled",
 "C_Cpp.intelliSenseEngineFallback": "disabled",
 "C_Cpp.intelliSenseEngine": "disabled",
-"clangd.path": "/Users/dingkai/Library/Application Support/Code/User/globalStorage/llvm-vs-code-extensions.vscode-clangd/install/17.0.3/clangd_17.0.3/bin/clangd",
+//"clangd.path": "/Users/dingkai/Library/Application Support/Code/User/globalStorage/llvm-vs-code-extensions.vscode-clangd/install/17.0.3/clangd_17.0.3/bin/clangd",
 //"clangd.path": "/usr/bin/clangd",
+"clangd.path":"/opt/homebrew/bin/g++-13",
 "clangd.arguments": [
     // compile_commands.json 生成文件夹
     "--compile-commands-dir=build",
@@ -203,7 +204,8 @@
     // compelie_commands.json 文件的目录位置(相对于工作区，由于 CMake 生成的该文件默认在 build 文件夹中，故设置为 build)
     "--clang-tidy", "--suggest-missing-includes", "--header-insertion=iwyu"
 
-  ]
+  ],
+  "cmake.sourceDirectory": "/Users/dingkai/Code/IOI2024/template/utils"
   
   
 }

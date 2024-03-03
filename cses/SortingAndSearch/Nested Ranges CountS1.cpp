@@ -7,10 +7,10 @@
 #include <utility>
 using namespace std;
 namespace gp = __gnu_pbds;
-
 typedef gp::tree<std::pair<int, int>, gp::null_type, less<std::pair<int, int>>,
                  gp::rb_tree_tag, gp::tree_order_statistics_node_update>
     ordered_set;
+ordered_set os;
 using ll = long long;
 #define endl '\n'
 vector<array<int, 3>> leftAsc;
@@ -34,9 +34,7 @@ int main() {
        [&](array<int, 3> a, array<int, 3> b) {
          return a[LEFT] == b[LEFT] ? a[RIGHT] > b[RIGHT] : a[LEFT] < b[LEFT];
        });
-
   deque<array<int, 3>> dqDuplicate;
-  ordered_set os;
   for (int i = 0; i < n; i++) {
     array<int, 3> curr = leftAsc[i];
     if (!dqDuplicate.empty() && dqDuplicate.front()[LEFT] == curr[LEFT] &&
