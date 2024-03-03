@@ -1,34 +1,33 @@
 #include <algorithm>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 using ll = long long;
 #define endl '\n'
 vector<ll> x;
-bool checkK(ll val, int k) {
-  ll sum = 0;
+int n, k;
+bool checkK(ll val) {
+  ll sum = 0, subCount = 1;
   for (int i = 0; i < x.size(); i++) {
-    if (k == 0) {
-      return false;
-    }
     if (sum + x[i] <= val) {
       sum += x[i];
     } else {
-      k--;
+      subCount++;
       sum = x[i];
     }
+    if (subCount > k) {
+      return false;
+    }
   }
-  if (k == 0)
-    return false;
   return true;
 }
 int main() {
   ios::sync_with_stdio(false); // Fast I/O
   cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
-  int n, k;
-  ll sumX = 0, mx = 0;
   cin >> n >> k;
   x.resize(n);
+  ll sumX = 0, mx = 0;
   for (int i = 0; i < n; i++) {
     cin >> x[i];
     sumX += x[i];
@@ -37,7 +36,7 @@ int main() {
   ll l = mx, r = sumX;
   while (l < r) {
     ll mid = (l + r) >> 1;
-    if (checkK(mid, k)) {
+    if (checkK(mid)) {
       r = mid;
     } else {
       l = mid + 1;
