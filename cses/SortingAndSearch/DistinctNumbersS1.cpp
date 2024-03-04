@@ -1,19 +1,18 @@
 #include <algorithm>
 #include <iostream>
 #include <vector>
-
 using namespace std;
-
+vector<int> x;
 int main(void) {
-  int N = 0;
-  cin >> N;
-  vector<int> nums(N);
-  for (int i = 0; i < N; i++)
-    cin >> nums[i];
-  sort(nums.begin(), nums.end());
+  int n;
+  cin >> n;
+  x.resize(n);
+  for (auto &a : x)
+    cin >> a;
+  sort(x.begin(), x.end());
   int count = 1;
-  for (int i = 1; i < N; i++) {
-    if (nums[i] != nums[i - 1])
+  for (int i = 1; i < n; i++) {
+    if (x[i] != x[i - 1])
       count++;
   }
   cout << count << endl;

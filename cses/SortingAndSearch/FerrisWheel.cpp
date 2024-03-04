@@ -3,29 +3,30 @@
 using namespace std;
 typedef long long ll;
 #define endl '\n'
-int p[200100];
+vector<int> p;
 
 int main() {
-  int n, x, cnt = 0;
+  int n, x, ans = 0;
   cin >> n >> x;
-  for (int i = 0; i < n; i++) {
-    cin >> p[i];
+  p.resize(n);
+  for (auto &i : p) {
+    cin >> i;
   }
-  sort(p, p + n);
+  sort(p.begin(), p.end());
   for (int i = 0, j = n - 1; i <= j;) {
     if (i == j) {
-      cnt++;
+      ans++;
       break;
     }
     if (p[j] + p[i] <= x) {
       i++;
       j--;
-      cnt++;
+      ans++;
     } else {
       j--;
-      cnt++;
+      ans++;
     }
   }
-  cout << cnt << endl;
+  cout << ans << endl;
   return 0;
 }

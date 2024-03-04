@@ -1,16 +1,15 @@
 #include <iostream>
-#include <set> // Add this line to import the set library
-#include <vector>
+#include <set>
 using namespace std;
-
+set<int> mSet;
 int main(void) {
-  int N = 0;
-  cin >> N;
-  vector<int> nums(N);
-  for (int i = 0; i < N; i++) {
-    cin >> nums[i];
+  int n = 0;
+  cin >> n;
+  for (int i = 0; i < n; i++) {
+    int num;
+    cin >> num;
+    mSet.insert(num);
   }
-  set<int> s(nums.begin(), nums.end());
-  cout << s.size() << endl;
+  cout << mSet.size() << endl;
   return 0;
 }
