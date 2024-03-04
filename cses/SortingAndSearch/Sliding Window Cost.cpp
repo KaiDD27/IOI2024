@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cstdlib>
 #include <iostream>
 #include <set>
 #include <utility>
@@ -19,7 +20,7 @@ int main() {
   for (auto &i : x)
     cin >> i;
   if (k == 1) {
-    for_each(x.begin(), x.end(), [](int i) { cout << i << " "; });
+    for_each(x.begin(), x.end(), [](int i) { cout << 0 << " "; });
     return 0;
   }
 
@@ -29,8 +30,12 @@ int main() {
   for (int i = 0; i < (k - 1) / 2; i++) {
     it++;
   }
-  cout << it->first << " ";
+  ll cost = 0;
+  for (auto m : mSet)
+    cost += abs(m.first - it->first);
+  cout << cost << " ";
   for (int l = 0, r = k; r < n; r++, l++) {
+    int prevMedianVal = it->first;
     // 删掉的正好是中位数的元素
     if (x[l] == it->first && l == it->second) {
       it++; // 往右移了才能删除
@@ -52,7 +57,29 @@ int main() {
         it--;
       }
     }
-    cout << it->first << " ";
+
+    cost -= abs(x[l] - prevMedianVal);
+    cost += abs(x[r] - it->first);
+    ll difference = it->first - prevMedianVal;
+    // 中位数的值没有变的情况下，不需要处理，变化的情况下，需要分类处理，共 4
+    // 类如下：
+    if (difference > 0) {
+      if (k % 2 == 1) {
+        cost += (k / 2) * difference;
+      } else {
+        cost += (k / 2 - 1) * difference;
+      }
+      cost -= (k / 2) * difference;
+    }
+    if (difference < 0) {
+      cost += (k / 2) * difference * (-1);
+      if (k % 2 == 1) {
+        cost -= (k / 2) * difference * (-1);
+      } else {
+        cost -= (k / 2 - 1) * difference * (-1);
+      }
+    }
+    cout << cost << " ";
   }
   return 0;
 }

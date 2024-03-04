@@ -18,8 +18,7 @@ int main() {
   cin >> n >> x;
   a.resize(n);
   preA.resize(n);
-  ll preSum = 0;
-  for (int i = 0; i < n; i++) {
+  for (ll i = 0, preSum = 0; i < n; i++) {
     cin >> a[i];
     preSum += a[i];
     preA[i] = preSum;
