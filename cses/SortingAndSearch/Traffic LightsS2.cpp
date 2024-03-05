@@ -11,30 +11,24 @@ int main() {
   ios::sync_with_stdio(false);
   cin.tie(NULL);
   int x, n;
-  set<int> lights;
-  priority_queue<int> distances;
-  map<int, int> count;
+  set<int> setLights;
+  map<int, int> mpDistance;
   cin >> x >> n;
-  lights.insert(0);
-  lights.insert(x);
-  distances.push(x);
-  count[x] = 1;
+  setLights.insert(0);
+  setLights.insert(x);
+  mpDistance[x] = 1;
   for (int i = 0; i < n; i++) {
     int num;
     cin >> num;
-    auto it = lights.insert(num).first;
+    auto it = setLights.insert(num).first;
     int currP = *it, nextP = *next(it), prevP = *prev(it);
-    count[nextP - prevP]--;
-    if (count[nextP - prevP] == 0) {
-      while (!distances.empty() && count[distances.top()] == 0) {
-        distances.pop();
-      }
+    mpDistance[nextP - prevP]--;
+    if (mpDistance[nextP - prevP] == 0) {
+      mpDistance.erase(nextP - prevP);
     }
-    distances.push(nextP - currP);
-    distances.push(currP - prevP);
-    count[nextP - currP]++;
-    count[currP - prevP]++;
-    cout << distances.top() << " ";
+    mpDistance[nextP - currP]++;
+    mpDistance[currP - prevP]++;
+    cout << (prev(mpDistance.end()))->first << " ";
   }
   return 0;
 }

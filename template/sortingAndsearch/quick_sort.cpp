@@ -20,8 +20,10 @@ void quickSort(int nums[], int left, int right) {
   if (left >= right)
     return;
   // 如果针对伪随机测试数据可能会被hack
-  int flag = nums[left + rand() % (right - left + 1)];
-  // int flag = medianThree(nums, left, right);
+  // int flag = nums[left + rand() % (right - left + 1)];
+
+  int flag = medianThree(nums, left, right);
+
   int lt = left, i = left, gt = right;
   while (i <= gt) {
     if (nums[i] < flag)
@@ -30,8 +32,12 @@ void quickSort(int nums[], int left, int right) {
       swap(nums[i], nums[gt--]);
     else
       i++;
-  }
+  } // while结束后lt指向大于等于flag的第一个元素，gt指向小于等于flag的最后一个元素
   quickSort(nums, left, lt - 1);
   quickSort(nums, gt + 1, right);
   return;
+}
+int main() {
+  int nums[5] = {1, 2, 3, 4, 5};
+  quickSort(nums, 0, 4);
 }

@@ -18,10 +18,10 @@ int main() {
   }
   sort(ab.begin(), ab.end());
   for (auto p : ab) {
-    if (p.second == 0) {
+    if (p.second == 0) { // arrival
       cnt++;
       ans = max(ans, cnt);
-    } else {
+    } else { // leaving
       cnt--;
     }
   }

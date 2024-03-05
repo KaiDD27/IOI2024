@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <iostream>
 using namespace std;
-typedef long long ll;
+using ll = long long;
 #define endl '\n'
 vector<int> p;
 

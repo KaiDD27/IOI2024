@@ -1,23 +1,24 @@
+#include <algorithm>
 #include <iostream>
-
+#include <utility>
 using namespace std;
 typedef long long ll;
 #define endl '\n'
 
-int a[200100];
-
+vector<pair<int, int>> x;
 int main() {
-  int rounds, n;
+  int ans = 1, n;
   cin >> n;
-  rounds = n + 1;
-  a[0] = 1;
+  x.resize(n);
   for (int i = 0; i < n; i++) {
-    int x;
-    cin >> x;
-    rounds -= a[x - 1];
-    a[x] = 1;
+    cin >> x[i].first;
+    x[i].second = i;
   }
-
-  cout << rounds << endl;
+  sort(x.begin(), x.end());
+  for (int i = 1; i < n; i++) {
+    if (x[i].second < x[i - 1].second) // 统计连续value 中的逆序对
+      ans++;
+  }
+  cout << ans << endl;
   return 0;
 }

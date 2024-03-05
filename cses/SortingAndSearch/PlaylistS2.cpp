@@ -4,18 +4,18 @@
 using namespace std;
 typedef long long ll;
 #define endl '\n'
-map<int, int> hp;
+map<int, int> mpSong;
 
 int main() {
-  int n, ans = 0, start = 0;
+  int n, ans = 0;
   cin >> n;
-  for (int i = 0; i < n; i++) {
-    int curr;
-    cin >> curr;
-    if (hp.count(curr) && hp[curr] >= start) {
-      start = hp[curr] + 1;
+  for (int i = 0, start = 0; i < n; i++) {
+    int id;
+    cin >> id;
+    if (mpSong.count(id) && mpSong[id] >= start) {
+      start = mpSong[id] + 1;
     }
-    hp[curr] = i;
+    mpSong[id] = i; // 此id的歌曲最后一次出现的序号i 存入map，key 为id。
     ans = max(ans, i - start + 1);
   }
   cout << ans << endl;

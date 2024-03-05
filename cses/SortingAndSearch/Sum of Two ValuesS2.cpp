@@ -1,33 +1,32 @@
 #include <algorithm>
 #include <iostream>
+#include <utility>
+#include <vector>
 using namespace std;
 typedef long long ll;
 #define endl '\n'
 
-int a[200100];
-int idx[200100];
-
+vector<pair<int, int>> a;
 int main() {
   int n, x;
   cin >> n >> x;
+  a.resize(n);
   for (int i = 0; i < n; i++) {
-    cin >> a[i];
-    idx[i] = i;
+    cin >> a[i].first;
+    a[i].second = i + 1;
   }
-  sort(idx, idx + n, [&](int i, int j) { return a[i] < a[j]; });
-  int l = 0, r = n - 1;
-  while (l < r) {
-    if (a[idx[l]] + a[idx[r]] == x) {
-      cout << idx[l] + 1 << " " << idx[r] + 1 << endl;
+  sort(a.begin(), a.end());
+  for (int l = 0, r = n - 1; l < r;) {
+    if (a[l].first + a[r].first == x) {
+      cout << a[l].second << " " << a[r].second << endl;
       return 0;
     }
-    if ((a[idx[l]] + a[idx[r]] > x)) {
+    if ((a[l].first + a[r].first > x)) {
       r--;
     } else {
       l++;
     }
   }
-
   cout << "IMPOSSIBLE" << endl;
   return 0;
 }

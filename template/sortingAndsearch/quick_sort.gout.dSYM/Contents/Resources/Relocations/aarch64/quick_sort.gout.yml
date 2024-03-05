@@ -1,0 +1,15 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/dingkai/Code/IOI2024/template/sortingAndsearch/quick_sort.gout'
+relocations:
+  - { offsetInCU: 0xC3, offset: 0xC3, size: 0x8, addend: 0x0, symName: __Z11medianThreePiii, symObjAddr: 0x0, symBinAddr: 0x100003B8C, symSize: 0x130 }
+  - { offsetInCU: 0xFB7, offset: 0xFB7, size: 0x8, addend: 0x0, symName: __ZSt4moveIRiEONSt16remove_referenceIT_E4typeEOS2_, symObjAddr: 0x33C, symBinAddr: 0x100003EC8, symSize: 0x14 }
+  - { offsetInCU: 0x1070, offset: 0x1070, size: 0x8, addend: 0x0, symName: __ZSt4swapIiENSt9enable_ifIXsrSt6__and_IJSt6__not_ISt15__is_tuple_likeIT_EESt21is_move_constructibleIS4_ESt18is_move_assignableIS4_EEE5valueEvE4typeERS4_SE_, symObjAddr: 0x2E8, symBinAddr: 0x100003E74, symSize: 0x54 }
+  - { offsetInCU: 0x1078, offset: 0x1078, size: 0x8, addend: 0x0, symName: __ZSt4moveIRiEONSt16remove_referenceIT_E4typeEOS2_, symObjAddr: 0x33C, symBinAddr: 0x100003EC8, symSize: 0x14 }
+  - { offsetInCU: 0x103B, offset: 0x103B, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x2A4, symBinAddr: 0x100003E30, symSize: 0x44 }
+  - { offsetInCU: 0x1043, offset: 0x1043, size: 0x8, addend: 0x0, symName: __ZSt4swapIiENSt9enable_ifIXsrSt6__and_IJSt6__not_ISt15__is_tuple_likeIT_EESt21is_move_constructibleIS4_ESt18is_move_assignableIS4_EEE5valueEvE4typeERS4_SE_, symObjAddr: 0x2E8, symBinAddr: 0x100003E74, symSize: 0x54 }
+  - { offsetInCU: 0x109A, offset: 0x109A, size: 0x8, addend: 0x0, symName: __Z9quickSortPiii, symObjAddr: 0x130, symBinAddr: 0x100003CBC, symSize: 0x174 }
+  - { offsetInCU: 0x10A2, offset: 0x10A2, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x2A4, symBinAddr: 0x100003E30, symSize: 0x44 }
+  - { offsetInCU: 0x1154, offset: 0x1154, size: 0x8, addend: 0x0, symName: __Z11medianThreePiii, symObjAddr: 0x0, symBinAddr: 0x100003B8C, symSize: 0x130 }
+  - { offsetInCU: 0x115C, offset: 0x115C, size: 0x8, addend: 0x0, symName: __Z9quickSortPiii, symObjAddr: 0x130, symBinAddr: 0x100003CBC, symSize: 0x174 }
+...

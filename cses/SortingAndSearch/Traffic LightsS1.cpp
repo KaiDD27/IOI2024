@@ -9,24 +9,25 @@ int main() {
   ios::sync_with_stdio(false);
   cin.tie(NULL);
   int x, n;
-  set<int> lights;
-  multiset<int> distance;
+  set<int> setLight;
+  multiset<int> msDistance;
   cin >> x >> n;
-  lights.emplace(0);
-  lights.emplace(x);
-  distance.emplace(x);
+  // 边界放两个路灯，不影响结果
+  setLight.insert(0);
+  setLight.insert(x);
+  msDistance.insert(x);
   for (int i = 0; i < n; i++) {
     int num;
     cin >> num;
-    auto it = lights.emplace(num).first;
+    auto it = setLight.insert(num).first;
     int currLight = *it, nextLight = *next(it), prevLight = *prev(it);
-    auto itToDel = distance.find(nextLight - prevLight);
-    if (itToDel != distance.end()) {
-      distance.erase(itToDel);
+    auto itToDel = msDistance.find(nextLight - prevLight);
+    if (itToDel != msDistance.end()) {
+      msDistance.erase(itToDel);
     }
-    distance.emplace(nextLight - currLight);
-    distance.emplace(currLight - prevLight);
-    cout << *distance.rbegin() << " ";
+    msDistance.insert(nextLight - currLight);
+    msDistance.insert(currLight - prevLight);
+    cout << *msDistance.rbegin() << " ";
   }
   return 0;
 }
