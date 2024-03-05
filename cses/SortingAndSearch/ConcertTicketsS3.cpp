@@ -1,28 +1,28 @@
-#include <algorithm>
 #include <iostream>
+#include <set>
 #include <vector>
 using namespace std;
 typedef long long ll;
 #define endl '\n'
 vector<int> t;
-vector<int> h; // 每次都要erase所以空间复杂度不满足，因为每次erase都是O(n),整体就是
-               // O(n2)了
+multiset<ll> h;
 int main() {
   int n, m;
   cin >> n >> m;
-  h.resize(n);
   t.resize(m);
-  for (auto &i : h)
-    cin >> i;
+  for (int i = 0; i < n; i++) {
+    int tmp;
+    cin >> tmp;
+    h.insert(tmp);
+  }
   for (auto &i : t)
     cin >> i;
-  sort(h.begin(), h.end());
   for (int i = 0; i < m; i++) {
     if (h.empty()) {
       cout << -1 << endl;
       continue;
     }
-    auto it = upper_bound(h.begin(), h.end(), t[i]);
+    auto it = h.upper_bound(t[i]);
     if (it != h.begin()) {
       --it;
       cout << *it << endl;

@@ -163,9 +163,9 @@
 "C_Cpp.errorSquiggles": "disabled",
 "C_Cpp.intelliSenseEngineFallback": "disabled",
 "C_Cpp.intelliSenseEngine": "disabled",
-//"clangd.path": "/Users/dingkai/Library/Application Support/Code/User/globalStorage/llvm-vs-code-extensions.vscode-clangd/install/17.0.3/clangd_17.0.3/bin/clangd",
-//"clangd.path": "/usr/bin/clangd",
-"clangd.path":"/opt/homebrew/bin/g++-13",
+"clangd.path": "/Users/dingkai/Library/Application Support/Code/User/globalStorage/llvm-vs-code-extensions.vscode-clangd/install/17.0.3/clangd_17.0.3/bin/clangd",
+//"clangd.path": "clangd",
+//"clangd.path":"/opt/homebrew/bin/g++-13",
 "clangd.arguments": [
     // compile_commands.json 生成文件夹
     "--compile-commands-dir=build",
