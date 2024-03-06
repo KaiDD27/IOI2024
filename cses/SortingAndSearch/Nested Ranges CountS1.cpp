@@ -4,7 +4,6 @@
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
 #include <iostream>
-#include <utility>
 using namespace std;
 namespace gp = __gnu_pbds;
 typedef gp::tree<std::pair<int, int>, gp::null_type, less<std::pair<int, int>>,
@@ -14,7 +13,7 @@ ordered_set os;
 using ll = long long;
 #define endl '\n'
 vector<array<int, 3>> leftAsc;
-
+deque<array<int, 3>> dqDuplicate;
 const int LEFT = 0;
 const int RIGHT = 1;
 const int INDEX = 2;
@@ -34,39 +33,38 @@ int main() {
        [&](array<int, 3> a, array<int, 3> b) {
          return a[LEFT] == b[LEFT] ? a[RIGHT] > b[RIGHT] : a[LEFT] < b[LEFT];
        });
-  deque<array<int, 3>> dqDuplicate;
   for (int i = 0; i < n; i++) {
-    array<int, 3> curr = leftAsc[i];
-    if (!dqDuplicate.empty() && dqDuplicate.front()[LEFT] == curr[LEFT] &&
-        dqDuplicate.front()[RIGHT] == curr[RIGHT]) {
+    int left = leftAsc[i][LEFT], right = leftAsc[i][RIGHT],
+        index = leftAsc[i][INDEX];
+    if (!dqDuplicate.empty() && dqDuplicate.front()[LEFT] == left &&
+        dqDuplicate.front()[RIGHT] == right) {
       for (auto dup : dqDuplicate) {
         isContained[dup[INDEX]]++;
       }
     } else {
       dqDuplicate.clear();
     }
-    dqDuplicate.emplace_back(curr);
-    isContained[curr[INDEX]] +=
-        (os.size() - os.order_of_key(make_pair(curr[RIGHT], -1)));
-    os.insert(make_pair(curr[RIGHT], curr[INDEX]));
+    dqDuplicate.push_back({left, right, index});
+    isContained[index] += (os.size() - os.order_of_key({right, -1}));
+    os.insert({right, index});
   }
 
   os.clear();
   dqDuplicate.clear();
   for (int i = n - 1; i >= 0; i--) {
-    array<int, 3> curr = leftAsc[i];
-    if (!dqDuplicate.empty() && dqDuplicate.front()[LEFT] == curr[LEFT] &&
-        dqDuplicate.front()[RIGHT] == curr[RIGHT]) {
+    int left = leftAsc[i][LEFT], right = leftAsc[i][RIGHT],
+        index = leftAsc[i][INDEX];
+    if (!dqDuplicate.empty() && dqDuplicate.front()[LEFT] == left &&
+        dqDuplicate.front()[RIGHT] == right) {
       for (auto dup : dqDuplicate) {
         containsOther[dup[INDEX]]++;
       }
     } else {
       dqDuplicate.clear();
     }
-    dqDuplicate.emplace_back(curr);
-    containsOther[curr[INDEX]] +=
-        (os.order_of_key(make_pair(curr[RIGHT], n + 1)));
-    os.insert(make_pair(curr[RIGHT], curr[INDEX]));
+    dqDuplicate.push_back({left, right, index});
+    containsOther[index] += os.order_of_key({right, n + 1});
+    os.insert({right, index});
   }
 
   for (auto ans : containsOther)

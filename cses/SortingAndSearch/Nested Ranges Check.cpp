@@ -16,51 +16,31 @@ int main() {
   cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
   int n;
   cin >> n;
+  leftAsc.resize(n);
   vector<int> isContained(n, 0), containsOther(n, 0);
   for (int i = 0; i < n; i++) {
-    int left, right;
-    cin >> left >> right;
-    leftAsc.push_back({left, right, i});
+    cin >> leftAsc[i][LEFT] >> leftAsc[i][RIGHT];
+    leftAsc[i][INDEX] = i;
   }
   sort(leftAsc.begin(), leftAsc.end(), [](array<int, 3> i, array<int, 3> j) {
     return i[LEFT] == j[LEFT] ? i[RIGHT] > j[RIGHT] : i[LEFT] < j[LEFT];
   });
 
-  int prevLeft = -1, prevRight = -1, prevId = -1;
   // 解决isContained问题
-  int mxRight = 0;
-  for (int i = 0; i < n; i++) {
-    array<int, 3> curr = leftAsc[i];
-    if (prevLeft == curr[LEFT] && prevRight == curr[RIGHT])
-      isContained[prevId] = 1;
-    else {
-      prevLeft = curr[LEFT];
-      prevRight = curr[RIGHT];
-      prevId = curr[INDEX];
-    }
-    if (curr[RIGHT] <= mxRight) {
-      isContained[curr[INDEX]] = 1;
+  for (int i = 0, mxRight = 0; i < n; i++) {
+    if (leftAsc[i][RIGHT] <= mxRight) {
+      isContained[leftAsc[i][INDEX]] = 1;
     } else {
-      mxRight = curr[RIGHT];
+      mxRight = max(mxRight, leftAsc[i][RIGHT]);
     }
   }
 
   // 解决containsOther问题
-  prevLeft = -1, prevRight = -1, prevId = -1;
-  int mnRight = 1e9 + 10;
-  for (int i = n - 1; i >= 0; i--) {
-    array<int, 3> curr = leftAsc[i];
-    if (prevLeft == curr[LEFT] && prevRight == curr[RIGHT])
-      isContained[prevId] = 1;
-    else {
-      prevLeft = curr[LEFT];
-      prevRight = curr[RIGHT];
-      prevId = curr[INDEX];
-    }
-    if (curr[RIGHT] >= mnRight) {
-      containsOther[curr[INDEX]] = 1;
+  for (int i = n - 1, mnRight = 1e9 + 10; i >= 0; i--) {
+    if (leftAsc[i][RIGHT] >= mnRight) {
+      containsOther[leftAsc[i][INDEX]] = 1;
     } else {
-      mnRight = curr[RIGHT];
+      mnRight = min(mnRight, leftAsc[i][RIGHT]);
     }
   }
 

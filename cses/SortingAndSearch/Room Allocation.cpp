@@ -1,50 +1,44 @@
+#include <algorithm>
 #include <array>
 #include <iostream>
 #include <queue>
-const int AORD = 1;
-const int CUSID = 2;
+#include <utility>
+const int ARRIVAL = 0;
+const int DEPARTURE = 1;
+const int INDEX = 2;
 using namespace std;
 using ll = long long;
 #define endl '\n'
-priority_queue<array<int, 3>, vector<array<int, 3>>, greater<array<int, 3>>>
-    prEvent; // first是日期，second 是事件类型（0表示到达，1表示离开），third
-             // 是顾客编号
-
-vector<int> CustomerToRoom;
-
+vector<array<int, 3>> customerPlan;
+vector<int> customerRoom;
+priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>>
+    prRoom;
 int main() {
   ios::sync_with_stdio(false); // Fast I/O
   cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
   int n;
   cin >> n;
-  CustomerToRoom.resize(n);
+  customerPlan.resize(n);
+  customerRoom.resize(n);
   for (int i = 0; i < n; i++) {
-    int arriveDay, departureDay;
-    cin >> arriveDay >> departureDay;
-    prEvent.push({arriveDay, 0, i});
-    prEvent.push({departureDay, 1, i});
+    cin >> customerPlan[i][ARRIVAL] >> customerPlan[i][DEPARTURE];
+    customerPlan[i][INDEX] = i;
   }
-
-  priority_queue<int, vector<int>, greater<int>> roomHeap;
+  sort(customerPlan.begin(), customerPlan.end());
   int maxRoomNumber = 0;
-  while (!prEvent.empty()) {
-    auto event = prEvent.top();
-    prEvent.pop();
-    if (event[AORD] == 0) { // Arrival
-      if (roomHeap.empty()) {
-        CustomerToRoom[event[CUSID]] = ++maxRoomNumber;
-      } else {
-        CustomerToRoom[event[CUSID]] = roomHeap.top();
-        roomHeap.pop();
-      }
-    } else { // Departure
-      roomHeap.push(CustomerToRoom[event[CUSID]]);
+  for (int i = 0; i < n; i++) {
+    if (!prRoom.empty() && customerPlan[i][ARRIVAL] > prRoom.top().first) {
+      customerRoom[customerPlan[i][INDEX]] = prRoom.top().second;
+      prRoom.pop();
+    } else {
+      customerRoom[customerPlan[i][INDEX]] = ++maxRoomNumber;
     }
+    prRoom.push(
+        {customerPlan[i][DEPARTURE], customerRoom[customerPlan[i][INDEX]]});
   }
-
   cout << maxRoomNumber << endl;
-  for (auto roomNum : CustomerToRoom) {
-    cout << roomNum << " ";
+  for (auto i : customerRoom) {
+    cout << i << " ";
   }
   return 0;
 }

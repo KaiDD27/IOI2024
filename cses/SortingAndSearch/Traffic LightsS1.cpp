@@ -20,6 +20,7 @@ int main() {
     int num;
     cin >> num;
     auto it = setLight.insert(num).first;
+    // it+1,it-1对set,map,list都是不合法的，但对于vector是合法的
     int currLight = *it, nextLight = *next(it), prevLight = *prev(it);
     auto itToDel = msDistance.find(nextLight - prevLight);
     if (itToDel != msDistance.end()) {

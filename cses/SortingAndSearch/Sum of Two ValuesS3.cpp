@@ -4,24 +4,24 @@ using namespace std;
 typedef long long ll;
 #define endl '\n'
 
-vector<int> mpA, idx;
+vector<int> a, idx;
 int main() {
   int n, x;
   cin >> n >> x;
-  mpA.resize(n);
+  a.resize(n);
   idx.resize(n);
   for (int i = 0; i < n; i++) {
-    cin >> mpA[i];
+    cin >> a[i];
     idx[i] = i;
   }
-  sort(idx.begin(), idx.end(), [&](int i, int j) { return mpA[i] < mpA[j]; });
+  sort(idx.begin(), idx.end(), [&](int i, int j) { return a[i] < a[j]; });
   for (int l = 0, r = n - 1; l < r;) {
     int iLeftOfA = idx[l], iRightOfA = idx[r];
-    if (mpA[iLeftOfA] + mpA[iRightOfA] == x) {
+    if (a[iLeftOfA] + a[iRightOfA] == x) {
       cout << iLeftOfA + 1 << " " << iRightOfA + 1 << endl;
       return 0;
     }
-    if ((mpA[iLeftOfA] + mpA[iRightOfA] > x)) {
+    if ((a[iLeftOfA] + a[iRightOfA] > x)) {
       r--;
     } else {
       l++;

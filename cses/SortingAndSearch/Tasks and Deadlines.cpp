@@ -14,7 +14,7 @@ int main() {
   ll n;
   cin >> n;
   task.resize(n);
-  for (auto &t : task) { // 一定要带&，否则只是操作副本，无法复制
+  for (auto &t : task) {
     cin >> t.first >> t.second;
   }
   sort(task.begin(), task.end());

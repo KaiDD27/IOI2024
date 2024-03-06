@@ -4,23 +4,20 @@
 using namespace std;
 using ll = long long;
 #define endl '\n'
-
+vector<ll> t;
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(NULL);
-
   int n;
   cin >> n;
-
+  t.resize(n);
   ll sum = 0;
-  ll t[n];
   ll maxA = 0;
-  for (int i = 0; i < n; i++) {
-    cin >> t[i];
-    maxA = max(maxA, t[i]);
-    sum += t[i];
+  for (auto &i : t) {
+    cin >> i;
+    maxA = max(maxA, i);
+    sum += i;
   }
-  ll ans = max(maxA * 2, sum);
-  cout << ans << endl;
+  cout << max(maxA * 2, sum) << endl;
   return 0;
 }
