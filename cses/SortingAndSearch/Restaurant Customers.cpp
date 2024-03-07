@@ -11,10 +11,9 @@ int main() {
   int ans = 0, cnt = 0;
   cin >> n;
   ab.resize(2 * n);
-  for (int i = 0; i < n; i++) {
-    cin >> ab[2 * i].first >> ab[2 * i + 1].first;
-    ab[2 * i].second = 0;     // arrival
-    ab[2 * i + 1].second = 1; // leaving
+  for (int i = 0; i < n * 2; i++) {
+    cin >> ab[i].first;
+    ab[i].second = i % 2; // 0 =arrival ,1=leaving
   }
   sort(ab.begin(), ab.end());
   for (auto p : ab) {

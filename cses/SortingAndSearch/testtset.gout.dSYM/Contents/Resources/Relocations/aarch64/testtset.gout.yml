@@ -1,0 +1,15 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/dingkai/Code/IOI2024/cses/SortingAndSearch/testtset.gout'
+relocations:
+  - { offsetInCU: 0xBD, offset: 0xBD, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003A00, symSize: 0x36C }
+  - { offsetInCU: 0x683F, offset: 0x683F, size: 0x8, addend: 0x0, symName: __ZStL8__ioinit, symObjAddr: 0x16110, symBinAddr: 0x100008032, symSize: 0x0 }
+  - { offsetInCU: 0x6C0C, offset: 0x6C0C, size: 0x8, addend: 0x0, symName: __ZNSt8__detail30__integer_to_chars_is_unsignedIjEE, symObjAddr: 0x48E, symBinAddr: 0x100003F1C, symSize: 0x0 }
+  - { offsetInCU: 0x6C26, offset: 0x6C26, size: 0x8, addend: 0x0, symName: __ZNSt8__detail30__integer_to_chars_is_unsignedImEE, symObjAddr: 0x48F, symBinAddr: 0x100003F1D, symSize: 0x0 }
+  - { offsetInCU: 0x6C40, offset: 0x6C40, size: 0x8, addend: 0x0, symName: __ZNSt8__detail30__integer_to_chars_is_unsignedIyEE, symObjAddr: 0x490, symBinAddr: 0x100003F1E, symSize: 0x0 }
+  - { offsetInCU: 0x6C81, offset: 0x6C81, size: 0x8, addend: 0x0, symName: __GLOBAL__sub_I_testtset.cpp, symObjAddr: 0x3A8, symBinAddr: 0x100003DA8, symSize: 0x14 }
+  - { offsetInCU: 0x6CA9, offset: 0x6CA9, size: 0x8, addend: 0x0, symName: __Z41__static_initialization_and_destruction_0v, symObjAddr: 0x36C, symBinAddr: 0x100003D6C, symSize: 0x3C }
+  - { offsetInCU: 0x6CB1, offset: 0x6CB1, size: 0x8, addend: 0x0, symName: __GLOBAL__sub_I_testtset.cpp, symObjAddr: 0x3A8, symBinAddr: 0x100003DA8, symSize: 0x14 }
+  - { offsetInCU: 0x6D7A, offset: 0x6D7A, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003A00, symSize: 0x36C }
+  - { offsetInCU: 0x6D82, offset: 0x6D82, size: 0x8, addend: 0x0, symName: __Z41__static_initialization_and_destruction_0v, symObjAddr: 0x36C, symBinAddr: 0x100003D6C, symSize: 0x3C }
+...

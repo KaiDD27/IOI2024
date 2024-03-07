@@ -5,8 +5,9 @@ using namespace std;
 typedef long long ll;
 #define endl '\n'
 vector<int> t;
-vector<int> h; // 每次都要erase所以空间复杂度不满足，因为每次erase都是O(n),整体就是
-               // O(n2)了
+vector<int>
+    h; // 每次都要erase所以空间复杂度不满足，因为每次erase都是O(n),整体就是
+       // O(n2)了
 int main() {
   int n, m;
   cin >> n >> m;
@@ -17,12 +18,12 @@ int main() {
   for (auto &i : t)
     cin >> i;
   sort(h.begin(), h.end());
-  for (int i = 0; i < m; i++) {
+  for (auto i : t) {
     if (h.empty()) {
       cout << -1 << endl;
       continue;
     }
-    auto it = upper_bound(h.begin(), h.end(), t[i]);
+    auto it = upper_bound(h.begin(), h.end(), i);
     if (it != h.begin()) {
       --it;
       cout << *it << endl;

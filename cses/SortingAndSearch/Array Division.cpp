@@ -7,17 +7,16 @@ using ll = long long;
 #define endl '\n'
 vector<ll> x;
 int n, k;
-bool checkK(ll val) {
-  ll sum = 0, subCount = 1;
-  for (int i = 0; i < x.size(); i++) {
+bool check(ll val) {
+  for (ll i = 0, subCount = 1, sum = 0; i < n; i++) {
     if (sum + x[i] <= val) {
       sum += x[i];
     } else {
       subCount++;
+      if (subCount > k) {
+        return false;
+      }
       sum = x[i];
-    }
-    if (subCount > k) {
-      return false;
     }
   }
   return true;
@@ -28,15 +27,15 @@ int main() {
   cin >> n >> k;
   x.resize(n);
   ll sumX = 0, mx = 0;
-  for (int i = 0; i < n; i++) {
-    cin >> x[i];
-    sumX += x[i];
-    mx = max(mx, x[i]);
+  for (auto &xi : x) {
+    cin >> xi;
+    sumX += xi;
+    mx = max(mx, xi);
   }
   ll l = mx, r = sumX;
   while (l < r) {
     ll mid = (l + r) >> 1;
-    if (checkK(mid)) {
+    if (check(mid)) {
       r = mid;
     } else {
       l = mid + 1;

@@ -13,9 +13,7 @@ int main() {
   int ans = 0;
   for (auto &i : a)
     cin >> i;
-  int l = 0, r = 0;
-  ll sum = 0;
-  while (l < n && r <= n) {
+  for (ll sum = 0, l = 0, r = 0; l < n && r <= n;) {
     if (sum > x) {
       sum -= a[l];
       l++;

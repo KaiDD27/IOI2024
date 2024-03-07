@@ -12,7 +12,8 @@ int main() {
   for (int i = 0, start = 0; i < n; i++) {
     int id;
     cin >> id;
-    if (mpSong.count(id) && mpSong[id] >= start) {
+    auto it = mpSong.find(id);
+    if (it != mpSong.end() && mpSong[id] >= start) {
       start = mpSong[id] + 1;
     }
     mpSong[id] = i; // 此id的歌曲最后一次出现的序号i 存入map，key 为id。

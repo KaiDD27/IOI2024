@@ -1,39 +1,38 @@
 #include <iostream>
-#include <map>
 #include <unordered_map>
 #include <vector>
 
 using namespace std;
 using ll = long long;
 #define endl '\n'
-unordered_map<ll, ll> mpValCount;
+unordered_map<ll, ll> umpNumCount;
 vector<ll> x;
 int main() {
   ios::sync_with_stdio(false); // Fast I/O
   cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
+  ll ans = 0;
   int n, k;
   cin >> n >> k;
   x.resize(n);
-  for (int i = 0; i < n; i++) {
-    cin >> x[i];
+  for (auto &i : x) {
+    cin >> i;
   }
-  ll l = 0, r = 0, ans = 0;
-  while (l < n && r < n) {
-    int distinct = mpValCount.size();
+  for (ll l = 0, r = 0; l < n && r < n;) {
+    int distinct = umpNumCount.size();
     if (distinct < k) {
-      mpValCount[x[r]]++;
+      umpNumCount[x[r]]++;
       r++;
       ans += (r - l);
     } else if (distinct == k) {
-      auto it = mpValCount.find(x[r]);
-      if (it != mpValCount.end()) {
-        mpValCount[x[r]]++;
+      auto it = umpNumCount.find(x[r]);
+      if (it != umpNumCount.end()) {
+        umpNumCount[x[r]]++;
         r++;
         ans += (r - l);
       } else {
-        mpValCount[x[l]]--;
-        if (mpValCount[x[l]] == 0) {
-          mpValCount.erase(x[l]);
+        umpNumCount[x[l]]--;
+        if (umpNumCount[x[l]] == 0) {
+          umpNumCount.erase(x[l]);
         }
         l++;
       }

@@ -1,6 +1,6 @@
 #include <algorithm>
+#include <cstdlib>
 #include <iostream>
-#include <iterator>
 #include <set>
 #include <utility>
 #include <vector>
@@ -20,17 +20,24 @@ int main() {
   for (auto &xi : x)
     cin >> xi;
   if (k == 1) {
-    for_each(x.begin(), x.end(), [](int i) { cout << i << " "; });
+    for (int i =0;i<n;i++) {
+      cout << 0 << " ";
+    }
     return 0;
   }
   for (int i = 0; i < k; i++)
     mSet.insert({x[i], i});
   auto it = mSet.begin();
   advance(it, (k - 1) / 2); // 等同于for循环 it++ (k-1)/2次
-  cout << it->first << " ";
-  for (int l = 0, r = k; r < n; r++, l++) {
+  ll cost = 0;
+  for (auto m : mSet)
+    cost += abs(m.first - it->first);
+  cout << cost << " ";
+  for (int r = k; r < n; r++) {
+    int l = r - k;
+    int prevMedianVal = it->first;
     // 删掉的正好是中位数的元素
-    if (x[l] == it->first && l == it->second) {
+    if (x[l] == prevMedianVal && l == it->second) {
       it++; // 往右移了才能删除
       mSet.erase({x[l], l});
       mSet.insert({x[r], r});
@@ -40,14 +47,18 @@ int main() {
     } else {
       mSet.erase({x[l], l});
       mSet.insert({x[r], r});
-      if (x[l] <= it->first && x[r] >= it->first)
+      if (x[l] <= prevMedianVal && x[r] >= prevMedianVal) {
         it++;
-      else if (x[l] > it->first && x[r] < it->first) {
+      } else if (x[l] > prevMedianVal && x[r] < prevMedianVal) {
         it--;
-      }
-      // x[l]和x[r]在同一边则中位数不变
+      } // x[l]和x[r]在同一边则中位数不变
     }
-    cout << it->first << " ";
+    int newMedianVal = it->first;
+    cost -= abs(x[l] - prevMedianVal);
+    cost += abs(x[r] - newMedianVal);
+    if (k % 2 == 0)
+      cost -= (newMedianVal - prevMedianVal);
+    cout << cost << " ";
   }
   return 0;
 }

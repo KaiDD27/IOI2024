@@ -19,12 +19,12 @@ int main() {
   }
   for (auto &i : t)
     cin >> i;
-  for (int i = 0; i < m; i++) {
+  for (auto i : t) {
     if (h.empty()) {
       cout << -1 << endl;
       continue;
     }
-    auto it = h.upper_bound({t[i], 200100});
+    auto it = h.upper_bound({i, n});
     if (it != h.begin()) {
       --it;
       cout << it->first << endl;

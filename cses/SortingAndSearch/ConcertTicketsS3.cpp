@@ -17,12 +17,12 @@ int main() {
   }
   for (auto &i : t)
     cin >> i;
-  for (int i = 0; i < m; i++) {
+  for (auto i : t) {
     if (h.empty()) {
       cout << -1 << endl;
       continue;
     }
-    auto it = h.upper_bound(t[i]);
+    auto it = h.upper_bound(i);
     if (it != h.begin()) {
       --it;
       cout << *it << endl;
