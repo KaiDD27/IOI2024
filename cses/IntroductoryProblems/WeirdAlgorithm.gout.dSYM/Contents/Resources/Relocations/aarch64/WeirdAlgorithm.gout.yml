@@ -1,0 +1,15 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/dingkai/Code/IOI2024/cses/IntroductoryProblems/WeirdAlgorithm.gout'
+relocations:
+  - { offsetInCU: 0xC7, offset: 0xC7, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003DF0, symSize: 0xC4 }
+  - { offsetInCU: 0x31FF, offset: 0x31FF, size: 0x8, addend: 0x0, symName: __ZStL8__ioinit, symObjAddr: 0xE470, symBinAddr: 0x100008000, symSize: 0x0 }
+  - { offsetInCU: 0x3505, offset: 0x3505, size: 0x8, addend: 0x0, symName: __ZNSt8__detail30__integer_to_chars_is_unsignedIjEE, symObjAddr: 0x11A, symBinAddr: 0x100003F52, symSize: 0x0 }
+  - { offsetInCU: 0x351F, offset: 0x351F, size: 0x8, addend: 0x0, symName: __ZNSt8__detail30__integer_to_chars_is_unsignedImEE, symObjAddr: 0x11B, symBinAddr: 0x100003F53, symSize: 0x0 }
+  - { offsetInCU: 0x3539, offset: 0x3539, size: 0x8, addend: 0x0, symName: __ZNSt8__detail30__integer_to_chars_is_unsignedIyEE, symObjAddr: 0x11C, symBinAddr: 0x100003F54, symSize: 0x0 }
+  - { offsetInCU: 0x3569, offset: 0x3569, size: 0x8, addend: 0x0, symName: __GLOBAL__sub_I_WeirdAlgorithm.cpp, symObjAddr: 0x100, symBinAddr: 0x100003EF0, symSize: 0x14 }
+  - { offsetInCU: 0x358B, offset: 0x358B, size: 0x8, addend: 0x0, symName: __Z41__static_initialization_and_destruction_0v, symObjAddr: 0xC4, symBinAddr: 0x100003EB4, symSize: 0x3C }
+  - { offsetInCU: 0x3593, offset: 0x3593, size: 0x8, addend: 0x0, symName: __GLOBAL__sub_I_WeirdAlgorithm.cpp, symObjAddr: 0x100, symBinAddr: 0x100003EF0, symSize: 0x14 }
+  - { offsetInCU: 0x3587, offset: 0x3587, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003DF0, symSize: 0xC4 }
+  - { offsetInCU: 0x358F, offset: 0x358F, size: 0x8, addend: 0x0, symName: __Z41__static_initialization_and_destruction_0v, symObjAddr: 0xC4, symBinAddr: 0x100003EB4, symSize: 0x3C }
+...
