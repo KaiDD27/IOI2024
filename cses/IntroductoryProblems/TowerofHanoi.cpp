@@ -13,7 +13,6 @@ void hanoi(int num, int fromStack, int tmpStack, int toStack) {
   hanoi(num - 1, fromStack, toStack, tmpStack);
   hanoi(1, fromStack, tmpStack, toStack);
   hanoi(num - 1, tmpStack, fromStack, toStack);
-
   return;
 }
 int main() {
@@ -21,8 +20,8 @@ int main() {
   cin >> n;
   hanoi(n, 1, 2, 3);
   cout << movDiskFromTo.size() << endl;
-  for (auto fromTo : movDiskFromTo) {
-    cout << fromTo.first << " " << fromTo.second << endl;
+  for (auto mi : movDiskFromTo) {
+    cout << mi.first << " " << mi.second << endl;
   }
   return 0;
 }

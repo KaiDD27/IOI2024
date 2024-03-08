@@ -21,6 +21,7 @@ int main() {
     cin >> numsP[i];
     sum += numsP[i];
   }
+  ans = sum;
   calc(1, 0);
   cout << ans << endl;
   return 0;

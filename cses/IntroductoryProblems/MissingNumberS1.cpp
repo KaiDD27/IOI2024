@@ -1,11 +1,13 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 #define endl '\n'
-const int MAXN = 200100;
-int nums[MAXN];
+
+vector<int> nums;
 int main() {
   int n;
   cin >> n;
+  nums.resize(n + 1);
   for (int i = 0; i < n - 1; i++) {
     int num;
     cin >> num;

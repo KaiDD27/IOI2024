@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-long long yVals[100100], xVals[100100];
+vector<long long> yVal, xVal;
 
 void calc(long long &y, long long &x) {
   if (x >= y) {
@@ -19,11 +19,13 @@ void calc(long long &y, long long &x) {
 int main() {
   int t;
   cin >> t;
+  yVal.resize(t);
+  xVal.resize(t);
   for (int i = 0; i < t; i++) {
-    cin >> yVals[i] >> xVals[i];
+    cin >> yVal[i] >> xVal[i];
   }
   for (int i = 0; i < t; i++) {
-    calc(yVals[i], xVals[i]);
+    calc(yVal[i], xVal[i]);
   }
   return 0;
 }

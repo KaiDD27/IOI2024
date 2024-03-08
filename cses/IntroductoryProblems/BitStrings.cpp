@@ -12,6 +12,6 @@ int main() {
     if (ans >= (int)pow(10, 9) + 7)
       ans = ans % ((int)pow(10, 9) + 7);
   }
-  cout << ans % ((int)pow(10, 9) + 7) << endl;
+  cout << ans << endl;
   return 0;
 }

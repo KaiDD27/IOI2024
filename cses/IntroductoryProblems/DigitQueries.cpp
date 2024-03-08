@@ -34,17 +34,6 @@ int main() {
     long long num = (k - 1) / n + pow10(n - 1);
     int pos = (int)((k - 1) % n);
     cout << to_string(num)[pos] << endl;
-    /*
-    long long tmp1 = k / n;
-    long long tmp2 = k % n;
-    long long curr = pow10(n - 1) - 1 + tmp1;
-    if (tmp2 == 0) {
-      cout << curr % 10 << endl;
-    } else {
-      curr++;
-      cout << (curr / (long long)pow10(n - 1 - (tmp2 - 1))) % 10 << endl;
-    }
-    */
   }
   return 0;
 }

@@ -1,9 +1,9 @@
 #include <algorithm>
 #include <iostream>
-
+#include <vector>
 using namespace std;
 
-int abc[26];
+vector<int> abc(26);
 int main() {
   string strIn;
   cin >> strIn;
@@ -11,12 +11,12 @@ int main() {
     abc[strIn[i] - 'A']++;
   }
   string strOut = "";
-  char oddChar = 0;
+  char oddChar = '0';
   for (int i = 0; i < 26; i++) {
     if (abc[i] % 2 == 0) {
       strOut.append(abc[i] / 2, i + 'A');
     } else {
-      if (oddChar) { // 如果已经有一个字符出现奇数次，那么无解
+      if (oddChar != '0') { // 如果已经有一个字符出现奇数次，那么无解
         cout << "NO SOLUTION" << endl;
         return 0;
       }
