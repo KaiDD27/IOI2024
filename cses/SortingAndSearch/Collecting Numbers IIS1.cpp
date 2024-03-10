@@ -18,8 +18,8 @@ int main() {
     pos[i] = i;
   }
   sort(pos.begin(), pos.end(), [&](int i, int j) { return x[i] < x[j]; });
-  for (int i = 1; i <= n; i++) {
-    if (pos[i] < pos[i - 1])
+  for (int iVal = 1; iVal <= n; iVal++) {
+    if (pos[iVal] < pos[iVal - 1])
       rounds++;
   }
 
