@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstddef>
 #include <iostream>
 #include <vector>
@@ -15,12 +16,19 @@ int main() {
   dp.resize(m + 1);
   for (int j = 0; j <= m; j++)
     dp[j] = j;
+
   for (int i = 1; i <= n; i++) {
     int leftUp = dp[0];
     dp[0] = i;
     for (int j = 1; j <= m; j++) {
+      int nextLeftUp = dp[j];
+      if (strN[i - 1] == strM[j - 1])
+        dp[j] = leftUp;
+      else
+        dp[j] = min(leftUp, min(dp[j], dp[j - 1])) + 1;
+      leftUp = nextLeftUp;
     }
   }
-
+  cout << dp[m] << endl;
   return 0;
 }
