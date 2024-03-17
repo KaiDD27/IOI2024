@@ -1,0 +1,21 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/dingkai/Code/IOI2024/cses/Dynamic Programming/Counting Tilings.gout'
+relocations:
+  - { offsetInCU: 0xC8, offset: 0xC8, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003884, symSize: 0x62C }
+  - { offsetInCU: 0x31FF, offset: 0x31FF, size: 0x8, addend: 0x0, symName: __ZStL8__ioinit, symObjAddr: 0xEBF8, symBinAddr: 0x100008000, symSize: 0x0 }
+  - { offsetInCU: 0x322E, offset: 0x322E, size: 0x8, addend: 0x0, symName: __ZL4maxN, symObjAddr: 0x680, symBinAddr: 0x100003F40, symSize: 0x0 }
+  - { offsetInCU: 0x3248, offset: 0x3248, size: 0x8, addend: 0x0, symName: __ZL4maxM, symObjAddr: 0x684, symBinAddr: 0x100003F44, symSize: 0x0 }
+  - { offsetInCU: 0x3261, offset: 0x3261, size: 0x8, addend: 0x0, symName: __ZL3MOD, symObjAddr: 0x688, symBinAddr: 0x100003F48, symSize: 0x0 }
+  - { offsetInCU: 0x327A, offset: 0x327A, size: 0x8, addend: 0x0, symName: _N, symObjAddr: 0xEC00, symBinAddr: 0x100008008, symSize: 0x0 }
+  - { offsetInCU: 0x3295, offset: 0x3295, size: 0x8, addend: 0x0, symName: _M, symObjAddr: 0xEC04, symBinAddr: 0x10000800C, symSize: 0x0 }
+  - { offsetInCU: 0x32D9, offset: 0x32D9, size: 0x8, addend: 0x0, symName: _dp, symObjAddr: 0xEC08, symBinAddr: 0x100008010, symSize: 0x0 }
+  - { offsetInCU: 0x35E5, offset: 0x35E5, size: 0x8, addend: 0x0, symName: __ZNSt8__detail30__integer_to_chars_is_unsignedIjEE, symObjAddr: 0x690, symBinAddr: 0x100003F50, symSize: 0x0 }
+  - { offsetInCU: 0x35FF, offset: 0x35FF, size: 0x8, addend: 0x0, symName: __ZNSt8__detail30__integer_to_chars_is_unsignedImEE, symObjAddr: 0x691, symBinAddr: 0x100003F51, symSize: 0x0 }
+  - { offsetInCU: 0x3619, offset: 0x3619, size: 0x8, addend: 0x0, symName: __ZNSt8__detail30__integer_to_chars_is_unsignedIyEE, symObjAddr: 0x692, symBinAddr: 0x100003F52, symSize: 0x0 }
+  - { offsetInCU: 0x364B, offset: 0x364B, size: 0x8, addend: 0x0, symName: __GLOBAL__sub_I_Counting_Tilings.cpp, symObjAddr: 0x668, symBinAddr: 0x100003EEC, symSize: 0x14 }
+  - { offsetInCU: 0x366B, offset: 0x366B, size: 0x8, addend: 0x0, symName: __Z41__static_initialization_and_destruction_0v, symObjAddr: 0x62C, symBinAddr: 0x100003EB0, symSize: 0x3C }
+  - { offsetInCU: 0x3673, offset: 0x3673, size: 0x8, addend: 0x0, symName: __GLOBAL__sub_I_Counting_Tilings.cpp, symObjAddr: 0x668, symBinAddr: 0x100003EEC, symSize: 0x14 }
+  - { offsetInCU: 0x3667, offset: 0x3667, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003884, symSize: 0x62C }
+  - { offsetInCU: 0x366F, offset: 0x366F, size: 0x8, addend: 0x0, symName: __Z41__static_initialization_and_destruction_0v, symObjAddr: 0x62C, symBinAddr: 0x100003EB0, symSize: 0x3C }
+...
