@@ -1,4 +1,3 @@
-// 参见《算法竞赛》上册例5.8
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -47,5 +46,6 @@ int main() {
       }
     }
   cout << dp[now][(1 << m) - 1] << endl;
+
   return 0;
 }
