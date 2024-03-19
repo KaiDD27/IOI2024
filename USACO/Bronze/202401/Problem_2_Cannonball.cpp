@@ -21,7 +21,7 @@ int main() {
   ll brokenTargetCnt = 0;
   for (ll pos = S - 1, direction = RIGHT, power = 1; pos >= 0 && pos < N;) {
     // 如果这次进入同一个位置的 PAD，且 PAD 的power为 0，且 Bessie
-    // 自己的方向和Power都和上次相同，则说明已经进入无线循环了，可以 break 了。
+    // 自己的方向和Power都和上次相同，则说明已经进入无限循环了，可以 break 了。
     if (location[pos].first == PAD && location[pos].second == 0 &&
         setPADofPowerZero.count(make_tuple(pos, direction, power)) == 1)
       break;

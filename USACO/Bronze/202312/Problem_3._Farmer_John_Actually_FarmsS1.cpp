@@ -6,7 +6,7 @@ using namespace std;
 using ll = long long;
 #define endl '\n'
 vector<array<ll, 3>> plant;
-const int IDX = 0;       // 按照高度，从高到低的排序
+const int IDX = 0;       // 按照高度，从高到低的排序,不能相等
 const int ORIGINAL = 1;  // 原始高度
 const int INCREMENT = 2; // 每天新增高度
 int main() {
@@ -37,21 +37,24 @@ int main() {
       if (curr[ORIGINAL] > next[ORIGINAL]) {
         mnDay = max(mnDay, 0LL);
         if (curr[INCREMENT] < next[INCREMENT]) {
+          // curr需要大于 curr，差减 1，再整除确保了正好大于
           mxDay = min(mxDay, ((curr[ORIGINAL] - next[ORIGINAL]) - 1) /
                                  (next[INCREMENT] - curr[INCREMENT]));
         }
       } else if (curr[ORIGINAL] == next[ORIGINAL]) {
+        // 需要大于
         if (curr[INCREMENT] > next[INCREMENT])
           mnDay = max(mnDay, 1LL);
         else {
           isImpossible = true;
           break;
         }
-      } else {
+      } else { // curr小于 next
         if (curr[INCREMENT] <= next[INCREMENT]) {
           isImpossible = true;
           break;
         } else {
+          // 整除加 1 确保了正好大于
           mnDay = max(mnDay, ((next[ORIGINAL] - curr[ORIGINAL]) /
                               (curr[INCREMENT] - next[INCREMENT])) +
                                  1);
