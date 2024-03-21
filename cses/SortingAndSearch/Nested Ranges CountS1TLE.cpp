@@ -1,16 +1,9 @@
 #include <algorithm>
 #include <array>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
 #include <iostream>
+#include <set>
 #include <vector>
 using namespace std;
-namespace gp = __gnu_pbds;
-// 不支持重复元素，所以需要用pair,通过 second,index来区分
-typedef gp::tree<std::pair<int, int>, gp::null_type, less<std::pair<int, int>>,
-                 gp::rb_tree_tag, gp::tree_order_statistics_node_update>
-    ordered_set;
-ordered_set os;
 using ll = long long;
 #define endl '\n'
 vector<array<int, 3>> leftAsc;
@@ -34,19 +27,21 @@ int main() {
          return a[LEFT] == b[LEFT] ? a[RIGHT] > b[RIGHT] : a[LEFT] < b[LEFT];
        });
 
+  multiset<int> ms;
+
   for (int i = n - 1; i >= 0; i--) {
     int right = leftAsc[i][RIGHT], index = leftAsc[i][INDEX];
-    // 返回的是严格小于key的数量，也就是0-base 下key的序号
-    containsOther[index] = os.order_of_key({right, n + 1});
-    os.insert({right, index});
+    // distance 是线性时间，所以可能是 O（n）
+    containsOther[index] = distance(ms.begin(), ms.upper_bound(right));
+    ms.insert(right);
   }
 
-  os.clear();
+  ms.clear();
 
   for (int i = 0; i < n; i++) {
     int right = leftAsc[i][RIGHT], index = leftAsc[i][INDEX];
-    isContained[index] = (os.size() - os.order_of_key({right, -1}));
-    os.insert({right, index});
+    isContained[index] = distance(ms.lower_bound(right), ms.end());
+    ms.insert(right);
   }
 
   for (auto ans : containsOther)

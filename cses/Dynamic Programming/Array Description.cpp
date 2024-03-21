@@ -17,93 +17,53 @@ int main() {
   x.resize(n + 1);
   for (int i = 1; i <= n; i++)
     cin >> x[i];
-  dp.resize(2, vector<int>(m + 1));
+  dp.resize(2, vector<int>(m + 2)); // 0和m+1做为墙
   int now = 1, old = 0;
   if (x[1] != 0) {
     dp[now][x[1]] = 1; // 只有一种
   } else {
     fill(dp[now].begin(), dp[now].end(), 1);
-    dp[now][0] = m; // 这里面存当x[i]==0时，所有的可能性数量之和。
+    dp[now][0] = 0;     // 墙赋值为 0
+    dp[now][m + 1] = 0; // 墙赋值为 0
   }
-
+  // 从第二个数开始到第 n 个数
   for (int i = 2; i <= n; i++) {
     swap(now, old);
     fill(dp[now].begin(), dp[now].end(), 0);
     if (x[i] != 0) {
       dp[now][x[i]] = dp[old][x[i]];
       dp[now][x[i]] %= modNum;
-      if (x[i] - 1 >= 1) {
-        dp[now][x[i]] += dp[old][x[i] - 1];
-        dp[now][x[i]] %= modNum;
+
+      dp[now][x[i]] += dp[old][x[i] - 1];
+      dp[now][x[i]] %= modNum;
+
+      dp[now][x[i]] += dp[old][x[i] + 1];
+      dp[now][x[i]] %= modNum;
+
+    } else { // x[i] == 0
+      for (int j = 1; j <= m; j++) {
+        dp[now][j] = dp[old][j];
+
+        dp[now][j] += dp[old][j - 1];
+        dp[now][j] %= modNum;
+
+        dp[now][j] += dp[old][j + 1];
+        dp[now][j] %= modNum;
       }
-      if (x[i] + 1 <= m) {
-        dp[now][x[i]] += dp[old][x[i] + 1];
-        dp[now][x[i]] %= modNum;
-      }
-    } else {
-      // x[i] == 0
     }
-    /*
-        if (x[i - 1] != 0) {
-          int prev = dp[old][x[i - 1]];
-          if (x[i] != 0) {
-            if (abs(x[i] - x[i - 1]) <= 1)
-              dp[now][x[i]] = prev;
-            else
-              dp[now][x[i]] = 0;
-          } else if (x[i] == 0) {
-            if (x[i - 1] - 1 >= 1) {
-              dp[now][x[i - 1] - 1] = prev;
-              dp[now][0] += prev;
-              dp[now][0] %= modNum;
-            }
-            if (x[i - 1] + 1 <= m) {
-              dp[now][x[i - 1] + 1] = prev;
-              dp[now][0] += prev;
-              dp[now][0] %= modNum;
-            }
-            dp[now][x[i - 1]] = prev;
-            dp[now][0] += prev;
-            dp[now][0] %= modNum;
-          }
-        } else if (x[i - 1] == 0) {
-          if (x[i] != 0) {
-            if (x[i] - 1 >= 1) {
-              dp[now][x[i]] += dp[old][x[i] - 1];
-              dp[now][x[i]] %= modNum;
-            }
-            if (x[i] + 1 <= m) {
-              dp[now][x[i]] += dp[old][x[i] + 1];
-              dp[now][x[i]] %= modNum;
-            }
-            dp[now][x[i]] += dp[old][x[i]];
-            dp[now][x[i]] %= modNum;
-          } else if (x[i] == 0) {
-            for (int j = 1; j <= m; j++) {
-              if (j - 1 >= 1) {
-                dp[now][j] += dp[old][j - 1];
-                dp[now][j] %= modNum;
-                dp[now][0] += dp[old][j - 1];
-                dp[now][0] %= modNum;
-              }
-              if (j + 1 <= m) {
-                dp[now][j] += dp[old][j + 1];
-                dp[now][j] %= modNum;
-                dp[now][0] += dp[old][j + 1];
-                dp[now][0] %= modNum;
-              }
-              dp[now][j] += dp[old][j];
-              dp[now][j] %= modNum;
-              dp[now][0] += dp[old][j];
-              dp[now][0] %= modNum;
-            }
-          }
-        }
-        if (dp[now][x[i]] == 0) // 剪枝
-          break;
-*/
+    if (x[i] != 0 && dp[now][x[i]] == 0) // 剪枝,可剪可不剪
+      break;
   }
 
-  cout << dp[now][x[n]] << endl;
+  if (x[n] != 0)
+    cout << dp[now][x[n]] << endl;
+  else {
+    ll sum = 0;
+    for (int i = 1; i <= m; i++) {
+      sum += dp[now][i];
+      sum %= modNum;
+    }
+    cout << sum << endl;
+  }
   return 0;
 }
