@@ -29,65 +29,81 @@ int main() {
   for (int i = 2; i <= n; i++) {
     swap(now, old);
     fill(dp[now].begin(), dp[now].end(), 0);
-    if (x[i - 1] != 0) {
-      int prev = dp[old][x[i - 1]];
-      if (x[i] != 0) {
-        if (abs(x[i] - x[i - 1]) <= 1)
-          dp[now][x[i]] = prev;
-        else
-          dp[now][x[i]] = 0;
-      } else if (x[i] == 0) {
-        if (x[i - 1] - 1 >= 1) {
-          dp[now][x[i - 1] - 1] = prev;
-          dp[now][0] += prev;
-          dp[now][0] %= modNum;
-        }
-        if (x[i - 1] + 1 <= m) {
-          dp[now][x[i - 1] + 1] = prev;
-          dp[now][0] += prev;
-          dp[now][0] %= modNum;
-        }
-        dp[now][x[i - 1]] = prev;
-        dp[now][0] += prev;
-        dp[now][0] %= modNum;
-      }
-    } else if (x[i - 1] == 0) {
-      if (x[i] != 0) {
-        if (x[i] - 1 >= 1) {
-          dp[now][x[i]] += dp[old][x[i] - 1];
-          dp[now][x[i]] %= modNum;
-        }
-        if (x[i] + 1 <= m) {
-          dp[now][x[i]] += dp[old][x[i] + 1];
-          dp[now][x[i]] %= modNum;
-        }
-        dp[now][x[i]] += dp[old][x[i]];
+    if (x[i] != 0) {
+      dp[now][x[i]] = dp[old][x[i]];
+      dp[now][x[i]] %= modNum;
+      if (x[i] - 1 >= 1) {
+        dp[now][x[i]] += dp[old][x[i] - 1];
         dp[now][x[i]] %= modNum;
-      } else if (x[i] == 0) {
-        for (int j = 1; j <= m; j++) {
-          if (j - 1 >= 1) {
-            dp[now][j] += dp[old][j - 1];
-            dp[now][j] %= modNum;
-            dp[now][0] += dp[old][j - 1];
-            dp[now][0] %= modNum;
-          }
-          if (j + 1 <= m) {
-            dp[now][j] += dp[old][j + 1];
-            dp[now][j] %= modNum;
-            dp[now][0] += dp[old][j + 1];
-            dp[now][0] %= modNum;
-          }
-          dp[now][j] += dp[old][j];
-          dp[now][j] %= modNum;
-          dp[now][0] += dp[old][j];
-          dp[now][0] %= modNum;
-        }
       }
+      if (x[i] + 1 <= m) {
+        dp[now][x[i]] += dp[old][x[i] + 1];
+        dp[now][x[i]] %= modNum;
+      }
+    } else {
+      // x[i] == 0
     }
-
-    if (dp[now][x[i]] == 0) // 剪枝
-      break;
+    /*
+        if (x[i - 1] != 0) {
+          int prev = dp[old][x[i - 1]];
+          if (x[i] != 0) {
+            if (abs(x[i] - x[i - 1]) <= 1)
+              dp[now][x[i]] = prev;
+            else
+              dp[now][x[i]] = 0;
+          } else if (x[i] == 0) {
+            if (x[i - 1] - 1 >= 1) {
+              dp[now][x[i - 1] - 1] = prev;
+              dp[now][0] += prev;
+              dp[now][0] %= modNum;
+            }
+            if (x[i - 1] + 1 <= m) {
+              dp[now][x[i - 1] + 1] = prev;
+              dp[now][0] += prev;
+              dp[now][0] %= modNum;
+            }
+            dp[now][x[i - 1]] = prev;
+            dp[now][0] += prev;
+            dp[now][0] %= modNum;
+          }
+        } else if (x[i - 1] == 0) {
+          if (x[i] != 0) {
+            if (x[i] - 1 >= 1) {
+              dp[now][x[i]] += dp[old][x[i] - 1];
+              dp[now][x[i]] %= modNum;
+            }
+            if (x[i] + 1 <= m) {
+              dp[now][x[i]] += dp[old][x[i] + 1];
+              dp[now][x[i]] %= modNum;
+            }
+            dp[now][x[i]] += dp[old][x[i]];
+            dp[now][x[i]] %= modNum;
+          } else if (x[i] == 0) {
+            for (int j = 1; j <= m; j++) {
+              if (j - 1 >= 1) {
+                dp[now][j] += dp[old][j - 1];
+                dp[now][j] %= modNum;
+                dp[now][0] += dp[old][j - 1];
+                dp[now][0] %= modNum;
+              }
+              if (j + 1 <= m) {
+                dp[now][j] += dp[old][j + 1];
+                dp[now][j] %= modNum;
+                dp[now][0] += dp[old][j + 1];
+                dp[now][0] %= modNum;
+              }
+              dp[now][j] += dp[old][j];
+              dp[now][j] %= modNum;
+              dp[now][0] += dp[old][j];
+              dp[now][0] %= modNum;
+            }
+          }
+        }
+        if (dp[now][x[i]] == 0) // 剪枝
+          break;
+*/
   }
+
   cout << dp[now][x[n]] << endl;
   return 0;
 }

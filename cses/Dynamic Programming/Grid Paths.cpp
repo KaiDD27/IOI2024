@@ -21,11 +21,10 @@ int main() {
     }
   }
 
-  // column[0]空着不用，方便对齐 1 base
+  // column[0]空着不用，方便对齐 1 base,全部初始化为 1
   column.resize(n + 1, 1);
   // 处理最后一行，倒序，一旦出现一个格子不可用，则从这个格子开始倒序的格子都是不可用了。
   for (int i = n, isZero = 0; i >= 1; i--) {
-    // 处理最后一列，倒序，一旦一个格子不可用了，则从这个格子开始倒序的格子都是不可用了。
     if (gridAvailable[n][i] == false)
       isZero = 1;
     if (isZero == 1)
@@ -40,10 +39,13 @@ int main() {
         column[x] = 0;
         continue;
       }
-      // 如果为false则清空，否则则继承下一行相同列的值
+      // 看往下走的如果为false则清空，否则则继承下一行相同列的值
       if (gridAvailable[y + 1][x] == false)
         column[x] = 0;
-
+      else {
+        column[x] = column[x];
+      }
+      // 看往右走的情况
       if (gridAvailable[y][x + 1] == true) {
         column[x] += column[x + 1];
         column[x] %= (int)(1e9 + 7);
