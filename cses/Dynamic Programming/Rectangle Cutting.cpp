@@ -16,7 +16,7 @@ int main() {
     cout << 0 << endl;
     return 0;
   }
-  // 行小于列，可以便于后面剪枝
+  // 行小于列，可以便于后面剪枝,如果不剪枝则非必需
   if (a > b)
     swap(a, b);
   // 当做是 1-base 的来用
@@ -24,24 +24,25 @@ int main() {
   for (int j = 1; j <= b; j++)
     dp[1][j] = j - 1;
 
-  for (int i = 2; i <= a; i++) {
-    for (int j = 1; j <= b; j++) {
-      // 因为 a小于 b，所以可以确保 dp[j][i] 已经被计算过了。
-      if (i > j)
-        dp[i][j] = dp[j][i];
-      else if (i < j) {
+  for (int iA = 2; iA <= a; iA++) {
+    for (int jB = 1; jB <= b; jB++) {
+      // 因为 a小于 b，所以可以确保 dp[j][i]
+      // 已经被计算过了。不做这个优化也满足时间复杂度
+      if (iA > jB)
+        dp[iA][jB] = dp[jB][iA];
+      else if (iA < jB) {
         // 如果想不出什么巧妙的解法，那可能就是没有巧妙的解法，考虑到a,b范围这么小，直接傻瓜式，
         // 只要能够缩小范围就行，先解出来，如果超时再考虑剪枝优化之类的
         // 完全递归的思想，没有任何可以优化的思路
-        dp[i][j] = a + b; // 取一个最大值
-        for (int m = 1; m < i; m++) {
-          dp[i][j] = min(dp[i][j], dp[m][j] + dp[i - m][j] + 1);
+        dp[iA][jB] = a + b; // 取一个最大值
+        for (int m = 1; m < iA; m++) {
+          dp[iA][jB] = min(dp[iA][jB], dp[m][jB] + dp[iA - m][jB] + 1);
         }
-        for (int n = 1; n < j; n++) {
-          dp[i][j] = min(dp[i][j], dp[i][n] + dp[i][j - n] + 1);
+        for (int n = 1; n < jB; n++) {
+          dp[iA][jB] = min(dp[iA][jB], dp[iA][n] + dp[iA][jB - n] + 1);
         }
       } else {
-        dp[i][j] = 0;
+        dp[iA][jB] = 0;
       }
     }
   }
