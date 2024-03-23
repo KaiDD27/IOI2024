@@ -3,6 +3,7 @@
 #include <iostream>
 #include <map>
 #include <set>
+#include <vector>
 using namespace std;
 using ll = long long;
 #define endl '\n'
@@ -43,9 +44,9 @@ int main() {
     leftAsc[i][LEFT] = l;
     leftAsc[i][RIGHT] = r;
     leftAsc[i][INDEX] = i;
-    rightSet.insert(leftAsc[i][RIGHT]); // 获得 RIGHT 值形成的BIT的数组的个数
+    rightSet.insert(r); // 获得 RIGHT 值形成的BIT的数组的个数
   }
-  bitTree.resize(n + 1); // 所以从 1 开始所以，size 加 1
+  bitTree.resize(rightSet.size() + 1); // 所以从 1 开始所以，size 加 1
   // 构造一个 Map 方便从 Right 的值查询对应到 BIT 数组的位置，注意 BIT 的索引从
   // 1 开始
   {
@@ -63,13 +64,12 @@ int main() {
  */
 
   // 按照 Left 升序排序，Left相等，则Right 降序排序
-  sort(leftAsc.begin(), leftAsc.begin() + n,
-       [&](array<int, 3> a, array<int, 3> b) {
-         return a[LEFT] == b[LEFT] ? a[RIGHT] > b[RIGHT] : a[LEFT] < b[LEFT];
-       });
+  sort(leftAsc.begin(), leftAsc.end(), [&](auto a, auto b) {
+    return a[LEFT] == b[LEFT] ? a[RIGHT] > b[RIGHT] : a[LEFT] < b[LEFT];
+  });
   // 降序遍历 Left（Left 相等，则是升序遍历
   // Right），这样可以确保找到所有的包含关系
-  for (int i = leftAsc.size() - 1; i >= 0; i--) {
+  for (int i = n - 1; i >= 0; i--) {
     int iTree = mpRightValToIndex[leftAsc[i][RIGHT]];
     containsOther[leftAsc[i][INDEX]] = queryBIT(iTree);
     updateBIT(iTree, 1);
@@ -80,7 +80,8 @@ int main() {
   fill(bitTree.begin(), bitTree.end(), 0);
   for (int i = 0; i < leftAsc.size(); i++) {
     int iTree = mpRightValToIndex[leftAsc[i][RIGHT]];
-    isContained[leftAsc[i][INDEX]] = queryBIT(n) - queryBIT(iTree - 1);
+    isContained[leftAsc[i][INDEX]] =
+        queryBIT(bitTree.size() - 1) - queryBIT(iTree - 1);
     updateBIT(iTree, 1);
   }
 
