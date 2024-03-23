@@ -11,10 +11,12 @@ int main() {
   int n;
   cin >> n;
   int x;
-  cin >> x;
-  dp.push_back(x);
-  for (int i = 1; i < n; i++) {
+  for (int i = 0; i < n; i++) {
     cin >> x;
+    if (dp.empty()) {
+      dp.push_back(x);
+      continue;
+    }
     if (x > *dp.rbegin())
       dp.push_back(x);
     else {
