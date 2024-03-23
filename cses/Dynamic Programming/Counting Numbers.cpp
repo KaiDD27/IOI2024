@@ -4,7 +4,7 @@
 using namespace std;
 using ll = long long;
 #define endl '\n'
-const int maxN = 20;
+const int maxN = 20; // a,b最大也就是 19 位数，所以 20 就够用了
 
 vector<bool> isPrefixXValid(maxN);
 vector<vector<ll>> dp;
@@ -28,10 +28,11 @@ ll solve(ll x) {
   for (int i = 1; i < N; i++)
     isPrefixXValid[i] = isPrefixXValid[i - 1] && (digit[i] != digit[i - 1]);
   // 最高位对于小于上限的数，其 dp 初始化为 1，也就是有一个有效选择
+  // 最高位为0 不能做为有效选择，因为会在后面统计的
   for (int d = 1; d < digit[0]; d++)
     dp[0][d] = 1;
 
-  // 统计的主流程，从次高位递推到最低位
+  // 统计的主流程，从第二高位递推到个位
   for (int i = 1; i < N; i++) {
     // x前缀位都是合法的情况下，前缀位取值和 x
     // 一样时，当前位不等于前一位的数都是合法的，每一个数都加 1
