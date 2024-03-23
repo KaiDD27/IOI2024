@@ -10,6 +10,10 @@ vector<bool> isPrefixXValid(maxN);
 vector<vector<ll>> dp;
 
 ll solve(ll x) {
+  // 个位数以及 10 都直接返回x 了，我们统计的起点都是从 1 开始。
+  // 0 这种特殊情况返回 0，不会影响我们的结果，因为a 是闭区间，a=0,b=0 的话，
+  // solve(b)-solve(a-1)，0 -（-1）=1，是我们所期望的值
+  // 所以这里的x其实包含了-1
   if (x <= 10)
     return x;
   fill(isPrefixXValid.begin(), isPrefixXValid.end(), false);
@@ -28,7 +32,8 @@ ll solve(ll x) {
   for (int i = 1; i < N; i++)
     isPrefixXValid[i] = isPrefixXValid[i - 1] && (digit[i] != digit[i - 1]);
   // 最高位对于小于上限的数，其 dp 初始化为 1，也就是有一个有效选择
-  // 最高位为0 不能做为有效选择，因为会在后面统计的
+  // 最高位为0 不能做为有效选择，因为 0如果 x 等于
+  // 0，已经在前面直接返回了，前缀位是 0 的情况在后面另外统计了
   for (int d = 1; d < digit[0]; d++)
     dp[0][d] = 1;
 
