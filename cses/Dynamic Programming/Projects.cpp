@@ -25,10 +25,10 @@ int main() {
     auto it = lower_bound(project.begin(), project.end(),
                           array<int, 3>{project[i][A], 0, 0});
     it--;
+    // project是1-base
     int idx = it - project.begin();
     dp[i] = max(dp[i - 1], dp[idx] + project[i][P]);
   }
   cout << dp[n] << endl;
-
   return 0;
 }
