@@ -1,46 +1,39 @@
 #include <algorithm>
-#include <cstring>
+
 #include <iostream>
 #include <vector>
 using namespace std;
-#define int long long
 
-int dp[20][10][2][2]; // DP array with dimensions for position, previous digit,
-                      // leading zeroes, and tight
+int dp[1003][1030], n, m;
+const int MOD = 1e9 + 7;
 
-// Function to compute the number of valid numbers up to a given digit
-int solve(const string &num, int pos, int prev, bool leading_zero, bool tight) {
-  if (pos == num.size())
-    return 1; // Base case: if at the end, count as 1 valid number
-  if (dp[pos][prev][leading_zero][tight] != -1)
-    return dp[pos][prev][leading_zero][tight]; // Memoization check
-
-  int limit =
-      tight ? (num[pos] - '0') : 9; // Determine the limit for the current digit
-  int ways = 0;
-
-  for (int dig = 0; dig <= limit; ++dig) {
-    if (dig == prev && !leading_zero)
-      continue; // Skip if the digit is the same as the previous non-zero digit
-    ways += solve(num, pos + 1, dig, leading_zero && dig == 0,
-                  tight && dig == limit);
+void solve(int x, int y, int mask, int next_mask) {
+  if (x == n)
+    return;
+  if (y >= m) {
+    (dp[x + 1][next_mask] += dp[x][mask]) %= MOD;
+    return;
   }
 
-  return dp[pos][prev][leading_zero][tight] =
-             ways; // Store and return the computed value
+  int my_mask = 1 << y;
+  if (mask & my_mask) {
+    solve(x, y + 1, mask, next_mask);
+  } else {
+    solve(x, y + 1, mask, next_mask | my_mask);
+    if (y + 1 < m && !(mask & (my_mask << 1))) {
+      solve(x, y + 2, mask, next_mask);
+    }
+  }
 }
 
-int countValidNumbers(int n) {
-  string num = to_string(n);
-  memset(dp, -1, sizeof(dp));          // Initialize DP array with -1
-  return solve(num, 0, 0, true, true); // Start the DP with the first digit
-}
-
-int32_t main() {
-  int a, b;
-  cin >> a >> b;
-  int res = countValidNumbers(b) -
-            (a ? countValidNumbers(a - 1) : 0); // Calculate result for [a, b]
-  cout << res << endl;
+int main() {
+  cin >> m >> n;
+  dp[0][0] = 1;
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < (1 << m); j++) {
+      solve(i, 0, j, 0);
+    }
+  }
+  cout << dp[n][0] << endl;
   return 0;
 }
