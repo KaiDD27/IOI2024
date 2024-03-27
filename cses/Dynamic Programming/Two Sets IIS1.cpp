@@ -28,7 +28,7 @@ int main() {
   for (int i = 1; i <= n; i++) {
     int sumI = (1 + i) * i / 2;
     for (int j = 0; j <= sumI; j++) {
-      // 和大于sum/2的都可以转化为选剩下的那部分
+      // 和大于sum/2的都可以转化为选剩下的那部分,不剪枝也不会超时
       if (j > sumI / 2) {
         dp[i][j] = dp[i][sumI - j];
         continue;

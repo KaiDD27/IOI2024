@@ -7,7 +7,7 @@ using namespace std;
 using ll = long long;
 #define endl '\n'
 vector<int> w;
-vector<pair<int, int>> dp;
+vector<pair<int, int>> f;
 int main() {
   ios::sync_with_stdio(false); // Fast I/O
   cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
@@ -16,8 +16,8 @@ int main() {
   w.resize(n);
   for (int i = 0; i < n; i++)
     cin >> w[i];
-  dp.resize(1 << n, {n, x}); // 最大值是n个电梯，且装满了x
-  dp[0] = {1, 0};
+  f.resize(1 << n, {n, x}); // 最大值是n个电梯，且装满了x
+  f[0] = {1, 0};
   for (int iMask = 1; iMask < (1 << n); iMask++) {
     // 用最笨的方法遍历所有的先后次序，则一定可以找到最优解，最优解就是在一个组合里面最少的电梯趟数且最后一个电梯重量最小
     // 最后一个上电梯的人，可能是任何一个人，所有的情况都要考虑，取最小值
@@ -27,15 +27,15 @@ int main() {
     for (int i = 0; i < n; i++) {
       if (iMask & 1 << i) // 说明第 i 个人在这个组合里面
       {
-        auto prev = dp[iMask ^ (1 << i)]; // 去掉第 i 个人的组合
-        if (prev.second + w[i] > x) {     // 装不下则新开趟电梯
-          dp[iMask] = min(dp[iMask], {prev.first + 1, w[i]});
+        auto prev = f[iMask ^ (1 << i)]; // 去掉第 i 个人的组合
+        if (prev.second + w[i] > x) {    // 装不下则新开趟电梯
+          f[iMask] = min(f[iMask], {prev.first + 1, w[i]});
         } else {
-          dp[iMask] = min(dp[iMask], {prev.first, prev.second + w[i]});
+          f[iMask] = min(f[iMask], {prev.first, prev.second + w[i]});
         }
       }
     }
   }
-  cout << dp[(1 << n) - 1].first << endl;
+  cout << f[(1 << n) - 1].first << endl;
   return 0;
 }

@@ -1,51 +1,33 @@
-#include <algorithm>
+// 洛谷 P1776：二进制拆分+滚动数组
 #include <iostream>
-
+#include <vector>
 using namespace std;
-int stone[50100];
-
-bool check(int NumsRemoved, int shortestJumpDistance, int N) {
-  int curr = 0;
-  int cnt = 0;
-  for (int i = 1; i < N + 2; i++) {
-    if (stone[i] - stone[curr] < shortestJumpDistance)
-      cnt++;
-    else
-      curr = i;
-  }
-  if (NumsRemoved < cnt)
-    return false;
-  else
-    return true;
-}
-int findMaxShortestJumpDistance(int NumsRemoved, int L, int N) {
-  int left = 1, right = L;
-
-  while (left < right) {
-    int mid = (left + right + 1) >> 1;
-    if (check(NumsRemoved, mid, N) == true)
-      left = mid;
-    else
-      right = mid - 1;
-  }
-
-  return left;
-}
+const int N = 100010;
+int n, C, dp[N];
+int w[N], c[N], m[N];
+int new_n;                        // 二进制拆分后的新物品总数量
+int new_w[N], new_c[N], new_m[N]; // 二进制拆分后新物品
 int main() {
-  int L, N, M, ans = 0;
-  cin >> L >> N >> M;
-
-  // 构造岩石数组，包含起点和终点。
-  for (int i = 1; i <= N; i++)
-    cin >> stone[i];
-  stone[N + 1] = L;
-
-  // 岩石数组排序,默认按照距离从小到大
-  sort(stone, stone + N + 2);
-
-  // 二分法来找最短跳跃距离的最大值
-  ans = findMaxShortestJumpDistance(M, L, N);
-
-  // 输出结果
-  cout << ans << endl;
+  cin >> n >> C;
+  for (int i = 1; i <= n; i++)
+    cin >> w[i] >> c[i] >> m[i];
+  // 以下是二进制拆分
+  int new_n = 0;
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= m[i]; j <<= 1) { // 二进制枚举：1,2,4...
+      m[i] -= j;                          // 减去已拆分的
+      new_c[++new_n] = j * c[i];          // 新物品
+      new_w[new_n] = j * w[i];
+    }
+    if (m[i]) { // 最后一个是余数
+      new_c[++new_n] = m[i] * c[i];
+      new_w[new_n] = m[i] * w[i];
+    }
+  }
+  // 以下是滚动数组版本的0/1背包
+  for (int i = 1; i <= new_n; i++)      // 枚举物品
+    for (int j = C; j >= new_c[i]; j--) // 枚举背包容量
+      dp[j] = max(dp[j], dp[j - new_c[i]] + new_w[i]);
+  cout << dp[C] << endl;
+  return 0;
 }
