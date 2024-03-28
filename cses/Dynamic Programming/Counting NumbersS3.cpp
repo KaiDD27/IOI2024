@@ -1,3 +1,4 @@
+// 数位统计 DP 递推实现，不推荐
 #include <algorithm>
 #include <iostream>
 #include <vector>
@@ -6,7 +7,7 @@ using ll = long long;
 #define endl '\n'
 const int maxN = 20; // a,b最大也就是 19 位数，所以 20 就够用了
 
-vector<bool> isPrefixXValid(maxN);
+vector<bool> limitValid(maxN);
 vector<vector<ll>> dp;
 
 ll solve(ll x) {
@@ -16,7 +17,7 @@ ll solve(ll x) {
   // 所以这里的x其实包含了-1
   if (x <= 10)
     return x;
-  fill(isPrefixXValid.begin(), isPrefixXValid.end(), false);
+  fill(limitValid.begin(), limitValid.end(), false);
   vector<int> digit;
   for (int i = 0; x > 0; i++) {
     digit.push_back(x % 10);
@@ -28,9 +29,9 @@ ll solve(ll x) {
   dp.clear();
   dp.resize(N, vector<ll>(10));
   // 如果x的前缀位已经出现相邻数相等了则后续所有的数都不合法，也就不需要统计了
-  isPrefixXValid[0] = true;
+  limitValid[0] = true;
   for (int i = 1; i < N; i++)
-    isPrefixXValid[i] = isPrefixXValid[i - 1] && (digit[i] != digit[i - 1]);
+    limitValid[i] = limitValid[i - 1] && (digit[i] != digit[i - 1]);
   // 最高位对于小于上限的数，其 dp 初始化为 1，也就是有一个有效选择
   // 最高位为0 不能做为有效选择，因为 0如果 x 等于
   // 0，已经在前面直接返回了，前缀位是 0 的情况在后面另外统计了
@@ -41,7 +42,7 @@ ll solve(ll x) {
   for (int i = 1; i < N; i++) {
     // x前缀位都是合法的情况下，前缀位取值和 x
     // 一样时，当前位不等于前一位的数都是合法的，每一个数都加 1
-    if (isPrefixXValid[i - 1])
+    if (limitValid[i - 1])
       for (int d = 0; d < digit[i]; d++)
         if (d != digit[i - 1])
           dp[i][d]++;
@@ -59,7 +60,7 @@ ll solve(ll x) {
 
   // x 本身是否合法，如果合法需要加 1
   ll cnt = 0;
-  if (isPrefixXValid[N - 1] == true)
+  if (limitValid[N - 1] == true)
     cnt = 1;
   // 把最低位 0-9 的合法数量累加即可。
   for (int d = 0; d <= 9; d++)
