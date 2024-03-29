@@ -1,4 +1,5 @@
-// 暴力递归
+// 暴力递归需要关注
+// 1.上界限制 2.高位枚举0 3.前导 0
 #include <algorithm>
 #include <cstring>
 #include <iostream>
@@ -9,7 +10,7 @@ typedef long long ll;
 ll count(vector<int> &digit, int pos, int prev, int leadingZero, int limit) {
   if (pos == 0)
     return 1;
-
+  // 上界限制
   int end = -1;
   if (limit == true) {
     end = digit[pos];
@@ -17,21 +18,21 @@ ll count(vector<int> &digit, int pos, int prev, int leadingZero, int limit) {
     end = 9;
   }
   ll ans = 0;
+  // 高位枚举0
   for (int i = 0; i <= end; i++) {
+    // 前导0
     if ((i == 0 && leadingZero == 1) || i != prev)
       ans += count(digit, pos - 1, i, leadingZero && (i == 0),
                    limit && (i == end));
   }
-
   return ans;
 }
 
 ll solve(ll num) {
   if (num == -1)
     return 0;
-
   vector<int> digit;
-  digit.push_back(0);
+  digit.push_back(0); // 0下标占位
   for (int i = 0; num > 0; i++) {
     digit.push_back(num % 10);
     num /= 10;
