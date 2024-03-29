@@ -15,17 +15,17 @@ ll count(vector<int> &digit, int pos, int prev, int leadingZero, int limit) {
   if (dp[pos][prev][leadingZero][limit] != -1)
     return dp[pos][prev][leadingZero][limit];
 
-  int end = -1;
+  int len = -1;
   if (limit == true) {
-    end = digit[pos];
+    len = digit[pos];
   } else {
-    end = 9;
+    len = 9;
   }
   ll ans = 0;
-  for (int i = 0; i <= end; i++) {
+  for (int i = 0; i <= len; i++) {
     if ((i == 0 && leadingZero == 1) || i != prev)
       ans += count(digit, pos - 1, i, leadingZero && (i == 0),
-                   limit && (i == end));
+                   limit && (i == len));
   }
   dp[pos][prev][leadingZero][limit] = ans;
   return ans;

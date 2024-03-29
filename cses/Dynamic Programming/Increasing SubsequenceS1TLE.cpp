@@ -18,6 +18,7 @@ int main() {
   }
   dp.resize(n + 1, 1);
   int ans = 1;
+  // dp表示以第 i 个数字结尾的最长上升序列的长度
   for (int i = 1; i <= n; i++) {
     for (int j = 1; j < i; j++) {
       if (x[i] > x[j])

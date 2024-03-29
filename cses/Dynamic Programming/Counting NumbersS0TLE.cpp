@@ -11,19 +11,19 @@ ll count(vector<int> &digit, int pos, int prev, int leadingZero, int limit) {
   if (pos == 0)
     return 1;
   // 上界限制
-  int end = -1;
+  int len = -1;
   if (limit == true) {
-    end = digit[pos];
+    len = digit[pos];
   } else {
-    end = 9;
+    len = 9;
   }
   ll ans = 0;
   // 高位枚举0
-  for (int i = 0; i <= end; i++) {
+  for (int i = 0; i <= len; i++) {
     // 前导0
     if ((i == 0 && leadingZero == 1) || i != prev)
       ans += count(digit, pos - 1, i, leadingZero && (i == 0),
-                   limit && (i == end));
+                   limit && (i == len));
   }
   return ans;
 }

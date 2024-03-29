@@ -1,3 +1,4 @@
+// 先按结束时间排序、再DP的做法
 #include <algorithm>
 #include <array>
 #include <iostream>
@@ -7,13 +8,13 @@ using ll = long long;
 #define endl '\n'
 const int B = 0, A = 1, P = 2;
 vector<array<int, 3>> project; // 0=b,1=a,2=p
-vector<ll> f;
+vector<ll> dp;
 int main() {
   ios::sync_with_stdio(false); // Fast I/O
   cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
   int n;
   cin >> n;
-  f.resize(n + 1); // dp[0] = 0是类似墙的一种保护，没有project 的时候最大就是 0
+  dp.resize(n + 1); // dp[0] = 0是类似墙的一种保护，没有project 的时候最大就是 0
   project.resize(n + 1);
   for (int i = 1; i <= n; i++)
     cin >> project[i][A] >> project[i][B] >> project[i][P];
@@ -27,8 +28,8 @@ int main() {
     it--;
     // project是1-base
     int idx = it - project.begin();
-    f[i] = max(f[i - 1], f[idx] + project[i][P]);
+    dp[i] = max(dp[i - 1], dp[idx] + project[i][P]);
   }
-  cout << f[n] << endl;
+  cout << dp[n] << endl;
   return 0;
 }
