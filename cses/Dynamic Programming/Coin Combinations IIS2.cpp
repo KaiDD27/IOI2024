@@ -1,4 +1,4 @@
-// 递推
+// 递推，内存最大到381MB了，空间没爆
 #include <array>
 #include <iostream>
 #include <vector>

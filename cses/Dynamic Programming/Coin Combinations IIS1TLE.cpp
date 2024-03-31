@@ -1,4 +1,4 @@
-// 记忆化搜索，内存快爆了，381MB 了
+// 记忆化搜索，内存最大到381MB了，空间没爆，单递归太多层，时间爆了
 #include <iostream>
 #include <vector>
 using namespace std;
