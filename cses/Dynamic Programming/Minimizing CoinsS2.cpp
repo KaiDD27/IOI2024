@@ -1,3 +1,4 @@
+// 递推
 #include <algorithm>
 #include <iostream>
 #include <vector>
@@ -18,13 +19,13 @@ int main() {
   dp.resize(x + 1);
   dp[0] = 0;
   for (int iSum = 1; iSum <= x; iSum++) {
-    dp[iSum] = x + 1; // x 个面值为1 的硬币是上限。
+    dp[iSum] = 1e6 + 1; // x 个面值为1 的硬币是上限。
     for (auto ci : coin) {
       if (iSum - ci >= 0)
         dp[iSum] = min(dp[iSum], dp[iSum - ci] + 1);
     }
   }
-  if (dp[x] != x + 1)
+  if (dp[x] != 1e6 + 1)
     cout << dp[x] << endl;
   else
     cout << "-1" << endl;

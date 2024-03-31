@@ -3,6 +3,7 @@
 using namespace std;
 using ll = long long;
 #define endl '\n'
+const ll MOD = 1e9 + 7;
 vector<ll> dp;
 vector<int> coin;
 int main() {
@@ -15,11 +16,11 @@ int main() {
     cin >> ci;
   dp.resize(x + 1);
   dp[0] = 1;
-  for (int iCoin = 0; iCoin < n; iCoin++) {
-    for (int jSum = coin[iCoin]; jSum <= x; jSum++) {
-      if (jSum - coin[iCoin] >= 0) {
-        dp[jSum] += dp[jSum - coin[iCoin]];
-        dp[jSum] %= (ll)(1e9 + 7);
+  for (auto ci : coin) {
+    for (int jSum = ci; jSum <= x; jSum++) {
+      if (jSum - ci >= 0) {
+        dp[jSum] += dp[jSum - ci];
+        dp[jSum] %= MOD;
       }
     }
   }

@@ -1,10 +1,11 @@
+// 递推
 #include <iostream>
 #include <vector>
 
 using namespace std;
 using ll = long long;
 #define endl '\n'
-vector<int> dp;
+vector<ll> dp;
 int main() {
   ios::sync_with_stdio(false); // Fast I/O
   cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
