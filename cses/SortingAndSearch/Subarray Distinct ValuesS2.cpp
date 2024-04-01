@@ -17,25 +17,22 @@ int main() {
   for (auto &i : x) {
     cin >> i;
   }
-  for (ll l = 0, r = 0; l < n && r < n;) {
+  for (ll l = 0, r = 0; l < n && r <= n;) {
     int distinct = umpNumCount.size();
-    if (distinct < k) {
+    if (distinct <= k) {
+      ans += (r - l);
+    }
+    if (distinct <= k) {
+      if (r == n)
+        break;
       umpNumCount[x[r]]++;
       r++;
-      ans += (r - l);
-    } else if (distinct == k) {
-      auto it = umpNumCount.find(x[r]);
-      if (it != umpNumCount.end()) {
-        umpNumCount[x[r]]++;
-        r++;
-        ans += (r - l);
-      } else {
-        umpNumCount[x[l]]--;
-        if (umpNumCount[x[l]] == 0) {
-          umpNumCount.erase(x[l]);
-        }
-        l++;
+    } else {
+      umpNumCount[x[l]]--;
+      if (umpNumCount[x[l]] == 0) {
+        umpNumCount.erase(x[l]);
       }
+      l++;
     }
   }
   cout << ans << endl;

@@ -19,6 +19,8 @@ int main() {
     if (sum >= x) {
       sum -= a[l++];
     } else if (sum < x) {
+      if (r == n)
+        break;
       sum += a[r++];
     }
   }
