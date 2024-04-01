@@ -1,5 +1,5 @@
 #include <iostream>
-#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 using namespace std;
@@ -7,10 +7,7 @@ using ll = long long;
 #define endl '\n'
 vector<ll> a;
 vector<ll> preSum;
-unordered_map<ll, int>
-    ums; // 因为只是需要返回数量，
-         // 所以unordered_map用来实现桶计数类似的效果时间复杂度是最低的，map也满足。
-// 而不是用multiset或者multimap，那样会超时
+unordered_multiset<ll> ums;
 ll ans = 0;
 int main() {
   ios::sync_with_stdio(false); // Fast I/O
@@ -27,11 +24,8 @@ int main() {
   for (int i = 0; i < n; i++) {
     if (preSum[i] == x)
       ans++;
-    auto it = ums.find(preSum[i] - x);
-    if (it != ums.end()) {
-      ans += ums[preSum[i] - x];
-    }
-    ums[preSum[i]]++;
+    ans += ums.count(preSum[i] - x);
+    ums.insert(preSum[i]);
   }
   cout << ans << endl;
   return 0;
