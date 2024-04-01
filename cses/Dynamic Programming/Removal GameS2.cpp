@@ -20,6 +20,7 @@ int main() {
     preSum[i] = preSum[i - 1] + x[i];
   }
   dp.resize(n + 1, vector<ll>(n + 1));
+  // 需要考虑按照哪种次序递推才可以从小问题推为大问题，在这里选择从末尾开始。如果选择从开头开始应该也可以。
   for (int i = n; i >= 1; i--) { // i 表示序列的开头
     // j 表示序列的结尾
     for (int j = i; j <= n; j++) {

@@ -1,4 +1,4 @@
-// 背包问题
+// 背包问题，递推
 #include <iostream>
 #include <utility>
 #include <vector>

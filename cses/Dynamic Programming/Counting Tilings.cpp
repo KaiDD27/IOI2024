@@ -1,4 +1,4 @@
-// 插头 DP
+// 插头 DP，利用了二进制，数学归纳法可证
 // 参见《算法竞赛》上册例5.8
 #include <iostream>
 #include <vector>

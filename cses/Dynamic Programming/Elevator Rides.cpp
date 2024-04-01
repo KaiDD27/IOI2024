@@ -1,4 +1,4 @@
-// 状态压缩 DP
+// 状态压缩 DP，利用了二进制的递推的巧妙之处。数学归纳法可证明有效性。
 #include <algorithm>
 #include <iostream>
 #include <utility>

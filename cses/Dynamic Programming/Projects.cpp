@@ -1,4 +1,4 @@
-// 先按结束时间排序、再DP的做法
+// 先按结束时间排序、再DP的做法，有效性可以通过数学归纳法证明
 #include <algorithm>
 #include <array>
 #include <iostream>

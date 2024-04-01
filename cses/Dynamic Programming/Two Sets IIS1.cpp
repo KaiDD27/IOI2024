@@ -1,4 +1,4 @@
-// 背包问题 记忆化搜索
+// 转化为背包问题 记忆化搜索
 #include <iostream>
 #include <utility>
 #include <vector>
