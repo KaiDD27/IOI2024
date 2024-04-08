@@ -19,7 +19,8 @@
       "args": [
         "-std=c++17",
         "-fdiagnostics-color=always",
-        "-g",
+        //"-g",
+        "-gdwarf-4",
         "-Wall",
         "-Wextra",
         "-Wshadow",

@@ -44,6 +44,18 @@
       // Indicates the debugger that VS Code will connect to. Must be set to gdb or lldb. 
       // 但是macOS只安装了llbd（有可能是安装命令行工具的时候安装的），那就用lldb吧
       "MIMode": "lldb",
+      /*"setupCommands": [
+                {
+                    "description": "Test",
+                    "text": "python import sys;sys.path.insert(0, '/usr/share/gcc-8/python');from libstdcxx.v6.printers import register_libstdcxx_printers;register_libstdcxx_printers(None)",
+                    "ignoreFailures": false
+                },
+                {
+                    "description": "为 gdb 启用整齐打印",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+            ]*/
     }
   ]
 }
