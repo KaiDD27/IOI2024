@@ -10,7 +10,7 @@ using ll = long long;
 #define endl "\n"
 vector<pair<int, int>> edges;
 vector<int> dis;
-vector<int> pre;
+vector<int> prev;
 void bfs(int i) {
   queue<int> q;
   q.push(i);
@@ -21,12 +21,12 @@ void bfs(int i) {
     for (auto ei : edges) {
       if (ei.first == x && dis[ei.second] > dis[x] + 1) {
         dis[ei.second] = dis[x] + 1;
-        pre[ei.second] = x;
+        prev[ei.second] = x;
         q.push(ei.second);
       }
       if (ei.second == x && dis[ei.first] > dis[x] + 1) {
         dis[ei.first] = dis[x] + 1;
-        pre[ei.first] = x;
+        prev[ei.first] = x;
         q.push(ei.first);
       }
     }
@@ -35,7 +35,7 @@ void bfs(int i) {
 void printPath(int x) {
   if (x == 0)
     return;
-  printPath(pre[x]);
+  printPath(prev[x]);
   cout << x << " ";
   return;
 }
@@ -46,7 +46,7 @@ int main() {
   cin >> n >> m;
   edges.resize(m);
   dis.resize(n + 1, n + 1);
-  pre.resize(n + 1);
+  prev.resize(n + 1);
   for (auto &ei : edges) {
     cin >> ei.first >> ei.second;
   }

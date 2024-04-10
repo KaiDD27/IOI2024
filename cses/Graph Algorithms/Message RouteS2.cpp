@@ -10,7 +10,7 @@ using ll = long long;
 #define endl "\n"
 vector<vector<int>> adj;
 vector<int> dis;
-vector<int> pre;
+vector<int> prev;
 void bfs(int i) {
   queue<int> q;
   q.push(i);
@@ -22,7 +22,7 @@ void bfs(int i) {
       if (dis[ai] > dis[x] + 1) {
         dis[ai] = dis[x] + 1;
         q.push(ai);
-        pre[ai] = x;
+        prev[ai] = x;
       }
     }
   }
@@ -30,7 +30,7 @@ void bfs(int i) {
 void printPath(int x) {
   if (x == 0)
     return;
-  printPath(pre[x]);
+  printPath(prev[x]);
   cout << x << " ";
   return;
 }
@@ -41,7 +41,7 @@ int main() {
   cin >> n >> m;
   adj.resize(n + 1);
   dis.resize(n + 1, n + 1);
-  pre.resize(n + 1);
+  prev.resize(n + 1);
   for (int i = 1; i <= m; i++) {
     int a, b;
     cin >> a >> b;
