@@ -18,11 +18,12 @@ void shortestRoute(int x) {
   dist[x][x] = 0;
   pq.push({0, x});
   while (!pq.empty()) {
-    int a = pq.top().second;
+    auto [shortestDistance, a] = pq.top();
     pq.pop();
-    if (processed[a] == true)
+    // 这个可以替代processed的效果，且节省了空间
+    // 当不是最短距离时，说明之前已经处理过了，这个直接跳过就好
+    if (-shortestDistance != dist[x][a])
       continue;
-    processed[a] = true;
     for (auto ai : adj[a]) {
       int b = ai.first;
       ll w = ai.second;

@@ -29,11 +29,12 @@ int main() {
   dist[1] = 0;
   pq.push({0, 1});
   while (!pq.empty()) {
-    int a = pq.top().second;
+    auto [shortestDistance, a] = pq.top();
     pq.pop();
-    if (processed[a])
+    // 这个可以替代processed的效果，且节省了空间
+    // 当不是最短距离时，说明之前已经处理过了，这个直接跳过就好
+    if (-shortestDistance != dist[a])
       continue;
-    processed[a] = true;
     for (auto ai : adj[a]) {
       int b = ai.first, w = ai.second;
       if (dist[a] + w < dist[b]) {

@@ -1,4 +1,5 @@
 // 参考解题思路 https://usaco.guide/problems/cses-1195-flight-discount/solution
+// Solution 1
 #include <climits>
 #include <iostream>
 #include <queue>
@@ -15,15 +16,16 @@ vector<vector<pair<int, int>>> adj, inAdj;
 void minCost(int sOrFcity, vector<vector<pair<int, int>>> &adjOrInAdj,
              vector<ll> &distCost) {
   priority_queue<pair<ll, int>> pq;
-  vector<bool> processed(distCost.size(), false);
+
   distCost[sOrFcity] = 0;
   pq.push({0, sOrFcity});
   while (!pq.empty()) {
-    int city = pq.top().second;
+    auto [tmpMinCost, city] = pq.top();
     pq.pop();
-    if (processed[city] == true)
+    // 这个可以替代processed的效果，且节省了空间
+    // 当不是最短距离时，说明之前已经处理过了，这个直接跳过就好
+    if (-tmpMinCost != distCost[city])
       continue;
-    processed[city] = true;
     for (auto [otherCity, cost] : adjOrInAdj[city]) {
       if (distCost[otherCity] > distCost[city] + cost) {
         distCost[otherCity] = distCost[city] + cost;
