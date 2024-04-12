@@ -1,58 +1,68 @@
-#include <array>
-#include <climits>
-#include <functional>
 #include <iostream>
-#include <utility>
+#include <queue>
 #include <vector>
-using namespace std;
 
-const long long INF = 1e18;
+using std::cout;
+using std::endl;
+using std::pair;
+using std::vector;
 
-int main() {
-  int n, m;
-  cin >> n >> m;
-
-  vector<tuple<int, int, int>> edges;
-  for (int i = 0; i < m; i++) {
-    int a, b, x;
-    cin >> a >> b >> x;
-    edges.emplace_back(a, b, x);
-  }
-
-  vector<long long> dist(n + 1, -INF);
-  dist[1] = 0;
-
-  for (int i = 1; i < n; i++) {
-    for (auto [a, b, x] : edges) {
-      if (dist[a] != -INF)
-        dist[b] = max(dist[b], dist[a] + x);
+/**
+ * given a start point, and an adjacency list with costs,
+ * this function gives an array with the minimum distances
+ * from all the other nodes to the start node
+ * (the value is INT64_MAX if unreachable)
+ */
+vector<long long> min_costs(int from,
+                            const vector<vector<pair<int, int>>> &neighbors) {
+  vector<long long> min_costs(neighbors.size(), INT64_MAX);
+  min_costs[from] = 0;
+  std::priority_queue<pair<long long, int>> frontier;
+  frontier.push({0, from});
+  while (!frontier.empty()) {
+    pair<long long, int> curr_state = frontier.top();
+    frontier.pop();
+    int curr = curr_state.second;
+    if (-curr_state.first != min_costs[curr]) {
+      continue;
     }
-  }
 
-  // 检测从 1 到 n 的路径上是否存在正环
-  for (auto [a, b, x] : edges) {
-    if (dist[a] != -INF && dist[a] + x > dist[b]) {
-      // 从 b 开始 DFS，检查 n 是否可达
-      vector<bool> vis(n + 1, false);
-      function<bool(int)> dfs = [&](int u) {
-        if (u == n)
-          return true;
-        if (vis[u])
-          return false;
-        vis[u] = true;
-        for (auto [a, b, x] : edges) {
-          if (a == u && dfs(b))
-            return true;
-        }
-        return false;
-      };
-      if (dfs(b)) {
-        cout << -1 << endl;
-        return 0;
+    for (auto [n, nc] : neighbors[curr]) {
+      long long new_cost = min_costs[curr] + nc;
+      if (new_cost < min_costs[n]) {
+        min_costs[n] = new_cost;
+        frontier.push({-new_cost, n});
       }
     }
   }
+  return min_costs;
+}
 
-  cout << (dist[n] == -INF ? -1 : dist[n]) << endl;
-  return 0;
+int main() {
+  int city_num;
+  int flight_num;
+  std::cin >> city_num >> flight_num;
+  vector<vector<pair<int, int>>> neighbors(city_num);
+  vector<vector<pair<int, int>>> reverse_neighbors(city_num);
+  for (int f = 0; f < flight_num; f++) {
+    int from;
+    int to;
+    int cost;
+    std::cin >> from >> to >> cost;
+    neighbors[--from].push_back({--to, cost});
+    reverse_neighbors[to].push_back({from, cost});
+  }
+
+  vector<long long> start_costs = min_costs(0, neighbors);
+  vector<long long> end_costs = min_costs(city_num - 1, reverse_neighbors);
+  long long total_min = INT64_MAX;
+  for (int c = 0; c < city_num; c++) {
+    for (auto [n, nc] : neighbors[c]) {
+      if (start_costs[c] == INT64_MAX || end_costs[n] == INT64_MAX) {
+        continue;
+      }
+      total_min = std::min(total_min, start_costs[c] + (nc / 2) + end_costs[n]);
+    }
+  }
+  cout << total_min << endl;
 }
