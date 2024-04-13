@@ -60,7 +60,7 @@ int main() {
         startPoint.first = y, startPoint.second = x;
     }
   }
-
+  // 时间复杂度为 O（mn）
   while (!monsterBfsQue.empty()) {
     int y = monsterBfsQue.front().first, x = monsterBfsQue.front().second;
     monsterBfsQue.pop();

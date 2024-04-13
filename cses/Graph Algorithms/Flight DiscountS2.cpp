@@ -3,9 +3,9 @@
 #include <climits>
 #include <iostream>
 #include <queue>
+#include <tuple>
 #include <utility>
 #include <vector>
-
 using namespace std;
 using ll = long long;
 #define endl "\n"
@@ -26,8 +26,35 @@ int main() {
     cin >> a >> b >> c;
     adj[a].push_back({b, c});
   }
-  priority_queue<array<ll, 3>> pq;
-  pq.push({0, 1, 0});
-
+  // 0位代表 -dist，1 代表city，2 是否用过了优惠券
+  distCost[1][0] = 0;
+  priority_queue<tuple<ll, int, bool>> pq;
+  pq.push({0, 1, false});
+  while (!pq.empty()) {
+    auto [tmpMinDistance, city, used] = pq.top();
+    pq.pop();
+    if (used == false && -tmpMinDistance != distCost[city][0])
+      continue;
+    if (used == true && -tmpMinDistance != distCost[city][1])
+      continue;
+    // 剪枝。其实不剪枝也没问题
+    if (city == n)
+      break;
+    for (auto [otherCity, cost] : adj[city]) {
+      // 如果在前序没有用过coupon，本次可以用
+      if (used == false &&
+          distCost[otherCity][1] > -tmpMinDistance + cost / 2) {
+        distCost[otherCity][1] = -tmpMinDistance + cost / 2;
+        pq.push({-distCost[otherCity][1], otherCity, true});
+      }
+      // 不管前序用没用过
+      // coupon，本次不用优惠券,继承目前是否用过优惠券的状态就好
+      if (distCost[otherCity][used] > -tmpMinDistance + cost) {
+        distCost[otherCity][used] = -tmpMinDistance + cost;
+        pq.push({-distCost[otherCity][used], otherCity, used});
+      }
+    }
+  }
+  cout << distCost[n][1] << endl;
   return 0;
 }
