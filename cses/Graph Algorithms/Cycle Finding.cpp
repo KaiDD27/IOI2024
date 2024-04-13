@@ -56,7 +56,6 @@ int main() {
   vector<int> cycle;
   cycle.push_back(cycleStart);
   while (cyclePre != cycleStart) {
-    cycle.push_back(cyclePre);
     cyclePre = pre[cyclePre];
   }
   cycle.push_back(cycleStart);
