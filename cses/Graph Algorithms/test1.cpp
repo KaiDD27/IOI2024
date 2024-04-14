@@ -1,62 +1,69 @@
-#include <algorithm>
-#include <array>
-#include <climits>
 #include <iostream>
+#include <queue>
 #include <vector>
-using namespace std;
 
-const int INF = 1e9;
+using namespace std;
+using ll = long long;
+#define endl "\n"
+
+using namespace std;
+const int maxN = 1e5 + 1;
+
+bool vis[maxN];
+int N, M, K, a, b, in[maxN], p[maxN], l[maxN], ans[maxN];
+vector<int> G[maxN];
+queue<int> Q;
+
+void dfs(int u, int par = 0) {
+  vis[u] = true;
+  for (int v : G[u])
+    if (v != par && !vis[v])
+      dfs(v, u);
+}
 
 int main() {
-  int n, m;
-  cin >> n >> m;
-
-  vector<tuple<int, int, int>> edges;
-  for (int i = 0; i < m; i++) {
-    int a, b, c;
-    cin >> a >> b >> c;
-    edges.push_back({a, b, c});
+  scanf("%d %d", &N, &M);
+  for (int i = 0; i < M; i++) {
+    scanf("%d %d", &a, &b);
+    G[a].push_back(b);
+    in[b]++;
   }
+  /*
+    dfs(1);
+    if (!vis[N]) {
+      printf("IMPOSSIBLE\n");
+      return 0;
+    }
+  */
+  fill(l + 2, l + maxN, -1);
+  for (int i = 1; i <= N; i++)
+    if (in[i] == 0)
+      Q.push(i);
 
-  vector<long long> dist(n + 1, INF);
-  vector<int> p(n + 1, -1);
-  int x = -1;
-
-  for (int i = 0; i < n; i++) {
-    for (auto e : edges) {
-      int a, b, c;
-      tie(a, b, c) = e;
-      if (i == n - 1) {
-        if (dist[a] + c < dist[b]) {
-          dist[b] = dist[a] + c;
-          p[b] = a;
-          x = b;
-        }
-      } else {
-        if (dist[a] + c < dist[b]) {
-          dist[b] = dist[a] + c;
-        }
+  while (!Q.empty()) {
+    int u = Q.front();
+    Q.pop();
+    for (int v : G[u]) {
+      if (l[u] != -1 && l[v] < l[u] + 1) {
+        l[v] = l[u] + 1;
+        p[v] = u;
       }
+      in[v]--;
+      if (in[v] == 0)
+        Q.push(v);
     }
   }
 
-  if (x == -1) {
-    cout << "NO" << endl;
-  } else {
-    for (int i = 0; i < n; i++)
-      x = p[x];
-
-    vector<int> cycle;
-    for (int v = x;; v = p[v]) {
-      cycle.push_back(v);
-      if (v == x && cycle.size() > 1)
-        break;
-    }
-    reverse(cycle.begin(), cycle.end());
-
-    cout << "YES" << endl;
-    for (int v : cycle)
-      cout << v << ' ';
-    cout << endl;
+  K = l[N];
+  if (K == -1) {
+    printf("IMPOSSIBLE\n");
+    return 0;
   }
+  printf("%d\n", K + 1);
+  for (int i = K, u = N; i >= 0; i--) {
+    ans[i] = u;
+    u = p[u];
+  }
+  for (int i = 0; i <= K; i++)
+    printf("%d%c", ans[i], (" \n")[i == K]);
 }

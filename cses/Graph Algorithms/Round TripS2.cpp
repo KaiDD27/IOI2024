@@ -12,7 +12,7 @@ vector<int> pre;
 vector<int> depth;
 vector<int> cycle;
 vector<int> pathOfStart, pathOfFin;
-int cycleStart = 0, cycleEnd = 0;
+int cycleStart = 0, cycleFin = 0;
 
 bool bfs(int start) {
   queue<int> q;
@@ -28,7 +28,7 @@ bool bfs(int start) {
         continue; // 跳过父节点
       if (depth[v] >= 0) {
         cycleStart = v;
-        cycleEnd = u;
+        cycleFin = u;
         return true;
       }
       q.push(v);
@@ -92,7 +92,7 @@ int main() {
   if (cycleStart == 0)
     cout << "IMPOSSIBLE" << endl;
   else {
-    printPath(cycleStart, cycleEnd);
+    printPath(cycleStart, cycleFin);
   }
   return 0;
 }
