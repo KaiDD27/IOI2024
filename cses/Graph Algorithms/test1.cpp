@@ -1,69 +1,64 @@
+#include <algorithm>
+#include <array> // Include the missing header file
+#include <cstring>
 #include <iostream>
 #include <queue>
+#include <utility>
 #include <vector>
-
 using namespace std;
-using ll = long long;
-#define endl "\n"
 
-using namespace std;
-const int maxN = 1e5 + 1;
+typedef long long ll;
 
-bool vis[maxN];
-int N, M, K, a, b, in[maxN], p[maxN], l[maxN], ans[maxN];
-vector<int> G[maxN];
-queue<int> Q;
+const int MAXN = 100001;
+const ll MAX = 0x3f3f3f3f3f3f3f3f;
+const int MOD = int(1e9) + 7;
 
-void dfs(int u, int par = 0) {
-  vis[u] = true;
-  for (int v : G[u])
-    if (v != par && !vis[v])
-      dfs(v, u);
-}
+vector<pair<ll, int>> edge[MAXN];
+ll dist[MAXN];  // minimum distance
+ll num[MAXN];   // number of ways with the minimum distance
+int minf[MAXN]; // minimum flights with minimum distance
+int maxf[MAXN]; // maximum flights with minimum distance
+bool v[MAXN];   // if a node is visited
 
-int main() {
-  scanf("%d %d", &N, &M);
-  for (int i = 0; i < M; i++) {
-    scanf("%d %d", &a, &b);
-    G[a].push_back(b);
-    in[b]++;
-  }
-  /*
-    dfs(1);
-    if (!vis[N]) {
-      printf("IMPOSSIBLE\n");
-      return 0;
-    }
-  */
-  fill(l + 2, l + maxN, -1);
-  for (int i = 1; i <= N; i++)
-    if (in[i] == 0)
-      Q.push(i);
+void djikstra(int s) {
+  priority_queue<pair<ll, int>, vector<pair<ll, int>>, greater<pair<ll, int>>>
+      pq;
 
-  while (!Q.empty()) {
-    int u = Q.front();
-    Q.pop();
-    for (int v : G[u]) {
-      if (l[u] != -1 && l[v] < l[u] + 1) {
-        l[v] = l[u] + 1;
-        p[v] = u;
+  pq.push({dist[s] = 0, s});
+  num[s] = 1;
+  while (!pq.empty()) {
+    int vert = pq.top().second;
+    pq.pop();
+
+    if (v[vert])
+      continue;
+    v[vert] = true;
+    for (auto [cost, next] : edge[vert]) {
+      ll alt = cost + dist[vert];
+
+      if (alt == dist[next]) {
+        num[next] = (num[next] + num[vert]) % MOD;
+        minf[next] = min(minf[next], minf[vert] + 1);
+        maxf[next] = max(maxf[next], maxf[vert] + 1);
+      } else if (alt < dist[next]) {
+        num[next] = num[vert];
+        minf[next] = minf[vert] + 1;
+        maxf[next] = maxf[vert] + 1;
+        pq.push({dist[next] = alt, next});
       }
-      in[v]--;
-      if (in[v] == 0)
-        Q.push(v);
     }
   }
-
-  K = l[N];
-  if (K == -1) {
-    printf("IMPOSSIBLE\n");
-    return 0;
+}
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  int n, m;
+  cin >> n >> m;
+  for (int i = 0, start, end, cost; i < m; i++) {
+    cin >> start >> end >> cost;
+    edge[start].push_back({cost, end});
   }
-  printf("%d\n", K + 1);
-  for (int i = K, u = N; i >= 0; i--) {
-    ans[i] = u;
-    u = p[u];
-  }
-  for (int i = 0; i <= K; i++)
-    printf("%d%c", ans[i], (" \n")[i == K]);
+  memset(dist + 1, 0x3f, n * sizeof(long long));
+  djikstra(1);
+  cout << dist[n] << " " << num[n] << " " << minf[n] << " " << maxf[n];
 }

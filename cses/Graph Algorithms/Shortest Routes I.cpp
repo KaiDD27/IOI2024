@@ -1,4 +1,5 @@
 // Dijkstra通过将距离乘以 -1，用优先队列默认的最大堆，注意one-way flight
+// 此算法要仔细理解每一个细节，参见Investigation.cpp这题的注释
 #include <iostream>
 #include <queue>
 #include <utility>
@@ -10,7 +11,6 @@ const ll INF = 1e14 + 10;
 vector<vector<pair<int, int>>> adj;
 vector<ll> dist;
 priority_queue<pair<ll, int>> pq;
-vector<bool> processed;
 
 int main() {
   ios::sync_with_stdio(false); // Fast I/O
@@ -19,7 +19,6 @@ int main() {
   cin >> n >> m;
   dist.resize(n + 1, INF);
   adj.resize(n + 1);
-  processed.resize(n + 1, false);
   for (int i = 0; i < m; i++) {
     int a, b, c;
     cin >> a >> b >> c;
