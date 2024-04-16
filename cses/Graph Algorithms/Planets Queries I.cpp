@@ -9,7 +9,8 @@ using ll = long long;
 const int MAXD = 30; // ceil(log2(10^9))
 // 这里如果用vector<vector<int>> dp;然后   dp.resize(n + 1,
 // vector<int>(MAXD));就会超时
-// 所以 vector 两层嵌套应该避免内层用 vector，而应该该用 array
+// 所以 vector 两层嵌套应该避免内层用 vector，而应该该用
+// array，除非长度是不确定的，需要push_back
 vector<array<int, MAXD>> dp;
 
 int jump(int x, int k) {

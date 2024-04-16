@@ -1,4 +1,7 @@
 // 函数图（功能图）+二进制跳跃
+// 这道题所谓的最短距离其实不是个问题，需要先把典型的图画出来，就明白了，只要不重复绕圈的路径就是最短路径
+// 参考但不完全相同
+// https://usaco.guide/problems/cses-1160-planets-queries-ii/solution
 #include <array>
 #include <iostream>
 #include <vector>
@@ -70,14 +73,19 @@ int main() {
 
   for (int i = 0, a = 0, b = 0; i < q; i++) {
     cin >> a >> b;
+    // 不相等，则说明不是同一个component,不可达
     if (Fin[a] != Fin[b]) {
       cout << "-1" << endl;
       continue;
     }
     int k = height[a] - height[b];
+
     if (k >= 0 && jump(a, k) == b) {
       cout << k << endl;
     } else {
+      // a可能在树上也可能在环上，b
+      // 必须在环上，但是应该是越过了fin点不远，所以此时height[a] -
+      // height[b]<0，但a 是可以走到 b 的
       k = height[a] - 1 + (teleport[Fin[a]] == Fin[a] ? 0 : 1);
       a = teleport[Fin[a]];
       int diff = height[a] - height[b];
