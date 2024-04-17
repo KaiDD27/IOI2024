@@ -6,17 +6,14 @@ using namespace std;
 using ll = long long;
 #define endl "\n"
 vector<vector<int>> adj, inAdj;
-vector<int> visited;
+vector<bool> visited;
 void dfs(int a, vector<vector<int>> &adj) {
-  visited[a] = 1;
+  visited[a] = true;
   for (auto b : adj[a]) {
-    if (visited[b] == 0)
+    if (visited[b] == false) {
       dfs(b, adj);
-    else if (visited[b] == 1 || visited[b] == 2) {
-      // 增加可读性，不需要做任何处理
     }
   }
-  visited[a] = 2;
   return;
 }
 int main() {
@@ -35,7 +32,7 @@ int main() {
   }
   dfs(1, adj);
   for (int i = 1; i <= n; i++) {
-    if (visited[i] == 0) {
+    if (visited[i] == false) {
       cout << "NO" << endl;
       cout << "1"
            << " " << i << endl;
@@ -46,13 +43,12 @@ int main() {
   visited.resize(n + 1);
   dfs(1, inAdj);
   for (int i = 1; i <= n; i++) {
-    if (visited[i] == 0) {
+    if (visited[i] == false) {
       cout << "NO" << endl;
       cout << i << " 1" << endl;
       return 0;
     }
   }
   cout << "YES" << endl;
-
   return 0;
 }
