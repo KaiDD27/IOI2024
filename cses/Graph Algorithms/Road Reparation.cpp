@@ -9,11 +9,11 @@ using ll = long long;
 // 0为 c，1 为 a，2 为 b
 vector<array<int, 3>> edge;
 vector<int> link;
-int find_set(int a) {
+int findSet(int a) {
   if (a == link[a])
     return a;
   // 路径压缩，不然会超时
-  return link[a] = find_set(link[a]);
+  return link[a] = findSet(link[a]);
 }
 int main() {
   ios::sync_with_stdio(false); // Fast I/O
@@ -29,8 +29,8 @@ int main() {
     link[i] = i;
   ll totalCost = 0, cnt = 0;
   for (auto [c, a, b] : edge) {
-    int e1 = find_set(a);
-    int e2 = find_set(b);
+    int e1 = findSet(a);
+    int e2 = findSet(b);
     if (e1 == e2)
       continue;
     link[e1] = e2;
