@@ -7,11 +7,11 @@ using ll = long long;
 #define endl "\n"
 vector<vector<int>> adj, inAdj;
 vector<bool> visited;
-void dfs(int a, vector<vector<int>> &adj) {
+void dfs(int a, vector<vector<int>> &adjOrIn) {
   visited[a] = true;
-  for (auto b : adj[a]) {
+  for (auto b : adjOrIn[a]) {
     if (visited[b] == false) {
-      dfs(b, adj);
+      dfs(b, adjOrIn);
     }
   }
   return;
