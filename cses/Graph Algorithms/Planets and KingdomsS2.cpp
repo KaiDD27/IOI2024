@@ -25,6 +25,7 @@ void dfs(int a) {
   for (auto b : adj[a]) {
     if (num[b] == -1) {
       dfs(b);
+      // 继承了子节点的最老祖先
       oldestAncestorsConnected[a] =
           min(oldestAncestorsConnected[a], oldestAncestorsConnected[b]);
     } else if (sCComponetLabel[b] == -1)
@@ -33,11 +34,13 @@ void dfs(int a) {
       oldestAncestorsConnected[a] = min(oldestAncestorsConnected[a], num[b]);
   }
   if (oldestAncestorsConnected[a] == num[a]) {
+    // 开始生成此 scc
     sCComponetLabel[a] = ++sccCnt;
     while (a != sk.top()) {
       sCComponetLabel[sk.top()] = sccCnt;
       sk.pop();
     }
+    // a 也需要弹出
     sk.pop();
   }
   return;
