@@ -4,13 +4,14 @@
 #include <array>
 #include <cstring>
 #include <iostream>
+#include <stack>
 #include <vector>
-#define maxn 200020
+#define maxn 12
 using namespace std;
 vector<int> graph[maxn]; // i表示+不满足时，也就是-满足时; i + n:
                          // -不满足时，也就是+满足时
 vector<int> rgraph[maxn];
-vector<int> vs;
+stack<int> vs;
 int comp[maxn];
 bool vis[maxn];
 
@@ -21,7 +22,7 @@ void dfs(int x) {
     if (!vis[to])
       dfs(to);
   }
-  vs.push_back(x);
+  vs.push(x);
 }
 
 void rdfs(int x, int k) {
@@ -48,7 +49,7 @@ int main() {
 
     // a="+-x1" b = "+-x2"
     // 这两个 ～a->b  ~b->a  都需要加入。注意a-~b和b->~a都是不成立的
-    // 为了Kosaraju所以有 反图
+    // 为了Kosaraju所以有 1反图
     graph[n * (1 - b1) + x1].push_back(n * b2 + x2);
     rgraph[n * b2 + x2].push_back(n * (1 - b1) + x1);
     graph[n * (1 - b2) + x2].push_back(n * b1 + x1);
@@ -60,10 +61,15 @@ int main() {
   }
   memset(vis, false, sizeof(vis));
   int cnt = 0;
-  for (int i = 2 * n - 1; i >= 0; i--) {
-    if (!vis[vs[i]])
-      rdfs(vs[i], cnt++);
+
+  while (!vs.empty()) {
+    auto a = vs.top();
+    vs.pop();
+    if (!vis[a]) {
+      rdfs(a, cnt++);
+    }
   }
+
   vector<char> ans(n);
   for (int i = 0; i < n; i++) {
     if (comp[i] == comp[i + n]) {
