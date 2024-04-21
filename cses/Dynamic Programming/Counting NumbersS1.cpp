@@ -35,6 +35,7 @@ ll solve(ll num) {
   if (num == -1)
     return 0;
   memset(dp, -1, sizeof(dp));
+  fill(dp[0], dp[maxN], -1);
   vector<int> digit;
   digit.push_back(0);
   for (int i = 0; num > 0; i++) {
