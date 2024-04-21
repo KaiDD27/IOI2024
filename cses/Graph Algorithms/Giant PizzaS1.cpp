@@ -1,3 +1,5 @@
+// 有向图强连通分量
+// Kosaraju 生成的SCC的序号是拓扑排序的
 #include <algorithm>
 #include <array>
 #include <iostream>
@@ -34,25 +36,25 @@ int main() {
   cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
   int n, m;
   cin >> n >> m;
-  // 1到 m 表示不喜欢 topping，m+1 到 2m 表示喜欢 topping
+  // 0到 m-1 表示不喜欢 topping，m到 2m-1 表示喜欢 topping
   adj.resize(2 * m);
   rAdj.resize(2 * m);
   visited.resize(2 * m);
   componentLabel.resize(2 * m);
   for (int i = 0; i < n; i++) {
     char symbolA, symbolB;
-    int toppingA, toppingB;
-    cin >> symbolA >> toppingA >> symbolB >> toppingB;
-    toppingA--;
-    toppingB--;
+    int a, b;
+    cin >> symbolA >> a >> symbolB >> b;
+    a--;
+    b--;
     if (symbolA == '+')
-      toppingA += m;
+      a += m;
     if (symbolB == '+')
-      toppingB += m;
-    adj[(toppingA + m) % (2 * m)].push_back(toppingB);
-    rAdj[toppingB].push_back((toppingA + m) % (2 * m));
-    adj[(toppingB + m) % (2 * m)].push_back(toppingA);
-    rAdj[toppingA].push_back((toppingB + m) % (2 * m));
+      b += m;
+    adj[(a + m) % (2 * m)].push_back(b);
+    rAdj[b].push_back((a + m) % (2 * m));
+    adj[(b + m) % (2 * m)].push_back(a);
+    rAdj[a].push_back((b + m) % (2 * m));
   }
 
   for (int i = 0; i < 2 * m; i++) {

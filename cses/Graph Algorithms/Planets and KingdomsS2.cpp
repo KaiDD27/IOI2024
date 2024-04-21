@@ -14,26 +14,26 @@ using ll = long long;
 stack<int> sk;
 // strongly connected component
 vector<int> sCComponetLabel;
-vector<int> oldestAncestorsConnected, num;
+vector<int> oldestAncestorConnected, num;
 int dfsN = 0;
 vector<vector<int>> adj;
 int sccCnt = 0;
 
 void dfs(int a) {
   sk.push(a);
-  oldestAncestorsConnected[a] = num[a] = ++dfsN;
+  oldestAncestorConnected[a] = num[a] = ++dfsN;
   for (auto b : adj[a]) {
     if (num[b] == -1) {
       dfs(b);
       // 继承了子节点的最老祖先
-      oldestAncestorsConnected[a] =
-          min(oldestAncestorsConnected[a], oldestAncestorsConnected[b]);
+      oldestAncestorConnected[a] =
+          min(oldestAncestorConnected[a], oldestAncestorConnected[b]);
     } else if (sCComponetLabel[b] == -1)
       // 如已独立出去了，则a,b不能双连通
       // 否则num[b]可能更老
-      oldestAncestorsConnected[a] = min(oldestAncestorsConnected[a], num[b]);
+      oldestAncestorConnected[a] = min(oldestAncestorConnected[a], num[b]);
   }
-  if (oldestAncestorsConnected[a] == num[a]) {
+  if (oldestAncestorConnected[a] == num[a]) {
     // 开始生成此 scc
     sCComponetLabel[a] = ++sccCnt;
     while (a != sk.top()) {
@@ -53,7 +53,7 @@ int main() {
   cin >> n >> m;
   adj.resize(n + 1);
   sCComponetLabel.resize(n + 1, -1);
-  oldestAncestorsConnected.resize(n + 1, n + 1);
+  oldestAncestorConnected.resize(n + 1, n + 1);
   num.resize(n + 1, -1);
   for (int i = 1; i <= m; i++) {
     int a, b;
