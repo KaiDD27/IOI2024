@@ -55,6 +55,7 @@ int main() {
   }
 
   while (!topologicalOrder.empty()) {
+    // SCC 的序号是拓扑排序正序
     auto a = topologicalOrder.top();
     topologicalOrder.pop();
     if (sCComponetLabel[a] == 0) {

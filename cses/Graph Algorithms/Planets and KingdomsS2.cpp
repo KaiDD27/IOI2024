@@ -33,6 +33,7 @@ void dfs(int a) {
       // 否则num[b]可能更老
       oldestAncestorConnected[a] = min(oldestAncestorConnected[a], num[b]);
   }
+  // SCC 的序号是拓扑排序逆序的
   if (oldestAncestorConnected[a] == num[a]) {
     // 开始生成此 scc
     sCComponetLabel[a] = ++sccCnt;
