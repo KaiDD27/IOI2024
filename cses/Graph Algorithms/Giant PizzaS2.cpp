@@ -67,7 +67,7 @@ int main() {
       return 0;
     }
   }
-
+  // SCC 的序号是拓扑排序逆序的
   for (int i = 1; i <= m; i++) {
     if (sCComponentLabel[i] > sCComponentLabel[i + m]) {
       cout << "+ ";
