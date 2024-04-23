@@ -1,0 +1,24 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/dingkai/Code/IOI2024/Atcoder/Dabc347.gout'
+relocations:
+  - { offsetInCU: 0xBC, offset: 0xBC, size: 0x8, addend: 0x0, symName: __ZNSt12_Base_bitsetILm1EEC2Ey, symObjAddr: 0x0, symBinAddr: 0x1000034E0, symSize: 0x24 }
+  - { offsetInCU: 0x5BD5, offset: 0x5BD5, size: 0x8, addend: 0x0, symName: __ZStL8__ioinit, symObjAddr: 0x19230, symBinAddr: 0x100008000, symSize: 0x0 }
+  - { offsetInCU: 0x5DA3, offset: 0x5DA3, size: 0x8, addend: 0x0, symName: __GLOBAL__sub_I_Dabc347.cpp, symObjAddr: 0x6C0, symBinAddr: 0x100003BA0, symSize: 0x14 }
+  - { offsetInCU: 0x5DC9, offset: 0x5DC9, size: 0x8, addend: 0x0, symName: __Z41__static_initialization_and_destruction_0v, symObjAddr: 0x684, symBinAddr: 0x100003B64, symSize: 0x3C }
+  - { offsetInCU: 0x5E12, offset: 0x5E12, size: 0x8, addend: 0x0, symName: __ZNSt6bitsetILm60EE9referenceC1ERS0_m, symObjAddr: 0x638, symBinAddr: 0x100003B18, symSize: 0x4C }
+  - { offsetInCU: 0x5E20, offset: 0x5E20, size: 0x8, addend: 0x0, symName: __ZNSt13_Sanitize_valILm60ELb1EE18_S_do_sanitize_valEy, symObjAddr: 0x620, symBinAddr: 0x100003B00, symSize: 0x18 }
+  - { offsetInCU: 0x5E4C, offset: 0x5E4C, size: 0x8, addend: 0x0, symName: __ZNKSt6bitsetILm60EE9to_ullongEv, symObjAddr: 0x604, symBinAddr: 0x100003AE4, symSize: 0x1C }
+  - { offsetInCU: 0x5E74, offset: 0x5E74, size: 0x8, addend: 0x0, symName: __ZNSt6bitsetILm60EE9referenceaSEb, symObjAddr: 0x57C, symBinAddr: 0x100003A5C, symSize: 0x88 }
+  - { offsetInCU: 0x5EAC, offset: 0x5EAC, size: 0x8, addend: 0x0, symName: __ZNKSt6bitsetILm60EE9referencecvbEv, symObjAddr: 0x538, symBinAddr: 0x100003A18, symSize: 0x44 }
+  - { offsetInCU: 0x5F13, offset: 0x5F13, size: 0x8, addend: 0x0, symName: __ZNSt6bitsetILm60EE9referenceD1Ev, symObjAddr: 0x524, symBinAddr: 0x100003A04, symSize: 0x14 }
+  - { offsetInCU: 0x5F19, offset: 0x5F19, size: 0x8, addend: 0x0, symName: __ZNSt6bitsetILm60EEixEm, symObjAddr: 0x4EC, symBinAddr: 0x1000039CC, symSize: 0x38 }
+  - { offsetInCU: 0x5F8A, offset: 0x5F8A, size: 0x8, addend: 0x0, symName: __ZNSt6bitsetILm60EEC1Ey, symObjAddr: 0x4B0, symBinAddr: 0x100003990, symSize: 0x3C }
+  - { offsetInCU: 0x5FA7, offset: 0x5FA7, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0xE4, symBinAddr: 0x1000035C4, symSize: 0x3CC }
+  - { offsetInCU: 0x6085, offset: 0x6085, size: 0x8, addend: 0x0, symName: __Z8popcountx, symObjAddr: 0x94, symBinAddr: 0x100003574, symSize: 0x50 }
+  - { offsetInCU: 0x60B0, offset: 0x60B0, size: 0x8, addend: 0x0, symName: __ZNKSt12_Base_bitsetILm1EE15_M_do_to_ullongEv, symObjAddr: 0x7C, symBinAddr: 0x10000355C, symSize: 0x18 }
+  - { offsetInCU: 0x60D8, offset: 0x60D8, size: 0x8, addend: 0x0, symName: __ZNSt12_Base_bitsetILm1EE10_M_getwordEm, symObjAddr: 0x64, symBinAddr: 0x100003544, symSize: 0x18 }
+  - { offsetInCU: 0x6104, offset: 0x6104, size: 0x8, addend: 0x0, symName: __ZNSt12_Base_bitsetILm1EE10_S_maskbitEm, symObjAddr: 0x3C, symBinAddr: 0x10000351C, symSize: 0x28 }
+  - { offsetInCU: 0x612C, offset: 0x612C, size: 0x8, addend: 0x0, symName: __ZNSt12_Base_bitsetILm1EE11_S_whichbitEm, symObjAddr: 0x24, symBinAddr: 0x100003504, symSize: 0x18 }
+  - { offsetInCU: 0x6197, offset: 0x6197, size: 0x8, addend: 0x0, symName: __ZNSt12_Base_bitsetILm1EEC2Ey, symObjAddr: 0x0, symBinAddr: 0x1000034E0, symSize: 0x24 }
+...
