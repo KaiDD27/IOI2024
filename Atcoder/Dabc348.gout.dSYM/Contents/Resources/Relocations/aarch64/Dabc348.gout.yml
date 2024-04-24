@@ -1,0 +1,22 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/dingkai/Code/IOI2024/Atcoder/Dabc348.gout'
+relocations:
+  - { offsetInCU: 0xBC, offset: 0xBC, size: 0x8, addend: 0x0, symName: __Z3dfsiii, symObjAddr: 0x0, symBinAddr: 0x100003814, symSize: 0x324 }
+  - { offsetInCU: 0x2589, offset: 0x2589, size: 0x8, addend: 0x0, symName: __ZStL8__ioinit, symObjAddr: 0x10180, symBinAddr: 0x100008020, symSize: 0x0 }
+  - { offsetInCU: 0x25BA, offset: 0x25BA, size: 0x8, addend: 0x0, symName: _grid, symObjAddr: 0x10184, symBinAddr: 0x100008024, symSize: 0x0 }
+  - { offsetInCU: 0x25EA, offset: 0x25EA, size: 0x8, addend: 0x0, symName: _gridMedicine, symObjAddr: 0x19F58, symBinAddr: 0x100011DF8, symSize: 0x0 }
+  - { offsetInCU: 0x25FC, offset: 0x25FC, size: 0x8, addend: 0x0, symName: _gridMaxE, symObjAddr: 0x4169C, symBinAddr: 0x10003953C, symSize: 0x0 }
+  - { offsetInCU: 0x260C, offset: 0x260C, size: 0x8, addend: 0x0, symName: _sy, symObjAddr: 0x68DE0, symBinAddr: 0x100060C80, symSize: 0x0 }
+  - { offsetInCU: 0x2622, offset: 0x2622, size: 0x8, addend: 0x0, symName: _sx, symObjAddr: 0x68DE4, symBinAddr: 0x100060C84, symSize: 0x0 }
+  - { offsetInCU: 0x2638, offset: 0x2638, size: 0x8, addend: 0x0, symName: _ty, symObjAddr: 0x68DE8, symBinAddr: 0x100060C88, symSize: 0x0 }
+  - { offsetInCU: 0x264E, offset: 0x264E, size: 0x8, addend: 0x0, symName: _tx, symObjAddr: 0x68DEC, symBinAddr: 0x100060C8C, symSize: 0x0 }
+  - { offsetInCU: 0x2663, offset: 0x2663, size: 0x8, addend: 0x0, symName: _h, symObjAddr: 0x68DF0, symBinAddr: 0x100060C90, symSize: 0x0 }
+  - { offsetInCU: 0x2679, offset: 0x2679, size: 0x8, addend: 0x0, symName: _w, symObjAddr: 0x68DF4, symBinAddr: 0x100060C94, symSize: 0x0 }
+  - { offsetInCU: 0x269C, offset: 0x269C, size: 0x8, addend: 0x0, symName: _dx, symObjAddr: 0x6A4, symBinAddr: 0x100008000, symSize: 0x0 }
+  - { offsetInCU: 0x26B2, offset: 0x26B2, size: 0x8, addend: 0x0, symName: _dy, symObjAddr: 0x6B4, symBinAddr: 0x100008010, symSize: 0x0 }
+  - { offsetInCU: 0x27F4, offset: 0x27F4, size: 0x8, addend: 0x0, symName: __GLOBAL__sub_I_Dabc348.cpp, symObjAddr: 0x690, symBinAddr: 0x100003EA4, symSize: 0x14 }
+  - { offsetInCU: 0x281A, offset: 0x281A, size: 0x8, addend: 0x0, symName: __Z41__static_initialization_and_destruction_0v, symObjAddr: 0x654, symBinAddr: 0x100003E68, symSize: 0x3C }
+  - { offsetInCU: 0x2813, offset: 0x2813, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x324, symBinAddr: 0x100003B38, symSize: 0x330 }
+  - { offsetInCU: 0x292E, offset: 0x292E, size: 0x8, addend: 0x0, symName: __Z3dfsiii, symObjAddr: 0x0, symBinAddr: 0x100003814, symSize: 0x324 }
+...
