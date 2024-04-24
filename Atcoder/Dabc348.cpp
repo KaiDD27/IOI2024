@@ -7,9 +7,9 @@
 using namespace std;
 using ll = long long;
 #define endl "\n"
-char grid[201][201];
-int gridMedicine[201][201];
-int gridMaxE[201][201];
+vector<vector<char>> grid;
+vector<vector<int>> gridMedicine;
+vector<vector<int>> gridMaxE;
 int sy, sx, ty, tx;
 int h, w;
 // 上右下左
@@ -51,6 +51,9 @@ int main() {
   ios::sync_with_stdio(false); // Fast I/O
   cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
   cin >> h >> w;
+  grid.resize(h + 1, vector<char>(w + 1));
+  gridMedicine.resize(h + 1, vector<int>(w + 1, 0));
+  gridMaxE.resize(h + 1, vector<int>(w + 1, -1));
   for (int line = 1; line <= h; line++) {
     for (int column = 1; column <= w; column++) {
       cin >> grid[line][column];
@@ -70,11 +73,6 @@ int main() {
     int r, c, e;
     cin >> r >> c >> e;
     gridMedicine[r][c] = e;
-  }
-
-  for (int i = 0; i <= h; i++) {
-    for (int j = 0; j <= w; j++)
-      gridMaxE[i][j] = -0x3f;
   }
   bfs();
   return 0;
