@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <array>
 #include <iostream>
-#include <queue>
 #include <vector>
 
 using namespace std;
@@ -15,37 +14,31 @@ int h, w;
 // 上右下左
 int dx[4] = {0, 1, 0, -1};
 int dy[4] = {-1, 0, 1, 0};
-void bfs() {
-  priority_queue<array<int, 3>> pq;
-  gridMaxE[sy][sx] = max(gridMedicine[sy][sx], 0);
-  pq.push({gridMaxE[sy][sx], sy, sx});
-  while (!pq.empty()) {
-    auto [e, y, x] = pq.top();
-    pq.pop();
-    if (x == tx && y == ty) {
-      cout << "Yes" << endl;
-      return;
-    }
-    if (e == 0)
+bool bfs(int x, int y, int e) {
+  if (x == tx && y == ty)
+    return true;
+  if (e == 0 && gridMedicine[y][x] == 0)
+    return false;
+  int medicine = gridMedicine[y][x];
+  if (e < medicine) {
+    e = medicine;
+    gridMedicine[y][x] = 0;
+  }
+  gridMaxE[y][x] = gridMaxE[y][x] >= e ? gridMaxE[y][x] : e;
+  for (int i = 0; i < 4; i++) {
+    int nx = x + dx[i], ny = y + dy[i];
+    if (nx < 1 || nx > w || ny < 1 || ny > h)
       continue;
-    if (e < gridMaxE[y][x])
-      continue;
-    for (int i = 0; i < 4; i++) {
-      int nx = x + dx[i], ny = y + dy[i];
-      if (nx < 1 || nx > w || ny < 1 || ny > h || grid[ny][nx] == '#')
-        continue;
-      int ne = e - 1;
-      if (gridMedicine[ny][nx] != 0) {
-        ne = max(gridMedicine[ny][nx], ne);
-      }
-      if (ne > gridMaxE[ny][nx]) {
-        pq.push({ne, ny, nx});
-        gridMaxE[ny][nx] = ne;
-      }
+    if (nx == tx && ny == ty)
+      return true;
+    if (grid[ny][nx] != '#' && e - 1 > gridMaxE[ny][nx] &&
+        !(e - 1 == 0 && gridMedicine[ny][nx] == 0)) {
+      if (bfs(nx, ny, e - 1))
+        return true;
     }
   }
-  cout << "No" << endl;
-  return;
+  gridMedicine[y][x] = medicine;
+  return false;
 }
 int main() {
   ios::sync_with_stdio(false); // Fast I/O
@@ -72,10 +65,14 @@ int main() {
     gridMedicine[r][c] = e;
   }
 
-  for (int i = 0; i <= h; i++) {
-    for (int j = 0; j <= w; j++)
-      gridMaxE[i][j] = -0x3f;
+  for (int i = 1; i <= h; i++) {
+    for (int j = 1; j <= w; j++)
+      gridMaxE[i][j] = -1;
   }
-  bfs();
+  if (bfs(sx, sy, 0)) {
+    cout << "Yes" << endl;
+  } else {
+    cout << "No" << endl;
+  }
   return 0;
 }
