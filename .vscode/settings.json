@@ -205,7 +205,10 @@
     "--clang-tidy", "--suggest-missing-includes", "--header-insertion=iwyu"
 
   ],
-  "cmake.sourceDirectory": "/Users/dingkai/Code/IOI2024/template/utils"
+  "cmake.sourceDirectory": "/Users/dingkai/Code/IOI2024/template/utils",
+  "cSpell.ignoreWords": [
+    "warnsdorff"
+  ]
   
   
 }

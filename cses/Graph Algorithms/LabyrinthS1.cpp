@@ -55,21 +55,21 @@ int main() {
   } else {
     cout << "YES\n";
     cout << dist[ey][ex] << "\n";
-    string path;
+    string pathA;
     while (ex != sx || ey != sy) {
       for (int i = 0; i < 4; i++) {
         int px = ex - dx[i], py = ey - dy[i];
         if (grid[py][px] == '#')
           continue;
         if (dist[py][px] == dist[ey][ex] - 1) {
-          path += dir[i];
+          pathA += dir[i];
           ex = px, ey = py;
           break;
         }
       }
     }
-    reverse(path.begin(), path.end());
-    cout << path << "\n";
+    reverse(pathA.begin(), pathA.end());
+    cout << pathA << "\n";
   }
   return 0;
 }
