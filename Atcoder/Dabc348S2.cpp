@@ -1,7 +1,8 @@
-// 递归调用太多层，超时了
+// 优先队列贪心优化了 bfs，节省了时间
 #include <algorithm>
 #include <array>
 #include <iostream>
+#include <queue>
 #include <vector>
 
 using namespace std;
@@ -15,31 +16,41 @@ int h, w;
 // 上右下左
 int dx[4] = {0, 1, 0, -1};
 int dy[4] = {-1, 0, 1, 0};
-bool bfs(int x, int y, int e) {
-  if (x == tx && y == ty)
-    return true;
-  if (e == 0 && gridMedicine[y][x] == 0)
-    return false;
-  int medicine = gridMedicine[y][x];
-  if (e < medicine) {
-    e = medicine;
-    gridMedicine[y][x] = 0;
+void bfs() {
+  if (gridMedicine[sy][sx] == 0) {
+    cout << "No" << endl;
+    return;
   }
-  gridMaxE[y][x] = gridMaxE[y][x] >= e ? gridMaxE[y][x] : e;
-  for (int i = 0; i < 4; i++) {
-    int nx = x + dx[i], ny = y + dy[i];
-    if (nx < 1 || nx > w || ny < 1 || ny > h)
+  gridMaxE[sy][sx] = gridMedicine[sy][sx];
+  priority_queue<array<int, 3>> pq;
+  pq.push({gridMaxE[sy][sx], sy, sx});
+  while (!pq.empty()) {
+    auto [e, y, x] = pq.top();
+    pq.pop();
+    if (x == tx && y == ty) {
+      cout << "Yes" << endl;
+      return;
+    }
+    if (e == 0)
       continue;
-    if (nx == tx && ny == ty)
-      return true;
-    if (grid[ny][nx] != '#' && e - 1 > gridMaxE[ny][nx] &&
-        !(e - 1 == 0 && gridMedicine[ny][nx] == 0)) {
-      if (bfs(nx, ny, e - 1))
-        return true;
+    if (e < gridMaxE[y][x])
+      continue;
+    for (int i = 0; i < 4; i++) {
+      int nx = x + dx[i], ny = y + dy[i];
+      if (nx < 1 || nx > w || ny < 1 || ny > h || grid[ny][nx] == '#')
+        continue;
+      int ne = e - 1;
+      if (gridMedicine[ny][nx] != 0) {
+        ne = max(gridMedicine[ny][nx], ne);
+      }
+      if (ne > gridMaxE[ny][nx]) {
+        pq.push({ne, ny, nx});
+        gridMaxE[ny][nx] = ne;
+      }
     }
   }
-  gridMedicine[y][x] = medicine;
-  return false;
+  cout << "No" << endl;
+  return;
 }
 int main() {
   ios::sync_with_stdio(false); // Fast I/O
@@ -68,10 +79,6 @@ int main() {
     cin >> r >> c >> e;
     gridMedicine[r][c] = e;
   }
-  if (bfs(sx, sy, 0)) {
-    cout << "Yes" << endl;
-  } else {
-    cout << "No" << endl;
-  }
+  bfs();
   return 0;
 }
