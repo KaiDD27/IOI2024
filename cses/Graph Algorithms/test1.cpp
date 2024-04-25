@@ -1,46 +1,69 @@
-#include <array>
+#include <climits>
 #include <iostream>
+#include <queue>
 #include <vector>
-
 using namespace std;
-using ll = long long;
-#define endl "\n"
-vector<vector<int>> inAdj;
-vector<array<ll, 20 + 1>> dp;
-const ll MOD = 1e9 + 7;
-int main() {
-  ios::sync_with_stdio(false); // Fast I/O
-  cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
 
-  int n, m;
-  cin >> n >> m;
-  inAdj.resize(n + 1);
-  dp.resize(1 << n, array<ll, 20 + 1>());
-  for (int i = 0; i < m; i++) {
-    int a, b;
-    cin >> a >> b;
-    inAdj[--b].push_back(--a);
-  }
-  dp[1][0] = 1;
-  for (int i = 2; i < 1 << n; i++) {
-    if ((i & (1 << 0)) == 0)
-      continue;
-    if ((i & (1 << (n - 1))) && i != ((1 << n) - 1))
-      continue;
-    for (int b = 0; b < n; b++) {
-      if ((i & (1 << b)) == 0)
-        continue;
-      int prev = i - (1 << b);
-      // 第 b 位是1
-      for (auto a : inAdj[b]) {
-        // 第 a 位是 1
-        if ((i & (1 << a)) != 0) {
-          dp[i][b] += dp[prev][a];
-          dp[i][b] %= MOD;
-        }
+long long max_flow(vector<vector<int>> adj, vector<vector<long long>> capacity,
+                   int source, int sink) {
+  int n = adj.size();
+  vector<int> parent(n, -1);
+  // Find a way from the source to sink on a path with non-negative capacities
+  auto reachable = [&]() -> bool {
+    queue<int> q;
+    q.push(source);
+    while (!q.empty()) {
+      int node = q.front();
+      q.pop();
+      for (int son : adj[node]) {
+        long long w = capacity[node][son];
+        if (w == 0 || parent[son] != -1)
+          continue;
+        parent[son] = node;
+        q.push(son);
       }
     }
+    return parent[sink] != -1;
+  };
+
+  long long flow = 0;
+  // While there is a way from source to sink with non-negative capacities
+  while (reachable()) {
+    int node = sink;
+    // The minimum capacity on the path from source to sink
+    long long curr_flow = LLONG_MAX;
+    while (node != source) {
+      curr_flow = min(curr_flow, capacity[parent[node]][node]);
+      node = parent[node];
+    }
+    node = sink;
+    while (node != source) {
+      // Subtract the capacity from capacity edges
+      capacity[parent[node]][node] -= curr_flow;
+      // Add the current flow to flow backedges
+      capacity[node][parent[node]] += curr_flow;
+      node = parent[node];
+    }
+    flow += curr_flow;
+    fill(parent.begin(), parent.end(), -1);
   }
-  cout << dp[(1 << n) - 1][n - 1] << endl;
-  return 0;
+
+  return flow;
+}
+
+int main() {
+  int n, m;
+  cin >> n >> m;
+
+  vector<vector<long long>> capacity(n, vector<long long>(n));
+  vector<vector<int>> adj(n);
+  for (int i = 0; i < m; i++) {
+    int a, b,c;
+    cin >> a >> b >> c;
+    adj[--a].push_back(--b);
+    adj[b].push_back(a);
+    capacity[a][b] += c;
+  }
+
+  cout << max_flow(adj, capacity, 0, n - 1) << endl;
 }
