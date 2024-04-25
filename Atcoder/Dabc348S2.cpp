@@ -1,4 +1,4 @@
-// 优先队列贪心优化了 bfs，节省了时间
+// bfs
 #include <algorithm>
 #include <array>
 #include <iostream>
@@ -22,11 +22,13 @@ void bfs() {
     return;
   }
   gridMaxE[sy][sx] = gridMedicine[sy][sx];
-  priority_queue<array<int, 3>> pq;
-  pq.push({gridMaxE[sy][sx], sy, sx});
-  while (!pq.empty()) {
-    auto [e, y, x] = pq.top();
-    pq.pop();
+  queue<array<int, 3>> q;
+  q.push({gridMaxE[sy][sx], sy, sx});
+  while (!q.empty()) {
+    auto [e, y, x] = q.front();
+    q.pop();
+    // 由于取出时，gridMaxE有可能和 push
+    // 进去时不一样了，所以尽量都在这里进行判断
     if (x == tx && y == ty) {
       cout << "Yes" << endl;
       return;
@@ -44,7 +46,7 @@ void bfs() {
         ne = max(gridMedicine[ny][nx], ne);
       }
       if (ne > gridMaxE[ny][nx]) {
-        pq.push({ne, ny, nx});
+        q.push({ne, ny, nx});
         gridMaxE[ny][nx] = ne;
       }
     }

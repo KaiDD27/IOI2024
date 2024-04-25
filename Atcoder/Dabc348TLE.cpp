@@ -1,4 +1,4 @@
-// 递归调用太多层，超时了
+// dfs递归调用太多层，超时了
 #include <algorithm>
 #include <array>
 #include <iostream>
@@ -15,7 +15,7 @@ int h, w;
 // 上右下左
 int dx[4] = {0, 1, 0, -1};
 int dy[4] = {-1, 0, 1, 0};
-bool bfs(int x, int y, int e) {
+bool dfs(int x, int y, int e) {
   if (x == tx && y == ty)
     return true;
   if (e == 0 && gridMedicine[y][x] == 0)
@@ -34,7 +34,7 @@ bool bfs(int x, int y, int e) {
       return true;
     if (grid[ny][nx] != '#' && e - 1 > gridMaxE[ny][nx] &&
         !(e - 1 == 0 && gridMedicine[ny][nx] == 0)) {
-      if (bfs(nx, ny, e - 1))
+      if (dfs(nx, ny, e - 1))
         return true;
     }
   }
@@ -68,7 +68,7 @@ int main() {
     cin >> r >> c >> e;
     gridMedicine[r][c] = e;
   }
-  if (bfs(sx, sy, 0)) {
+  if (dfs(sx, sy, 0)) {
     cout << "Yes" << endl;
   } else {
     cout << "No" << endl;

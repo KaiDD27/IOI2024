@@ -1,8 +1,8 @@
-// 用stack来去掉dfs 的递归
+// 优先队列贪心优化了 bfs，节省了时间
 #include <algorithm>
 #include <array>
 #include <iostream>
-#include <stack>
+#include <queue>
 #include <vector>
 
 using namespace std;
@@ -22,13 +22,11 @@ void bfs() {
     return;
   }
   gridMaxE[sy][sx] = gridMedicine[sy][sx];
-  stack<array<int, 3>> sk;
-  sk.push({gridMaxE[sy][sx], sy, sx});
-  while (!sk.empty()) {
-    auto [e, y, x] = sk.top();
-    sk.pop();
-    // 由于取出时，gridMaxE有可能和 push
-    // 进去时不一样了，所以尽量都在这里进行判断
+  priority_queue<array<int, 3>> pq;
+  pq.push({gridMaxE[sy][sx], sy, sx});
+  while (!pq.empty()) {
+    auto [e, y, x] = pq.top();
+    pq.pop();
     if (x == tx && y == ty) {
       cout << "Yes" << endl;
       return;
@@ -45,9 +43,8 @@ void bfs() {
       if (gridMedicine[ny][nx] != 0) {
         ne = max(gridMedicine[ny][nx], ne);
       }
-      // 由于记录了gridMaxE，所以就没有必要记录吃没吃过药了
       if (ne > gridMaxE[ny][nx]) {
-        sk.push({ne, ny, nx});
+        pq.push({ne, ny, nx});
         gridMaxE[ny][nx] = ne;
       }
     }
