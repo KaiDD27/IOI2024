@@ -16,6 +16,8 @@ ll n, m;
 bool bfs() {
   queue<int> q;
   q.push(1);
+  // 置为 0，便于后面找最小割
+  pre[1] = 0;
   while (!q.empty()) {
     auto a = q.front();
     q.pop();
@@ -48,6 +50,7 @@ int main() {
 
   ll maxFlow = 0;
   while (bfs()) {
+    // 找出这条增广路上本次可以增加的流量的最大值
     int b = n;
     ll currFlow = LLONG_MAX;
     while (b != 1) {
@@ -55,6 +58,7 @@ int main() {
       currFlow = min(currFlow, capacity[a][b]);
       b = a;
     }
+    // 对流量进行增加
     b = n;
     while (b != 1) {
       int a = pre[b];

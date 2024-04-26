@@ -22,7 +22,7 @@ void bfs(int i) {
       if (dis[ai] > dis[x] + 1) {
         dis[ai] = dis[x] + 1;
         q.push(ai);
-        prev[ai] = x;
+        pre[ai] = x;
       }
     }
   }
