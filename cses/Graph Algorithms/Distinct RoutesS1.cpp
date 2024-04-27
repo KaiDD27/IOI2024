@@ -1,16 +1,15 @@
-// Dinic算法
+// Dinic算法,残留网络
 #include <algorithm>
 #include <climits>
 #include <iostream>
 #include <queue>
 #include <vector>
 using namespace std;
-
 struct Edge {
   int to;
   int nex;
-  int weight;
-  int flow;
+  int capacity;
+  int remainCapacity;
 };
 
 vector<Edge> e;
@@ -20,7 +19,7 @@ vector<int> level, next_edge;
 vector<int> now;
 void addEdge(int a, int b, int w) {
   edgeCnt++;
-  e[edgeCnt] = {b, head[a], w, 0};
+  e[edgeCnt] = {b, head[a], w, w};
   head[a] = edgeCnt;
 }
 
@@ -36,8 +35,8 @@ bool bfs(int s, int t) {
     q.pop();
     for (int i = head[a]; i > 0; i = e[i].nex) {
       auto b = e[i].to;
-      // 如果节点 e.to 未访问过且边的流量小于容量,则将其加入队列
-      if (level[b] == -1 && e[i].flow < e[i].weight) {
+      // 如果节点 e.to 未访问过且还有残留容量,则将其加入队列
+      if (level[b] == -1 && e[i].remainCapacity > 0) {
         q.push(b);
         now[b] = head[b];
         level[b] = level[a] + 1;
@@ -48,25 +47,26 @@ bool bfs(int s, int t) {
   return level[t] >= 0;
 }
 
-// 深度优先搜索,用于寻找增广路径并更新正向反向流
+// 深度优先搜索,用于寻找增广路径并更新残留网络
 int dfs(int a, int flow, int t) {
   if (a == t) {
     return flow;
   }
   // 弧优化，在这一条dfs
-  // 寻找增广路径的过程中next_edge[v]++，可以让看过的出边，就不再看了
+  // 看过的出边，就不再看了
   for (int i = now[a]; i > 0; i = e[i].nex) {
     now[a] = i;
     int b = e[i].to;
-    // 如果节点 e.to 的层次不等于当前节点的层次加1,或者边的流量等于容量,则跳过
-    if (level[b] != level[a] + 1 || e[i].flow == e[i].weight) {
+    // 如果节点 e.to 的层次不等于当前节点的层次加1,或者残留容量为 0,则跳过
+    if (level[b] != level[a] + 1 || e[i].remainCapacity == 0) {
       continue;
     }
-    // 递归寻找增广路径,正向增流，反向减流
-    int f = dfs(b, min(flow, e[i].weight - e[i].flow), t);
+    // 递归寻找增广路径
+    int f = dfs(b, min(flow, e[i].remainCapacity), t);
     if (f) {
-      e[i].flow += f;
-      e[i ^ 1].flow -= f;
+      // 更新残留网络
+      e[i].remainCapacity -= f;
+      e[i ^ 1].remainCapacity += f;
       return f;
     } else {
       // 增广完毕的点，剪枝
@@ -93,10 +93,10 @@ vector<int> path;
 // 寻找一条从源点到汇点的路径
 void find_path(int v) {
   path.push_back(v);
-  // 弧优化，寻找这条路径时，next_edge[v]++，可以让看过的出边，就不再看了，或者用过的出边就不再用了
+  // 弧优化，寻找这条路径时，看过的出边，就不再看了，或者用过的出边就不再用了
   for (int i = now[v]; i > 0; i = e[i].nex) {
     now[v] = i;
-    if (e[i].flow > 0) {
+    if (e[i].remainCapacity < e[i].capacity) {
       now[v] = e[i].nex;
       find_path(e[i].to);
       break;
@@ -133,7 +133,7 @@ int main() {
     now[i] = head[i];
   // 对于每一条从源点出发的边,如果流量大于0,则找出对应的路径并输出
   for (int i = now[s]; i > 0; i = e[i].nex) {
-    if (e[i].flow > 0) {
+    if (e[i].remainCapacity < e[i].capacity) {
       path.clear();
       path.push_back(s);
       find_path(e[i].to);
