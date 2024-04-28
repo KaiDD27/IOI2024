@@ -16,7 +16,7 @@ int h, w;
 // 上右下左
 int dx[4] = {0, 1, 0, -1};
 int dy[4] = {-1, 0, 1, 0};
-void bfs() {
+void dfs() {
   if (gridMedicine[sy][sx] == 0) {
     cout << "No" << endl;
     return;
@@ -82,6 +82,6 @@ int main() {
     cin >> r >> c >> e;
     gridMedicine[r][c] = e;
   }
-  bfs();
+  dfs();
   return 0;
 }
