@@ -4,7 +4,11 @@
 #include <iostream>
 #include <queue>
 #include <vector>
+
 using namespace std;
+using ll = long long;
+#define endl "\n"
+const int INF = INT_MAX;
 struct Edge {
   int to;
   int nex;
@@ -48,13 +52,16 @@ bool bfs(int s, int t) {
 }
 
 // 深度优先搜索,用于寻找增广路径并更新残留网络
-int dfs(int a, int flow, int t) {
+// sum 是这条增广路对最大流的最大可能的贡献
+int dfs(int a, int sum, int t) {
   if (a == t) {
-    return flow;
+    return sum;
   }
+  // flow
+  int flow = 0;
   // 弧优化，在这一条dfs
   // 看过的出边，就不再看了
-  for (int i = now[a]; i > 0; i = e[i].nex) {
+  for (int i = now[a]; i > 0 && sum > 0; i = e[i].nex) {
     now[a] = i;
     int b = e[i].to;
     // 如果节点 e.to 的层次不等于当前节点的层次加1,或者残留容量为 0,则跳过
@@ -62,18 +69,20 @@ int dfs(int a, int flow, int t) {
       continue;
     }
     // 递归寻找增广路径
-    int f = dfs(b, min(flow, e[i].remainCapacity), t);
-    if (f) {
+    int k = dfs(b, min(sum, e[i].remainCapacity), t);
+    if (k) {
       // 更新残留网络
-      e[i].remainCapacity -= f;
-      e[i ^ 1].remainCapacity += f;
-      return f;
+      e[i].remainCapacity -= k;
+      e[i ^ 1].remainCapacity += k;
+      flow += k;
+      sum -= k;
+
     } else {
       // 增广完毕的点，剪枝
       level[b] = 0;
     }
   }
-  return 0;
+  return flow;
 }
 
 // Dinic算法主函数,用于计算最大流
@@ -81,7 +90,7 @@ long long max_flow(int s, int t) {
   long long total_flow = 0;
   while (bfs(s, t)) {
     int f;
-    while ((f = dfs(s, INT_MAX, t)) > 0) {
+    while ((f = dfs(s, INF, t)) > 0) {
       total_flow += f;
     }
   }
