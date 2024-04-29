@@ -22,11 +22,11 @@ int main() {
         grid[i][j] = "#";
     }
   }
-  grid[(n + 1) / 2][(n + 1) / 2] = 'T';
+  grid[(n + 1) / 2][(n + 1) / 2] = "T";
   int x = 1, y = 1;
   int dir = 0;
   int part = 1;
-  grid[1][1] = '1';
+  grid[1][1] = "1";
   while (1) {
     if (grid[y + dy[dir]][x + dx[dir]] == "T") {
       break;
