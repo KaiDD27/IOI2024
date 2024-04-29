@@ -24,19 +24,19 @@ int main() {
   }
   grid[(n + 1) / 2][(n + 1) / 2] = "T";
   int x = 1, y = 1;
-  int dir = 0;
+  int currDir = 0;
   int part = 1;
   grid[1][1] = "1";
   while (1) {
-    if (grid[y + dy[dir]][x + dx[dir]] == "T") {
+    if (grid[y + dy[currDir]][x + dx[currDir]] == "T") {
       break;
     }
-    if (grid[y + dy[dir]][x + dx[dir]] != "0") {
-      dir++;
-      dir = dir % 4;
+    if (grid[y + dy[currDir]][x + dx[currDir]] != "0") {
+      currDir++;
+      currDir = currDir % 4;
     } else {
-      x += dx[dir];
-      y += dy[dir];
+      x += dx[currDir];
+      y += dy[currDir];
       part++;
       grid[y][x] = to_string(part);
     }
