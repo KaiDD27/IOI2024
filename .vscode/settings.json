@@ -43,6 +43,10 @@
     /* ------ 编译c文件 ------ */
     "c": "gcc $fullFileName -o $dir\"$fileNameWithoutExt\"\".gout\" -W -Wall -Wno-sign-compare -Wno-conversion -O2 -std=c17 && $dir\"$fileNameWithoutExt\"\".gout\"",
     // "c": "gcc $fullFileName <file_to_link> -o $dir\"$fileNameWithoutExt\"\".out\" -W -Wall -O2 -std=c17 && $dir\"$fileNameWithoutExt\"\".out\"",
+    // 指定解释器
+    "code-runner.executorMap": {
+    "typescript": "ts-node $fileName"
+},
   },
   // Whether to clear previous output before each run (default is false):
   "code-runner.clearPreviousOutput": true,
@@ -210,8 +214,14 @@
     "warnsdorff"
   ],
   "cSpell.words": [
-    "RDLU"
-  ]
-  
-  
+    "RDLU",
+    "URDL"
+  ],
+  "editor.semanticTokenColorCustomizations": {
+    "rules": {
+      "*.mutable": {
+        "fontStyle": "", // set to empty string to disable underline, which is the default
+      },
+    }
+  }
 }
