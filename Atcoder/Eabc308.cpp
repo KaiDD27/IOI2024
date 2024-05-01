@@ -8,10 +8,10 @@ using namespace std;
 using ll = long long;
 #define endl "\n"
 vector<int> a;
-// 第一维是 1-n，第二维是 m e x，第三维是 0 1 2
-vector<array<array<ll, 3>, 3>> mexCharPreSum;
-int mex(int ai, int aj, int ak) {
-  for (int result = 0;; result++) {
+// 第一维是 i，第二维是 0 1 2
+vector<array<ll, 3>> mPreSum, xPostSum;
+ll mex(ll ai, ll aj, ll ak) {
+  for (ll result = 0;; result++) {
     if (result != ai && result != aj && result != ak)
       return result;
   }
@@ -23,56 +23,35 @@ int main() {
   cin >> n;
   string strS;
   a.resize(n);
-  mexCharPreSum.resize(n);
+  mPreSum.resize(n);
+  xPostSum.resize(n);
   for (int i = 0; i < n; i++)
     cin >> a[i];
   cin >> strS;
+  // 统计 M 的前缀和
+  if (strS[0] == 'M')
+    mPreSum[0][a[0]]++;
+  for (int i = 1; i < n - 2; i++) {
+    mPreSum[i] = mPreSum[i - 1];
+    if (strS[i] == 'M')
+      mPreSum[i][a[i]]++;
+  }
+  // 统计X的后缀和
+  if (strS[n - 1] == 'X')
+    xPostSum[n - 1][a[n - 1]]++;
+  for (int i = n - 2; i > 1; i--) {
+    xPostSum[i] = xPostSum[i + 1];
+    if (strS[i] == 'X')
+      xPostSum[i][a[i]]++;
+  }
   ll sum = 0;
-  switch (strS[0]) {
-  case 'M':
-    mexCharPreSum[0][0][a[0]]++;
-    break;
-  case 'E':
-    mexCharPreSum[0][1][a[0]]++;
-    break;
-  case 'X':
-    mexCharPreSum[0][2][a[0]]++;
-    break;
-  }
-  for (int i = 1; i < n; i++) {
-    mexCharPreSum[i] = mexCharPreSum[i - 1];
-    switch (strS[i]) {
-    case 'M':
-      mexCharPreSum[i][0][a[i]]++;
-      break;
-    case 'E':
-      mexCharPreSum[i][1][a[i]]++;
-      break;
-    case 'X':
-      mexCharPreSum[i][2][a[i]]++;
-      break;
-    }
-  }
-
   // 遍历所有可能有效的e，掐头去尾
-  array<ll, 3> xSum = mexCharPreSum[n - 1][2];
   for (int i = 1; i < n - 1; i++) {
     if (strS[i] == 'E') {
-      array<ll, 3> mBefore = mexCharPreSum[i - 1][0];
-      array<ll, 3> xBefore = mexCharPreSum[i - 1][2];
-      vector<bool> minInt(4, false);
       for (int mInt = 0; mInt <= 2; mInt++) {
         for (int xInt = 0; xInt <= 2; xInt++) {
-          fill(minInt.begin(), minInt.end(), false);
-          minInt[a[i]] = true;
-          minInt[mInt] = true;
-          minInt[xInt] = true;
-          for (int j = 0; j < 4; j++) {
-            if (minInt[j] == false) {
-              sum += (j * mBefore[mInt] * (xSum[xInt] - xBefore[xInt]));
-              break;
-            }
-          }
+          sum += (mex(mInt, a[i], xInt) * mPreSum[i - 1][mInt] *
+                  xPostSum[i + 1][xInt]);
         }
       }
     }
