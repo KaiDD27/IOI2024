@@ -1,0 +1,16 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/dingkai/Code/IOI2024/NZOI/2024-1-2.gout'
+relocations:
+  - { offsetInCU: 0xBA, offset: 0xBA, size: 0x8, addend: 0x0, symName: __ZSt3absx, symObjAddr: 0x0, symBinAddr: 0x1000035B8, symSize: 0x1C }
+  - { offsetInCU: 0x2628, offset: 0x2628, size: 0x8, addend: 0x0, symName: __ZStL8__ioinit, symObjAddr: 0x10898, symBinAddr: 0x100008000, symSize: 0x0 }
+  - { offsetInCU: 0x2784, offset: 0x2784, size: 0x8, addend: 0x0, symName: __GLOBAL__sub_I_2024_1_2.cpp, symObjAddr: 0x7E4, symBinAddr: 0x100003D9C, symSize: 0x14 }
+  - { offsetInCU: 0x27A9, offset: 0x27A9, size: 0x8, addend: 0x0, symName: __Z41__static_initialization_and_destruction_0v, symObjAddr: 0x7A8, symBinAddr: 0x100003D60, symSize: 0x3C }
+  - { offsetInCU: 0x27A0, offset: 0x27A0, size: 0x8, addend: 0x0, symName: __ZSt4moveIRxEONSt16remove_referenceIT_E4typeEOS2_, symObjAddr: 0x794, symBinAddr: 0x100003D4C, symSize: 0x14 }
+  - { offsetInCU: 0x27D6, offset: 0x27D6, size: 0x8, addend: 0x0, symName: __ZSt3minIxERKT_S2_S2_, symObjAddr: 0x75C, symBinAddr: 0x100003D14, symSize: 0x38 }
+  - { offsetInCU: 0x2815, offset: 0x2815, size: 0x8, addend: 0x0, symName: __ZSt4swapIxENSt9enable_ifIXsrSt6__and_IJSt6__not_ISt15__is_tuple_likeIT_EESt21is_move_constructibleIS4_ESt18is_move_assignableIS4_EEE5valueEvE4typeERS4_SE_, symObjAddr: 0x708, symBinAddr: 0x100003CC0, symSize: 0x54 }
+  - { offsetInCU: 0x286B, offset: 0x286B, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0xA8, symBinAddr: 0x100003660, symSize: 0x660 }
+  - { offsetInCU: 0x29F6, offset: 0x29F6, size: 0x8, addend: 0x0, symName: __Z3lcmii, symObjAddr: 0x6C, symBinAddr: 0x100003624, symSize: 0x3C }
+  - { offsetInCU: 0x2A37, offset: 0x2A37, size: 0x8, addend: 0x0, symName: __Z3gcdii, symObjAddr: 0x1C, symBinAddr: 0x1000035D4, symSize: 0x50 }
+  - { offsetInCU: 0x2A68, offset: 0x2A68, size: 0x8, addend: 0x0, symName: __ZSt3absx, symObjAddr: 0x0, symBinAddr: 0x1000035B8, symSize: 0x1C }
+...
