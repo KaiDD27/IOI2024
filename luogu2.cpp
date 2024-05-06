@@ -1,48 +1,40 @@
-#include <iomanip>
+#include <array>
 #include <iostream>
+#include <vector>
 
 using namespace std;
-const double esp = 1e-4;
-
-double calExpressions(double a, double b, double c, double d, double x) {
-  return a * x * x * x + b * x * x + c * x + d;
-}
-
-double solvingEquations(double a, double b, double c, double d, double left,
-                        double right) {
-  double valLeft = calExpressions(a, b, c, d, left);
-  double valRight = calExpressions(a, b, c, d, right);
-  if (valLeft == 0) {
-    return left;
-  }
-  if (valLeft * valRight < 0) {
-    while (left + esp < right) {
-      double mid = (left + right) / 2;
-      double tmp = calExpressions(a, b, c, d, mid);
-      if (tmp * valLeft < 0) {
-        right = mid;
-      } else
-        left = mid;
-    }
-    return left;
-  }
-  return -200; // 无解
-}
-
+using ll = long long;
+#define endl "\n"
+vector<vector<ll>> dp;
 int main() {
-  double a, b, c, d;
-  cin >> a >> b >> c >> d;
-  int count = 0;
-  for (double i = -101; i <= 101; i = i + 0.9) {
-    double ans = solvingEquations(a, b, c, d, i, i + 0.9);
-    if (ans != -200) {
-      cout << fixed << setprecision(2) << ans;
-      count++;
-      if (count == 3)
-        return 0;
-      else if (count > 0)
-        cout << " ";
+  ios::sync_with_stdio(false); // Fast I/O
+  cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
+  int n;
+  cin >> n;
+  // 第一维是序列的长度，第二维是序列最后一个数字
+  dp.resize(n + 1, vector<ll>(n + 1));
+  dp[1][1] = 1;
+  for (int i = 2; i <= n; i++) {
+    for (int j = 1; j <= i; j++) {
+      ll pre = 0, suffix = 0;
+      if (j - 1 == 0)
+        pre = 1;
+      else
+        for (int k = 1; k <= j - 1; k++) {
+          pre += dp[j - 1][k];
+        }
+      if (i - j == 0)
+        suffix = 1;
+      else
+        for (int k = 1; k <= i - j; k++) {
+          suffix += dp[i - j][k];
+        }
+      dp[i][j] = pre * suffix;
     }
   }
+  ll ans = 0;
+  for (int i = 1; i <= n; i++)
+    ans += dp[n][i];
+  cout << ans << endl;
   return 0;
 }

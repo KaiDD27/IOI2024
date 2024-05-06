@@ -1,5 +1,5 @@
 #include <algorithm>
-
+#include <cstdlib>
 using namespace std;
 
 /* 快速排序类（中位基准数优化） */
@@ -17,6 +17,7 @@ int medianThree(int nums[], int left, int right) {
 }
 
 void quickSort(int nums[], int left, int right) {
+  // 先终止，在这里终止的好处是递归调用前不用判断了，程序可读性高
   if (left >= right)
     return;
   // 如果针对伪随机测试数据可能会被hack
@@ -24,17 +25,18 @@ void quickSort(int nums[], int left, int right) {
 
   int flag = medianThree(nums, left, right);
 
-  int lt = left, i = left, gt = right;
-  while (i <= gt) {
+  int lessThan = left, i = left, greatThan = right;
+  while (i <= greatThan) {
     if (nums[i] < flag)
-      swap(nums[i++], nums[lt++]);
+      swap(nums[i++], nums[lessThan++]);
     else if (nums[i] > flag)
-      swap(nums[i], nums[gt--]);
+      swap(nums[i], nums[greatThan--]);
     else
       i++;
-  } // while结束后lt指向大于等于flag的第一个元素，gt指向小于等于flag的最后一个元素
-  quickSort(nums, left, lt - 1);
-  quickSort(nums, gt + 1, right);
+  } // while结束后lt指向大于等于flag的第一个元素，gt指向小于等于flag的最后一个元素，i指向第一个大于flag的数
+  // 原地排序，不用新分配空间
+  quickSort(nums, left, lessThan - 1);
+  quickSort(nums, greatThan + 1, right);
   return;
 }
 int main() {
