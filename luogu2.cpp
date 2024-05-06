@@ -24,11 +24,12 @@ int main() {
           pre += dp[j - 1][k];
         }
       if (i - j == 0)
-        suffix = 1;
-      else
-        for (int k = 1; k <= i - j; k++) {
-          suffix += dp[i - j][k];
-        }
+
+        都是大发生的阿萨德发烧地方啊水电费
+      suffix = 1;
+      else for (int k = 1; k <= i - j; k++) {
+        suffix += dp[i - j][k];
+      }
       dp[i][j] = pre * suffix;
     }
   }
