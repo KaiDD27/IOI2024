@@ -1,59 +1,66 @@
 #include <algorithm>
-#include <cmath>
-#include <cstdio>
+#include <array>
 #include <cstdlib>
-#include <cstring>
 #include <iostream>
+#include <vector>
+#define N 1000005
 using namespace std;
-int n, m, res[200005];
-struct soldier {
-  int id, l, r;
-} s[400005];
-int cmp(soldier a, soldier b) { return a.l < b.l; }
-
-int go[400005][20];
-
-void pre() {
-  for (int i = 1, p = i; i <= 2 * n; i++) {
-    while (p <= 2 * n && s[p].l <= s[i].r)
-      p++;
-    int pos = p - 1;
-    go[i][0] = pos;
-  }
-  for (int i = 1; i < 20; i++) {
-    for (int j = 1; j <= 2 * n; j++) {
-      go[j][i] = go[go[j][i - 1]][i - 1];
-    }
-  }
+int A, B, C, m, s[N];
+int X1[N], X2[N], Y1[N], Y2[N], Z1[N], Z2[N];
+int d[N], l, r, sub[N];
+int num(int x, int y, int z) {
+  if (x > A || y > B || z > C)
+    return 0;
+  return ((x - 1) * B + y - 1) * C + z;
+} // 将三维转化成一维
+void xxs(int x, int y, int z, int d) { sub[num(x, y, z)] += d; }
+bool pre() {
+  // 三个方向计算前缀和
+  for (int i = 1; i <= A; i++)
+    for (int j = 1; j <= B; j++)
+      for (int k = 1; k <= C; k++)
+        xxs(i, j, k + 1, sub[num(i, j, k)]);
+  for (int i = 1; i <= A; i++)
+    for (int k = 1; k <= C; k++)
+      for (int j = 1; j <= B; j++)
+        xxs(i + 1, j, k, sub[num(i, j, k)]);
+  for (int j = 1; j <= B; j++)
+    for (int k = 1; k <= C; k++)
+      for (int i = 1; i <= A; i++)
+        xxs(i, j + 1, k, sub[num(i, j, k)]);
+  for (int i = 1; i <= A * B * C; i++)
+    if (sub[i] > s[i])
+      return 1;
+  return 0;
 }
-void search(int k) {
-  int lmt = s[k].l + m, ans = 1, p = k;
-  for (int i = 19; i >= 0; i--) {
-    if (go[k][i] != 0 && s[go[k][i]].r < lmt) {
-      ans += (1 << i);
-      k = go[k][i];
-    }
-  }
-  res[s[p].id] = ans + 1;
+bool check(int x) {
+  memset(sub, 0, sizeof(sub)); // 记住这里要清空，不然之前的还会留在数组中
+  for (int i = 1; i <= x; i++) {
+    xxs(X1[i], Y1[i], Z1[i], d[i]);
+    xxs(X2[i] + 1, Y1[i], Z1[i], -d[i]);
+    xxs(X1[i], Y1[i], Z2[i] + 1, -d[i]);
+    xxs(X2[i] + 1, Y1[i], Z2[i] + 1, d[i]);
+    xxs(X1[i], Y2[i] + 1, Z1[i], -d[i]);
+    xxs(X2[i] + 1, Y2[i] + 1, Z1[i], d[i]);
+    xxs(X1[i], Y2[i] + 1, Z2[i] + 1, d[i]);
+    xxs(X2[i] + 1, Y2[i] + 1, Z2[i] + 1, -d[i]);
+  } // 对sub数组进行差分
+  return pre();
 }
 int main() {
-  cin >> n >> m;
-  for (int i = 1; i <= n; i++) {
-    cin >> s[i].l >> s[i].r;
-    if (s[i].r < s[i].l)
-      s[i].r += m;
-    s[i].id = i;
+  cin >> A >> B >> C >> m;
+  for (int i = 1; i <= A * B * C; i++)
+    cin >> s[i];
+  for (int i = 1; i <= m; i++)
+    cin >> X1[i] >> X2[i] >> Y1[i] >> Y2[i] >> Z1[i] >> Z2[i] >> d[i];
+  int l = 1, r = m;
+  while (l + 1 < r) { // 二分答案，取临界点
+    int mid = (l + r) / 2;
+    if (check(mid))
+      r = mid;
+    else
+      l = mid;
   }
-  sort(s + 1, s + 1 + n, cmp);
-  for (int i = 1; i <= n; i++) {
-    s[i + n] = s[i];
-    s[i + n].l = s[i].l + m;
-    s[i + n].r = s[i].r + m;
-  }
-  pre();
-  for (int i = 1; i <= n; i++)
-    search(i);
-  for (int i = 1; i <= n; i++)
-    cout << res[i] << " ";
+  cout << r;
   return 0;
 }
