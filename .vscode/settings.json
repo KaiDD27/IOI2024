@@ -223,5 +223,6 @@
         "fontStyle": "", // set to empty string to disable underline, which is the default
       },
     }
-  }
+  },
+  "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }

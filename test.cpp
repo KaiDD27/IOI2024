@@ -1,66 +1,39 @@
-#include <algorithm>
+// 洛谷P2015的代码（邻接表存树）
 #include <array>
-#include <cstdlib>
 #include <iostream>
 #include <vector>
-#define N 1000005
 using namespace std;
-int A, B, C, m, s[N];
-int X1[N], X2[N], Y1[N], Y2[N], Z1[N], Z2[N];
-int d[N], l, r, sub[N];
-int num(int x, int y, int z) {
-  if (x > A || y > B || z > C)
-    return 0;
-  return ((x - 1) * B + y - 1) * C + z;
-} // 将三维转化成一维
-void xxs(int x, int y, int z, int d) { sub[num(x, y, z)] += d; }
-bool pre() {
-  // 三个方向计算前缀和
-  for (int i = 1; i <= A; i++)
-    for (int j = 1; j <= B; j++)
-      for (int k = 1; k <= C; k++)
-        xxs(i, j, k + 1, sub[num(i, j, k)]);
-  for (int i = 1; i <= A; i++)
-    for (int k = 1; k <= C; k++)
-      for (int j = 1; j <= B; j++)
-        xxs(i + 1, j, k, sub[num(i, j, k)]);
-  for (int j = 1; j <= B; j++)
-    for (int k = 1; k <= C; k++)
-      for (int i = 1; i <= A; i++)
-        xxs(i, j + 1, k, sub[num(i, j, k)]);
-  for (int i = 1; i <= A * B * C; i++)
-    if (sub[i] > s[i])
-      return 1;
-  return 0;
-}
-bool check(int x) {
-  memset(sub, 0, sizeof(sub)); // 记住这里要清空，不然之前的还会留在数组中
-  for (int i = 1; i <= x; i++) {
-    xxs(X1[i], Y1[i], Z1[i], d[i]);
-    xxs(X2[i] + 1, Y1[i], Z1[i], -d[i]);
-    xxs(X1[i], Y1[i], Z2[i] + 1, -d[i]);
-    xxs(X2[i] + 1, Y1[i], Z2[i] + 1, d[i]);
-    xxs(X1[i], Y2[i] + 1, Z1[i], -d[i]);
-    xxs(X2[i] + 1, Y2[i] + 1, Z1[i], d[i]);
-    xxs(X1[i], Y2[i] + 1, Z2[i] + 1, d[i]);
-    xxs(X2[i] + 1, Y2[i] + 1, Z2[i] + 1, -d[i]);
-  } // 对sub数组进行差分
-  return pre();
+const int N = 200;
+struct node {
+  int v, w; // v是子结点，w是边[u,v]的值
+  node(int v = 0, int w = 0) : v(v), w(w) {}
+};
+vector<node> edge[N];
+int dp[N][N], sum[N]; // sum[i]记录以点i为根的子树的总边数
+int n, q;
+void dfs(int u, int father) {
+  for (int i = 0; i < edge[u].size(); i++) { // 用i遍历u的所有子结点
+    int v = edge[u][i].v, w = edge[u][i].w;
+    if (v == father)
+      continue;           // 不回头搜父亲，避免循环
+    dfs(v, u);            // 递归到最深的叶子结点，然后返回
+    sum[u] += sum[v] + 1; // 子树上的总边数
+    for (int j = sum[u]; j >= 0; j--)
+      for (int - = 0; k <= j - 1; k++) // 两个for优化为下面的代码。不优化也行
+        // for (int j = min(q, sum[u]); j >= 0; j--)
+        // for (int k = 0; k <= min(sum[v], j - 1); k++)
+        dp[u][j] = max(dp[u][j], dp[u][j - k - 1] + dp[v][k] + w);
+  }
 }
 int main() {
-  cin >> A >> B >> C >> m;
-  for (int i = 1; i <= A * B * C; i++)
-    cin >> s[i];
-  for (int i = 1; i <= m; i++)
-    cin >> X1[i] >> X2[i] >> Y1[i] >> Y2[i] >> Z1[i] >> Z2[i] >> d[i];
-  int l = 1, r = m;
-  while (l + 1 < r) { // 二分答案，取临界点
-    int mid = (l + r) / 2;
-    if (check(mid))
-      r = mid;
-    else
-      l = mid;
+  scanf("%d%d", &n, &q); // n个点，留q条树枝
+  for (int i = 1; i < n; i++) {
+    int u, v, w;
+    scanf("%d%d%d", &u, &v, &w);
+    edge[u].push_back(node(v, w)); // 把边[u,v]存到u的邻接表中
+    edge[v].push_back(node(u, w)); // 无向边
   }
-  cout << r;
+  dfs(1, 0); // 从根结点开始做记忆化搜索
+  printf("%d\n", dp[1][q]);
   return 0;
 }
