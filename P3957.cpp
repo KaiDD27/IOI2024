@@ -56,7 +56,7 @@ bool canAchieveTargetScore(int g) {
 }
 
 int main() {
-  int answer = -1, left, right, mid;
+  int left, right, mid;
   // 读取输入
   cin >> numGrids >> initialJumpDistance >> targetScore;
   positions.resize(numGrids + 1);
@@ -68,16 +68,15 @@ int main() {
   left = 0;
   right = 1005;
   mid = (left + right) / 2;
-  while (left <= right) {
+  while (left < right) {
+    mid = (left + right) / 2;
     if (canAchieveTargetScore(mid)) {
-      answer = mid;
-      right = mid - 1;
+      right = mid;
     } else {
       left = mid + 1;
     }
-    mid = (left + right) / 2;
   }
   // 输出结果
-  cout << answer;
+  cout << left;
   return 0;
 }
