@@ -2,12 +2,13 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-
+using ll = long long;
+#define endl "\n"
 // 定义全局变量
-vector<long long> scores;
-vector<pair<long long, long long>> positions;
-long long numGrids, initialJumpDistance, targetScore;
-long long minJumpDistance, maxJumpDistance;
+vector<ll> scores;
+vector<pair<ll, ll>> positions;
+ll numGrids, initialJumpDistance, targetScore;
+ll minJumpDistance, maxJumpDistance;
 
 // 检查是否可以通过花费g个金币达到至少k分
 bool canAchieveTargetScore(int g) {
