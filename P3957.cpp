@@ -1,5 +1,3 @@
-#include <cstdio>
-#include <cstring>
 #include <deque>
 #include <iostream>
 #include <vector>
@@ -60,10 +58,10 @@ bool canAchieveTargetScore(int g) {
 int main() {
   int answer = -1, left, right, mid;
   // 读取输入
-  scanf("%lld%lld%lld", &numGrids, &initialJumpDistance, &targetScore);
+  cin >> numGrids >> initialJumpDistance >> targetScore;
   positions.resize(numGrids + 1);
   for (int i = 1; i <= numGrids; i++) {
-    scanf("%lld%lld", &positions[i].first, &positions[i].second);
+    cin >> positions[i].first >> positions[i].second;
   }
 
   // 二分查找最小的金币数
