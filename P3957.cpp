@@ -24,10 +24,17 @@ bool canAchieveTargetScore(int g) {
 
   // 遍历每个格子
   for (int i = 1; i <= numGrids; i++) {
+    // 移除不满足条件的格子
+    while (!dq.empty() &&
+           positions[i].first - positions[dq.front()].first > maxJumpDistance) {
+      dq.pop_front();
+    }
     // 将满足条件的格子加入队列
     for (; currentGrid < i &&
            positions[i].first - positions[currentGrid].first >= minJumpDistance;
          currentGrid++) {
+      if (positions[i].first - positions[currentGrid].first > maxJumpDistance)
+        continue;
       if (dq.empty()) {
         dq.push_back(currentGrid);
       } else {
@@ -37,11 +44,7 @@ bool canAchieveTargetScore(int g) {
         dq.push_back(currentGrid);
       }
     }
-    // 移除不满足条件的格子
-    while (!dq.empty() &&
-           positions[i].first - positions[dq.front()].first > maxJumpDistance) {
-      dq.pop_front();
-    }
+
     // 计算当前格子的分数
     if (!dq.empty()) {
       scores[i] = scores[dq.front()] + positions[i].second;
