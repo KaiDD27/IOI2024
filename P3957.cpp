@@ -67,7 +67,6 @@ int main() {
   // 二分查找最小的金币数
   left = 0;
   right = 1005;
-  mid = (left + right) / 2;
   while (left < right) {
     mid = (left + right) / 2;
     if (canAchieveTargetScore(mid)) {
