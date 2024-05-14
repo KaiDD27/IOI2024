@@ -1,70 +1,55 @@
-#include <algorithm>
+#include <cstdio>
+#include <cstring>
 #include <iostream>
-#include <vector>
+#include <queue>
 using namespace std;
+long long f[500005], a[500005][2], n, d, k, ok, lpos, rpos;
 
-// 定义一个结构体来存储每个格子的位置和分数
-struct Cell {
-  int position;
-  int score;
-};
-
+bool check(int g) {
+  lpos = d - g; // 跳的最短距离
+  rpos = d + g; // 跳的最长距离
+  if (lpos <= 0)
+    lpos = 1;
+  memset(f, 0, sizeof(f));
+  deque<int> dq; // 定义一个双端队列
+  int cur = 0;   // 当前待入队的格子编号
+  for (int i = 1; i <= n; i++) {
+    for (; cur < i && a[i][0] - a[cur][0] >= lpos; cur++) {
+      if (dq.empty())
+        dq.push_back(cur);
+      else {
+        while (!dq.empty() && f[cur] >= f[dq.back()])
+          dq.pop_back();
+        dq.push_back(cur);
+      }
+    }
+    while (!dq.empty() && a[i][0] - a[dq.front()][0] > rpos)
+      dq.pop_front();
+    if (!dq.empty())
+      f[i] = f[dq.front()] + a[i][1];
+    else
+      f[i] = -999999999999;
+    if (f[i] >= k)
+      return 1;
+  }
+  return 0;
+}
 int main() {
-  int n, d, k;
-  cin >> n >> d >> k;
-
-  vector<Cell> cells(n);
-  for (int i = 0; i < n; ++i) {
-    cin >> cells[i].position >> cells[i].score;
-  }
-
-  // 二分搜索最小的金币数 g
-  int left = 0, right = d + 1;
-  while (left < right) {
-    int mid = left + (right - left) / 2;
-    bool canAchieve = false;
-    vector<int> dp(n, -1e9); // dp数组，存储到达每个格子的最大分数
-
-    // 初始化起点
-    for (int i = 0; i < n && cells[i].position <= d + mid; ++i) {
-      if (cells[i].position >= d - mid) {
-        dp[i] = cells[i].score;
-      }
-    }
-
-    // 动态规划计算到达每个格子的最大分数
-    for (int i = 0; i < n; ++i) {
-      if (dp[i] < 0)
-        continue; // 如果当前格子不可达，则跳过
-      for (int j = i + 1;
-           j < n && cells[j].position <= cells[i].position + d + mid; ++j) {
-        if (cells[j].position >= cells[i].position + d - mid) {
-          dp[j] = max(dp[j], dp[i] + cells[j].score);
-        }
-      }
-    }
-
-    // 检查是否有任何路径可以达到或超过 k 分
-    for (int score : dp) {
-      if (score >= k) {
-        canAchieve = true;
-        break;
-      }
-    }
-
-    if (canAchieve) {
-      right = mid; // 尝试更少的金币
+  int i, ans = -1, l, r, m;
+  scanf("%lld%lld%lld", &n, &d, &k);
+  for (i = 1; i <= n; i++)
+    scanf("%lld%lld", &a[i][0], &a[i][1]);
+  l = 0, r = 1005;
+  m = (l + r) / 2;
+  while (l <= r) {
+    if (check(m)) {
+      ans = m;
+      r = m - 1;
     } else {
-      left = mid + 1; // 需要更多的金币
+      l = m + 1;
     }
+    m = (l + r) / 2;
   }
-
-  // 输出结果
-  if (left > d) {
-    cout << -1 << endl; // 如果金币数超过了 d+1，说明无法达到 k 分
-  } else {
-    cout << left << endl;
-  }
-
+  cout << ans;
   return 0;
 }
