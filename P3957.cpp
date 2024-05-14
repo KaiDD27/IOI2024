@@ -18,7 +18,7 @@ bool canAchieveTargetScore(int g) {
     minJumpDistance = 1;
 
   // 初始化分数数组
-  scores.assign(numGrids + 1, 0);
+  scores.resize(numGrids + 1, 0);
   deque<int> dq;       // 定义一个双端队列
   int currentGrid = 0; // 当前待入队的格子编号
 
