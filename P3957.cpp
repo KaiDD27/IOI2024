@@ -1,55 +1,85 @@
 #include <cstdio>
 #include <cstring>
+#include <deque>
 #include <iostream>
-#include <queue>
+#include <vector>
 using namespace std;
-long long f[500005], a[500005][2], n, d, k, ok, lpos, rpos;
 
-bool check(int g) {
-  lpos = d - g; // 跳的最短距离
-  rpos = d + g; // 跳的最长距离
-  if (lpos <= 0)
-    lpos = 1;
-  memset(f, 0, sizeof(f));
-  deque<int> dq; // 定义一个双端队列
-  int cur = 0;   // 当前待入队的格子编号
-  for (int i = 1; i <= n; i++) {
-    for (; cur < i && a[i][0] - a[cur][0] >= lpos; cur++) {
-      if (dq.empty())
-        dq.push_back(cur);
-      else {
-        while (!dq.empty() && f[cur] >= f[dq.back()])
+// 定义全局变量
+vector<long long> scores;
+vector<pair<long long, long long>> positions;
+long long numGrids, initialJumpDistance, targetScore;
+long long minJumpDistance, maxJumpDistance;
+
+// 检查是否可以通过花费g个金币达到至少k分
+bool canAchieveTargetScore(int g) {
+  // 计算跳跃的最短和最长距离
+  minJumpDistance = initialJumpDistance - g;
+  maxJumpDistance = initialJumpDistance + g;
+  if (minJumpDistance <= 0)
+    minJumpDistance = 1;
+
+  // 初始化分数数组
+  scores.assign(numGrids + 1, 0);
+  deque<int> dq;       // 定义一个双端队列
+  int currentGrid = 0; // 当前待入队的格子编号
+
+  // 遍历每个格子
+  for (int i = 1; i <= numGrids; i++) {
+    // 将满足条件的格子加入队列
+    for (; currentGrid < i &&
+           positions[i].first - positions[currentGrid].first >= minJumpDistance;
+         currentGrid++) {
+      if (dq.empty()) {
+        dq.push_back(currentGrid);
+      } else {
+        while (!dq.empty() && scores[currentGrid] >= scores[dq.back()]) {
           dq.pop_back();
-        dq.push_back(cur);
+        }
+        dq.push_back(currentGrid);
       }
     }
-    while (!dq.empty() && a[i][0] - a[dq.front()][0] > rpos)
+    // 移除不满足条件的格子
+    while (!dq.empty() &&
+           positions[i].first - positions[dq.front()].first > maxJumpDistance) {
       dq.pop_front();
-    if (!dq.empty())
-      f[i] = f[dq.front()] + a[i][1];
-    else
-      f[i] = -999999999999;
-    if (f[i] >= k)
-      return 1;
-  }
-  return 0;
-}
-int main() {
-  int i, ans = -1, l, r, m;
-  scanf("%lld%lld%lld", &n, &d, &k);
-  for (i = 1; i <= n; i++)
-    scanf("%lld%lld", &a[i][0], &a[i][1]);
-  l = 0, r = 1005;
-  m = (l + r) / 2;
-  while (l <= r) {
-    if (check(m)) {
-      ans = m;
-      r = m - 1;
-    } else {
-      l = m + 1;
     }
-    m = (l + r) / 2;
+    // 计算当前格子的分数
+    if (!dq.empty()) {
+      scores[i] = scores[dq.front()] + positions[i].second;
+    } else {
+      scores[i] = -999999999999;
+    }
+    // 检查是否达到目标分数
+    if (scores[i] >= targetScore)
+      return true;
   }
-  cout << ans;
+  return false;
+}
+
+int main() {
+  int answer = -1, left, right, mid;
+  // 读取输入
+  scanf("%lld%lld%lld", &numGrids, &initialJumpDistance, &targetScore);
+  positions.resize(numGrids + 1);
+  for (int i = 1; i <= numGrids; i++) {
+    scanf("%lld%lld", &positions[i].first, &positions[i].second);
+  }
+
+  // 二分查找最小的金币数
+  left = 0;
+  right = 1005;
+  mid = (left + right) / 2;
+  while (left <= right) {
+    if (canAchieveTargetScore(mid)) {
+      answer = mid;
+      right = mid - 1;
+    } else {
+      left = mid + 1;
+    }
+    mid = (left + right) / 2;
+  }
+  // 输出结果
+  cout << answer;
   return 0;
 }
