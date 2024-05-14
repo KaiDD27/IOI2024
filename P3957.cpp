@@ -63,7 +63,7 @@ int main() {
   int left, right, mid;
   // 读取输入
   cin >> numGrids >> initialJumpDistance >> targetScore;
-  positions.resize(numGrids + 1);
+  positions.assign(numGrids + 1, {0, 0});
   for (int i = 1; i <= numGrids; i++) {
     cin >> positions[i].first >> positions[i].second;
   }
