@@ -1,61 +1,30 @@
+#include <algorithm>
+#include <array>
 #include <deque>
 #include <iostream>
 #include <vector>
 using namespace std;
-using ll = long long;
-#define endl "\n"
-vector<ll> scores;
-vector<pair<ll, ll>> positions;
-ll numGrids, initialJumpDistance, targetScore;
-ll minJumpDistance, maxJumpDistance;
-bool good(ll g) {
-  minJumpDistance = initialJumpDistance - g;
-  maxJumpDistance = initialJumpDistance + g;
-  if (minJumpDistance <= 0) {
-    minJumpDistance = 1;
-  }
-  scores.assign(numGrids + 1, 0);
-  deque<ll> dq;
-  ll currentGrid = 0;
-  for (int i = 1; i <= numGrids; i++) {
-    for (; currentGrid < i &&
-           positions[i].first - positions[currentGrid].first >= minJumpDistance;
-         currentGrid++) {
-      if (dq.empty()) {
-        dq.push_back(currentGrid);
-      } else {
-        while (!dq.empty() && scores[currentGrid] >= scores[dq.back()]) {
-          dq.pop_back();
-        }
-        dq.push_back(currentGrid);
-      }
-    }
-    while (!dq.empty() &&
-           positions[i].first - positions[dq.front()].first > maxJumpDistance) {
-      dq.pop_front();
-    }
-    if (!dq.empty()) {
-      scores[i] = scores[dq.front()] + positions[i].second;
-    } else {
-      scores[i] = -999999999999;
-    }
-    if (scores[i] >= targetScore) {
-      return true;
-    }
-  }
-  return false;
+const int N = 100;
+long long n, k, e[N], sum[N], dp[N];
+long long ds[N];              // ds[j] = dp[j-1]-sum[j]
+int q[N], head = 0, tail = 1; // 递减的单调队列，队头最大
+long long que_max(int j) {
+  ds[j] = dp[j - 1] - sum[j];
+  while (head <= tail && ds[q[tail]] < ds[j])
+    tail--;      // 去掉不合格的队尾
+  q[++tail] = j; // j进队尾
+  while (head <= tail && q[head] < j - k)
+    head++;           // 去掉超过窗口k的队头
+  return ds[q[head]]; // 返回队头，即最大的dp[j-1]-sum[j]
 }
 int main() {
-  cin >> numGrids >> initialJumpDistance >> targetScore;
-  ll l = 0, r = 1005;
-  while (l < r) {
-    ll mid = (l + r) / 2;
-    if (good(mid)) {
-      r = mid;
-    } else {
-      l = mid + 1;
-    }
+  cin >> n >> k;
+  sum[0] = 0;
+  for (int i = 1; i <= n; i++) {
+    cin >> e[i];
+    sum[i] = sum[i - 1] + e[i]; // 计算前缀和
   }
-  cout << l << endl;
-  return 0;
+  for (int i = 1; i <= n; i++)
+    dp[i] = que_max(i) + sum[i]; // 状态转移方程
+  cout << dp[n];
 }
