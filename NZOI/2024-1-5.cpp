@@ -1,60 +1,50 @@
+#include <algorithm>
 #include <array>
-#include <climits>
 #include <iostream>
-#include <stack>
 #include <vector>
 
 using namespace std;
 using ll = long long;
 #define endl "\n"
-
-int N, M;
-vector<int> t;           // 动态数组替换静态数组 t[100000]
-vector<vector<int>> dp;  // 动态数组替换静态数组 dp[2005][2005]
-vector<vector<int>> adj; // 动态数组替换静态数组 conn[100000]
-
-void dfs(int node, int next, int p = -1) {
-  int curr_next = next;
-  for (int c : adj[node]) {
-    if (c != p) {
-      dfs(c, curr_next, node);
-      curr_next = c;
-    }
+int n, m;
+vector<ll> t;
+vector<vector<ll>> adj, dp;
+// dfsNextButNotSubTree是dfs
+// 先序遍历里面排在当前节点之后,且不是当前节点的子节点的第一个节点，其实就是先序遍历排在当前节点后面的第一个兄弟节点
+void dfs(int a, int dfsNextButNotSubTree, int father) {
+  // curr_Next是先序遍历当前节点的下一个节点，当这个节点不是子节点的时候，等于dfsNextButNotSubTree
+  int curr_Next = dfsNextButNotSubTree;
+  for (auto b : adj[a]) {
+    if (b == father)
+      continue;
+    dfs(b, curr_Next, a);
+    curr_Next = b;
   }
-  for (int m = 0; m <= M; m++) {
-    dp[node][m] = min(dp[next][m],
-                      t[node] + (m > t[node] ? dp[curr_next][m - t[node]] : 0));
+  // 就是按照先序遍历从末尾一步步递推上来的
+  for (int k = 0; k <= m; k++) {
+    dp[a][k] = min(dp[dfsNextButNotSubTree][k],
+                   t[a] + (k > t[a] ? dp[curr_Next][k - t[a]] : 0));
   }
 }
-
 int main() {
-  cin >> N >> M;
-  t.resize(N);                                         // 调整 t 的大小
-  dp.resize(N + 1, vector<int>(M + 1, 2 * 2000 + 10)); // 调整 dp 的大小并初始化
-  adj.resize(N);                                       // 调整 conn 的大小
+  ios::sync_with_stdio(false); // Fast I/O
+  cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
+  cin >> n >> m;
+  t.resize(n);
+  adj.resize(n);
+  dp.resize(n + 1, vector<ll>(m + 1, 5000));
+  for (auto &ti : t)
+    cin >> ti;
 
-  for (int i = 0; i < N; i++) {
-    cin >> t[i];
+  for (int i = 0; i < n - 1; i++) {
+    int a, b;
+    cin >> a >> b;
+    adj[a].push_back(b);
+    adj[b].push_back(a);
   }
 
-  for (int i = 0; i < N - 1; i++) {
-    int x, y;
-    cin >> x >> y;
-    adj[x].push_back(y);
-    adj[y].push_back(x);
-  }
-
-  dfs(0, N, -1);
-  cout << dp[0][M] << endl;
-
+  // dfs 先序遍历最后一个节点的下一个节点就是 n，n 是虚拟出来的节点，相当于墙
+  dfs(0, n, -1);
+  cout << dp[0][m] << endl;
   return 0;
 }
-
-/*
-5 5
-3 1 5 1 2
-0 1
-1 3
-0 2
-1 4
-*/
