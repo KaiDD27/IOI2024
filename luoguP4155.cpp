@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <array>
+#include <cmath>
 #include <deque>
 #include <iostream>
 #include <vector>
@@ -10,8 +11,10 @@ int n, m;
 
 struct Warrior {
   int id, L, R; // id: 战士的编号；L、R：战士的左右区间
-  bool operator<(const Warrior &b) const { return L < b.L; }
 };
+
+// 自定义比较函数，用于按左端点排序
+bool compareWarrior(const Warrior &a, const Warrior &b) { return a.L < b.L; }
 
 vector<Warrior> w(N * 2);
 vector<vector<int>> go(N, vector<int>(20));
@@ -54,7 +57,7 @@ int main() {
     if (w[i].R < w[i].L)
       w[i].R += m; // 把环变成链
   }
-  sort(w.begin() + 1, w.begin() + n + 1); // 按左端点排序
+  sort(w.begin() + 1, w.begin() + n + 1, compareWarrior); // 按左端点排序
 
   for (int i = 1; i <= n; i++) { // 拆环加倍成一条链
     w[n + i] = w[i];
