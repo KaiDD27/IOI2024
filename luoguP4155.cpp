@@ -6,7 +6,6 @@
 #include <vector>
 using namespace std;
 
-const int N = 4e5 + 1;
 int n, m;
 
 struct Warrior {
@@ -16,19 +15,19 @@ struct Warrior {
 // 自定义比较函数，用于按左端点排序
 bool compareWarrior(const Warrior &a, const Warrior &b) { return a.L < b.L; }
 
-vector<Warrior> w(N * 2);
-vector<vector<int>> go(N, vector<int>(20));
-vector<int> res(N);
+vector<Warrior> w;
+vector<vector<int>> go;
+vector<int> res;
 
-void init() { // 贪心 + 预计算倍增
+void init(int n2) { // 贪心 + 预计算倍增
   int nxt = 1;
-  for (int i = 1; i <= n * 2; ++i) { // 用贪心求每个区间的下一个区间
-    while (nxt <= n * 2 && w[nxt].L <= w[i].R)
+  for (int i = 1; i <= n2; ++i) { // 用贪心求每个区间的下一个区间
+    while (nxt <= n2 && w[nxt].L <= w[i].R)
       nxt++; // 每个区间的下一个是右端点最大的那个区间
     go[i][0] = nxt - 1; // 区间i的下一个区间
   }
   for (int i = 1; (1 << i) <= n; ++i) { // 倍增：i=1,2,4,8,... 共log(n)次
-    for (int s = 1; s <= n * 2; ++s) {  // 每个区间后的第2^i个区间
+    for (int s = 1; s <= n2; ++s) {     // 每个区间后的第2^i个区间
       go[s][i] = go[go[s][i - 1]][i - 1];
     }
   }
@@ -36,7 +35,7 @@ void init() { // 贪心 + 预计算倍增
 
 void getans(int x) { // 从第x个战士出发
   int len = w[x].L + m, cur = x, ans = 1;
-  for (int i = log2(N); i >= 0; i--) { // 从最大的i开始找：2^i = N
+  for (int i = log2(n * 2); i >= 0; i--) { // 从最大的i开始找：2^i = N
     int pos = go[cur][i];
     if (pos && w[pos].R < len) {
       ans += 1 << i; // 累加跳过的区
@@ -51,6 +50,12 @@ int main() {
   cin.tie(nullptr);
 
   cin >> n >> m;
+
+  // 动态调整数组大小
+  w.resize(n * 2 + 1);
+  go.resize(n * 2 + 1, vector<int>(20));
+  res.resize(n + 1);
+
   for (int i = 1; i <= n; i++) {
     w[i].id = i; // 记录战士的顺序
     cin >> w[i].L >> w[i].R;
@@ -65,7 +70,7 @@ int main() {
     w[n + i].R += m;
   }
 
-  init();
+  init(n * 2);
 
   for (int i = 1; i <= n; i++)
     getans(i); // 逐个计算每个战士
