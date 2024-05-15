@@ -7,67 +7,54 @@
 using namespace std;
 using ll = long long;
 #define endl "\n"
-vector<int> t;
-vector<vector<int>> adj;
-int minTastiness = INT_MAX;
-int totalTastiness = 0;
-int n, m;
 
-void dfs(int a) {
-  int tmpTa = t[a];
-  totalTastiness += t[a];
-  t[a] = 0;
-  for (auto b : adj[a]) {
-    if (t[b] == 0)
-      continue;
-    int nextTastiness = totalTastiness + t[b];
-    if (nextTastiness >= m) {
-      minTastiness = min(minTastiness, nextTastiness);
-      if (minTastiness == m) {
-        cout << minTastiness << endl;
-        exit(0);
-      }
-      continue;
+int N, M;
+vector<int> t;           // 动态数组替换静态数组 t[100000]
+vector<vector<int>> dp;  // 动态数组替换静态数组 dp[2005][2005]
+vector<vector<int>> adj; // 动态数组替换静态数组 conn[100000]
+
+void dfs(int node, int next, int p = -1) {
+  int curr_next = next;
+  for (int c : adj[node]) {
+    if (c != p) {
+      dfs(c, curr_next, node);
+      curr_next = c;
     }
-    dfs(b);
   }
-  t[a] = tmpTa;
-  totalTastiness -= t[a];
+  for (int m = 0; m <= M; m++) {
+    dp[node][m] = min(dp[next][m],
+                      t[node] + (m > t[node] ? dp[curr_next][m - t[node]] : 0));
+  }
 }
 
 int main() {
-  ios::sync_with_stdio(false); // Fast I/O
-  cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
-  cin >> n >> m;
-  t.resize(n);
-  for (auto &ti : t) {
-    cin >> ti;
+  cin >> N >> M;
+  t.resize(N);                                         // 调整 t 的大小
+  dp.resize(N + 1, vector<int>(M + 1, 2 * 2000 + 10)); // 调整 dp 的大小并初始化
+  adj.resize(N);                                       // 调整 conn 的大小
+
+  for (int i = 0; i < N; i++) {
+    cin >> t[i];
   }
-  adj.resize(n);
-  for (int i = 0; i < n - 1; i++) {
-    int a, b;
-    cin >> a >> b;
-    adj[a].push_back(b);
-    adj[b].push_back(a);
+
+  for (int i = 0; i < N - 1; i++) {
+    int x, y;
+    cin >> x >> y;
+    adj[x].push_back(y);
+    adj[y].push_back(x);
   }
-  if (t[0] >= m) {
-    cout << t[0] << endl;
-    return 0;
-  }
-  dfs(0);
-  cout << minTastiness << endl;
+
+  dfs(0, N, -1);
+  cout << dp[0][M] << endl;
+
   return 0;
 }
+
 /*
-10 2000
-3 1 4 5 7 6 7 2 6 2000
+5 5
+3 1 5 1 2
 0 1
 1 3
 0 2
 1 4
-1 5
-1 6
-1 7
-1 8
-1 9
 */
