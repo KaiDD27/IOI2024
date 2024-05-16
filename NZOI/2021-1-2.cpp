@@ -1,30 +1,16 @@
-#include <array>
+#include <algorithm>
 #include <iostream>
+#include <string>
 #include <vector>
-
 using namespace std;
-using ll = long long;
-#define endl "\n"
-vector<string> strNums = {"2", "3",  "4", "5", "6", "7", "8",
-                          "9", "10", "J", "Q", "K", "A"};
-vector<string> strSuits = {"spades", "clubs", "diamonds", "hearts"};
+
 int main() {
-  ios::sync_with_stdio(false); // Fast I/O
-  cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
-  string strNum;
-  string strSuit;
-  cin >> strNum >> strSuit;
-  int ans = strNums.size() * strSuits.size();
-  for (int i = 0; i < strSuit.size(); i++) {
-    if (strSuit == strSuits[i]) {
-      ans = ans - i * strNums.size();
-    }
-  }
-  for (int i = 0; i < strNums.size(); i++) {
-    if (strNum == strNums[i]) {
-      ans = ans - (i + 1);
-    }
-  }
-  cout << ans << endl;
-  return 0;
+  vector<string> n = {"2", "3",  "4", "5", "6", "7", "8",
+                      "9", "10", "J", "Q", "K", "A"};
+  vector<string> s = {"spades", "clubs", "diamonds", "hearts"};
+  vector<string> sam(2);
+  cin >> sam[0] >> sam[1];
+  int p1 = search(n.begin(), n.end(), sam.end() - 1, sam.end()) - n.begin();
+  int p2 = search(s.begin(), s.end(), sam.end() - 1, sam.end()) - s.begin();
+  cout << (12 - p1) + (3 - p2) * 13 << endl;
 }
