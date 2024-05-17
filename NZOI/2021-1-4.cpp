@@ -1,47 +1,48 @@
-#include <array>
-#include <cmath>
+#include <climits>
 #include <iostream>
-#include <vector>
+#include <map>
+#include <string>
 
 using namespace std;
-using ll = long long;
-#define endl "\n"
-vector<ll> digitalHurt(10);
-// 用了乘法或者不用乘法的最小伤害
-vector<ll> numMultipHurt;
-ll getHurt(ll x) {
-  ll result = 0;
-  while (x != 0) {
-    result += digitalHurt[x % 10];
-    x /= 10;
+
+map<char, int> mpShock;
+
+int calcShock(int val) {
+  string strVal = to_string(val);
+  int ret = 0;
+  for (int i = 0; i < strVal.length(); i++) {
+    ret += mpShock[strVal[i]];
   }
-  return result;
+  return ret;
 }
+
 int main() {
-  ios::sync_with_stdio(false); // Fast I/O
-  cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
-  int n, addHurt, multipHurt, equalHurt;
+  int n;
   cin >> n;
-  numMultipHurt.resize(n + 1);
-  for (auto &ni : digitalHurt)
-    cin >> ni;
-  cin >> addHurt >> multipHurt >> equalHurt;
-  for (ll i = 1; i <= n; i++) {
-    // 初始化为不用乘法
-    ll minHurt = getHurt(i);
-    ll sqrtNum = sqrt(i);
-    for (ll j = 1; j <= sqrtNum; j++) {
+  // 用map来存 char 对应的 hurt
+  for (int i = 0; i < 10; i++) {
+    cin >> mpShock['0' + i];
+  }
+
+  cin >> mpShock['+'];
+  cin >> mpShock['*'];
+  cin >> mpShock['='];
+
+  int miniHurt = INT_MAX;
+  for (int i = 1; i <= n; i++) {
+    // 先计算直接输入数字的 hurt，比如 10 就是 1,0 这两个字符 hurt 之和
+    int iShock = calcShock(i);
+    // 在计算采用乘法得到数字的 hurt，并和之前的结果取 min，比如 10 可以等于 2*5
+    for (int j = 1; j * j <= i; j++) {
       if (i % j == 0) {
-        minHurt = min(minHurt, getHurt(j) + getHurt(i / j) + multipHurt);
+        iShock = min(iShock, calcShock(j) + calcShock(i / j) + mpShock['*']);
       }
     }
-    numMultipHurt[i] = minHurt;
+    // 最后计算加上另一个数等于n，只需考虑直接输入数字，因为之前包含了用了一次乘号的可能。
+    if (i != n)
+      iShock += calcShock(n - i) + mpShock['+'];
+    miniHurt = min(miniHurt, iShock);
   }
-  ll ans = numMultipHurt[n];
-  for (int i = 1; i < n; i++) {
-    ans = min(ans, numMultipHurt[i] + getHurt(n - i) + addHurt);
-  }
-  cout << ans + equalHurt << endl;
-
+  cout << miniHurt + mpShock['='] << endl;
   return 0;
 }
