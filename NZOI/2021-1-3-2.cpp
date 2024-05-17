@@ -7,6 +7,7 @@ int main() {
   string strN;
   cin >> strN;
   long long value, j, total = 0, len = strN.length();
+  // 从最高位遍历到最低位
   for (int i = 0; i < len; i++) {
     value = strN[i] - '0';
     j = len - i - 1;
