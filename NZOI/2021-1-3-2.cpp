@@ -1,25 +1,38 @@
-#include <cmath>
+#include <algorithm>
+#include <array>
 #include <iostream>
-#include <string>
-using namespace std;
+#include <vector>
 
+using namespace std;
+using ll = long long;
+#define endl "\n"
+vector<int> digitals;
+ll pow10(int x) {
+  ll powX = 1;
+  for (int i = 0; i < x; i++) {
+    powX = powX * 10;
+  }
+  return powX;
+}
 int main() {
-  string strN;
-  cin >> strN;
-  long long value, j, total = 0, len = strN.length();
-  // 从最高位遍历到最低位
-  for (int i = 0; i < len; i++) {
-    value = strN[i] - '0';
-    j = len - i - 1;
-    if (j > 0)
-      total += value * j * pow(10, j - 1);
-    if (value == 3) {
-      total += 1;
-      if (i + 1 < len)
-        total += stoll(strN.substr(i + 1));
-    } else if (value > 3) {
-      total += pow(10, j);
+  ios::sync_with_stdio(false); // Fast I/O
+  cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
+  ll n;
+  cin >> n;
+  ll tmp = n;
+  while (tmp > 0) {
+    digitals.push_back(tmp % 10);
+    tmp = tmp / 10;
+  }
+  ll cnt = 0;
+  for (int i = digitals.size() - 1; i >= 0; i--) {
+    cnt += (digitals[i] * pow10(i - 1) * i);
+    if (digitals[i] > 3)
+      cnt += (pow10(i));
+    else if (digitals[i] == 3) {
+      cnt += (n % (pow10(i)) + 1);
     }
   }
-  cout << total << endl;
+  cout << cnt << endl;
+  return 0;
 }
