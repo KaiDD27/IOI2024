@@ -1,140 +1,92 @@
-#include <array>
-#include <cstdio>
+#include <algorithm>
 #include <iostream>
-#include <regex>
 #include <vector>
 
 using namespace std;
-using ll = long long;
-#define endl "\n"
-vector<int> pbcCards;
 
-void deleteSets(vector<int> &cards, int cnt) {
-  for (int g = 0; g < cnt; g++) {
-    for (int i = 1; i < 13; i++) {
-      if (cards[i] != 0 && cards[i] == cards[i - 1] &&
-          cards[i] == cards[i + 1]) {
-        cards[i] = 0;
-        cards[i - 1] = 0;
-        cards[i + 1] = 0;
-        break;
-      }
-    }
-  }
-  return;
-}
-void deleteStraights(vector<int> &cards, int cnt) {
-  for (int g = 0; g < cnt; g++) {
-    int index = 0;
-    int pre = 0;
-    for (int i = 0; i < 14; i++) {
-      if (cards[i] != 0) {
-        if (index == 0) {
-          index++;
-          pre = cards[i];
-          cards[i] = 0;
-        } else {
-          if (cards[i] == pre + 1) {
-            index++;
-            pre = cards[i];
-            cards[i] = 0;
-          }
-        }
-      }
-      if (index == 3)
-        break;
-    }
-  }
-  return;
-}
-bool isCardsEmpty(vector<int> cards) {
-  for (int i = 0; i < 14; i++) {
-    if (cards[i] != 0)
+bool isSimple(const vector<int> &tiles) {
+  for (int tile : tiles) {
+    int num = tile % 10;
+    if (num == 1 || num == 9)
       return false;
   }
   return true;
 }
 
-bool containFourGroups(vector<int> cards) {
+bool canFormGroups(vector<int> &tiles) {
+  int size = tiles.size();
+  if (size % 3 != 0)
+    return false;
 
-  vector<int> tmpCards = cards;
-  deleteSets(tmpCards, 4);
-  if (isCardsEmpty(tmpCards))
-    return true;
+  vector<int> counts(30, 0);
+  for (int tile : tiles)
+    counts[tile]++;
 
-  tmpCards = cards;
-  deleteSets(tmpCards, 3);
-  deleteStraights(tmpCards, 1);
-  if (isCardsEmpty(tmpCards))
-    return true;
+  for (int i = 1; i < 30; i++) {
+    if (counts[i] >= 3)
+      counts[i] -= 3;
+    while (i <= 27 && counts[i] > 0 && counts[i + 1] > 0 && counts[i + 2] > 0) {
+      counts[i]--;
+      counts[i + 1]--;
+      counts[i + 2]--;
+    }
+  }
 
-  tmpCards = cards;
-  deleteSets(tmpCards, 2);
-  deleteStraights(tmpCards, 2);
-  if (isCardsEmpty(tmpCards))
-    return true;
+  for (int i = 1; i < 30; i++) {
+    if (counts[i] != 0)
+      return false;
+  }
 
-  tmpCards = cards;
-  deleteSets(tmpCards, 1);
-  deleteStraights(tmpCards, 3);
-  if (isCardsEmpty(tmpCards))
-    return true;
-
-  tmpCards = cards;
-  deleteStraights(tmpCards, 4);
-  if (isCardsEmpty(tmpCards))
-    return true;
-
-  return false;
+  return true;
 }
 
-bool isComplete(vector<int> cards) {
-  for (int i = 1; i < 14; i++) {
-    if (cards[i] == cards[i - 1]) {
-      vector<int> tmpCards = cards;
-      tmpCards[i] = 0;
-      tmpCards[i - 1] = 0;
-      if (containFourGroups(tmpCards))
+bool isComplete(vector<int> tiles) {
+  for (int i = 0; i < tiles.size() - 1; i++) {
+    if (tiles[i] == tiles[i + 1]) {
+      vector<int> remainingTiles;
+      for (int j = 0; j < tiles.size(); j++) {
+        if (j != i && j != i + 1)
+          remainingTiles.push_back(tiles[j]);
+      }
+      if (canFormGroups(remainingTiles))
         return true;
     }
   }
   return false;
 }
 
-bool isSimple(const vector<int> &cards) {
-  for (int i = 0; i < 14; i++) {
-    if (cards[i] % 10 == 1 || cards[i] % 10 == 9)
-      return false;
-  }
-  return true;
-}
 int main() {
-  ios::sync_with_stdio(false); // Fast I/O
-  cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   int pCnt, bCnt, cCnt;
   cin >> pCnt >> bCnt >> cCnt;
-  if (pCnt + bCnt + cCnt != 14) {
+
+  vector<int> pbcCards;
+
+  for (int i = 0; i < pCnt; i++) {
+    int tile;
+    cin >> tile;
+    pbcCards.push_back(tile);
+  }
+
+  for (int i = 0; i < bCnt; i++) {
+    int tile;
+    cin >> tile;
+    pbcCards.push_back(tile + 10);
+  }
+
+  for (int i = 0; i < cCnt; i++) {
+    int tile;
+    cin >> tile;
+    pbcCards.push_back(tile + 20);
+  }
+
+  if (pbcCards.size() != 14) {
     cout << "SAD" << endl;
     return 0;
   }
-  while (pCnt != 0) {
-    int pi;
-    cin >> pi;
-    pbcCards.push_back(pi);
-    pCnt--;
-  }
-  while (bCnt != 0) {
-    int bi;
-    cin >> bi;
-    pbcCards.push_back(bi + 10);
-    bCnt--;
-  }
-  while (cCnt != 0) {
-    int ci;
-    cin >> ci;
-    pbcCards.push_back(ci + 20);
-    cCnt--;
-  }
+
   bool simple = isSimple(pbcCards);
   bool complete = isComplete(pbcCards);
 
@@ -146,5 +98,6 @@ int main() {
     cout << "SIMPLE" << endl;
   else
     cout << "SAD" << endl;
+
   return 0;
 }
