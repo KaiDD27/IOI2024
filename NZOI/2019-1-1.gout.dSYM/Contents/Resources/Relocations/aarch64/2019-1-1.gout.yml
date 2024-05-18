@@ -1,0 +1,10 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/dingkai/Code/IOI2024/NZOI/2019-1-1.gout'
+relocations:
+  - { offsetInCU: 0xBA, offset: 0xBA, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003E0C, symSize: 0x9C }
+  - { offsetInCU: 0x23FC, offset: 0x23FC, size: 0x8, addend: 0x0, symName: __ZStL8__ioinit, symObjAddr: 0xECF8, symBinAddr: 0x100008000, symSize: 0x0 }
+  - { offsetInCU: 0x2546, offset: 0x2546, size: 0x8, addend: 0x0, symName: __GLOBAL__sub_I_2019_1_1.cpp, symObjAddr: 0xD8, symBinAddr: 0x100003EE4, symSize: 0x14 }
+  - { offsetInCU: 0x256B, offset: 0x256B, size: 0x8, addend: 0x0, symName: __Z41__static_initialization_and_destruction_0v, symObjAddr: 0x9C, symBinAddr: 0x100003EA8, symSize: 0x3C }
+  - { offsetInCU: 0x2564, offset: 0x2564, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003E0C, symSize: 0x9C }
+...
