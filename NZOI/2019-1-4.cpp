@@ -7,11 +7,7 @@ using namespace std;
 using ll = long long;
 #define endl "\n"
 
-struct rect {
-  int leftUpX, leftUpY, rightDownX, rightDownY;
-  char chColor; //
-};
-vector<rect> throws;
+vector<tuple<int, int, int, int, char>> throws;
 vector<vector<char>> compressGrid;
 vector<int> ys, xs;
 char chPColor;
@@ -41,19 +37,19 @@ int main() {
   throws.resize(n);
   ys = {0, h};
   xs = {0, w};
-  for (int i = 0; i < n; i++) {
+  for (auto &[leftUpX, leftUpY, rightDownX, rightDownY, color] : throws) {
     int x, y, spread;
     char chColor;
     cin >> x >> y >> spread >> chColor;
-    throws[i].leftUpX = max(0, x - spread);
-    throws[i].leftUpY = max(0, y - spread);
-    throws[i].rightDownX = min(w, x + spread + 1);
-    throws[i].rightDownY = min(h, y + spread + 1);
-    throws[i].chColor = chColor;
-    xs.push_back(throws[i].leftUpX);
-    ys.push_back(throws[i].leftUpY);
-    xs.push_back(throws[i].rightDownX);
-    ys.push_back(throws[i].rightDownY);
+    leftUpX = max(0, x - spread);
+    leftUpY = max(0, y - spread);
+    rightDownX = min(w, x + spread + 1);
+    rightDownY = min(h, y + spread + 1);
+    color = chColor;
+    xs.push_back(leftUpX);
+    ys.push_back(leftUpY);
+    xs.push_back(rightDownX);
+    ys.push_back(rightDownY);
   }
   cin >> chPColor;
   sort(ys.begin(), ys.end());
@@ -62,13 +58,13 @@ int main() {
   xs.erase(unique(xs.begin(), xs.end()), xs.end());
   compressGrid.resize(ys.size(), vector<char>(xs.size(), ' '));
   bool flagStart = false;
-  for (int i = 0; i < n; i++) {
-    if (throws[i].chColor == chPColor || flagStart == true) {
-      for (int yi = findCompressY(throws[i].leftUpY);
-           yi < findCompressY(throws[i].rightDownY); yi++) {
-        for (int xi = findCompressX(throws[i].leftUpX);
-             xi < findCompressX(throws[i].rightDownX); xi++) {
-          compressGrid[yi][xi] = throws[i].chColor;
+  for (auto [leftUpX, leftUpY, rightDownX, rightDownY, color] : throws) {
+    if (color == chPColor || flagStart == true) {
+      for (int yi = findCompressY(leftUpY); yi < findCompressY(rightDownY);
+           yi++) {
+        for (int xi = findCompressX(leftUpX); xi < findCompressX(rightDownX);
+             xi++) {
+          compressGrid[yi][xi] = color;
         }
       }
       flagStart = true;
