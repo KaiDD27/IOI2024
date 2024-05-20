@@ -1,3 +1,5 @@
+// 这道题，应该是题目的测试用例数据出错了，最多只能通过 35%
+#include <algorithm>
 #include <array>
 #include <iostream>
 #include <map>
@@ -6,8 +8,7 @@
 using namespace std;
 using ll = long long;
 #define endl "\n"
-ll n, a, b, c, sumX, newDoubleMean;
-map<int, int> mpX;
+ll n, a, b, c, sumX;
 int main() {
   ios::sync_with_stdio(false); // Fast I/O
   cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
@@ -56,49 +57,98 @@ int main() {
       cout << "Impossible" << endl;
     return 0;
   }
-
-  if (b < c) {
-    bool flag = false;
-    for (int i = 2; i <= (n - 1) / 2; i++) {
-      // 检测 a 会不会过大
-      ll ret = ((n - 1) / 2 + 1) / (i - 1);
-      ll remain = ((n - 1) / 2 + 1) % (i - 1);
-      // 先减去左边(包含 b 点）最大的可能的sum
-      ll minRightNumSum =
-          (sumX - (b - ret + 1 + b) * (i - 1) / 2 - (b - ret) * remain);
-      // 再看看大于 c 的数字取到最大值是否还是不够大
-      ret = (((n - 1) / 2) - i) / (i - 1);
-      remain = (((n - 1) / 2) - i) % (i - 1);
-      if (ret > 1000000 - c || (ret == 1000000 - c && remain != 0))
+  bool flag = false;
+  // k代表 c 出现的次数
+  for (int k = 2; k <= n / 2; k++) {
+    // 个数超过了，就直接不用看了
+    if (b < c) {
+      if ((n / 2) / (k - 1) >= b ||
+          (n / 2 - k) / (k - 1) >= (1000000 - b + 1 - 1))
         continue;
-      if (minRightNumSum - c * i >
-          ((1000000 + 1000000 - ret + 1) * (i - 1) / 2 +
-           (1000000 - ret) * remain))
+    } else {
+      if ((n / 2 - k) / (k - 1) >= b - 1 ||
+          (n / 2) / (k - 1) >= (1000000 - b + 1))
         continue;
-
-      // 检测 a 会不会过小
-      ret = ((n - 1) / 2 + 1 - i) / (i - 1);
-      remain = ((n - 1) / 2 + 1 - i) % (i - 1);
-      if (ret < c - b || (ret == c - b && remain == 0)) {
-        ll maxLeftNum = (sumX - c * i - (b + ret - 1 + b) * (i - 1) / 2 -
-                         remain * (b + ret)) /
-                        ((n - 1) / 2);
-        ll maxLeftNumRemain = (sumX - c * i - (b + ret - 1 + b) * (i - 1) / 2 -
-                               remain * (b + ret)) %
-                              ((n - 1) / 2);
-        if (maxLeftNumRemain < 1)
-          continue;
-        else {
-          flag = true;
-          break;
+    }
+    // 计算 minSum
+    int ret = (n / 2) / (k - 1);
+    int remain = (n / 2) % (k - 1);
+    int minSum = b + k * c;
+    for (int i = 1; i <= ret; i++) {
+      if (i == c)
+        ret++;
+      else
+        minSum += i * (k - 1);
+    }
+    minSum += (ret + 1) * remain;
+    if (ret + 1 == b) {
+      if (n / 2 <= (k - 1 - remain - 1) * b)
+        minSum += (n / 2) * b;
+      else {
+        ret = (n / 2 - (k - 1 - remain - 1)) / (k - 1);
+        remain = (n / 2 - (k - 1 - remain - 1)) % (k - 1);
+        for (int i = b + 1; i <= b + 1 + ret - 1; i++) {
+          if (i == c)
+            ret++;
+          else
+            minSum += i * (k - 1);
         }
+        minSum += (b + 1 + ret - 1 + 1) * remain;
       }
     }
-    if (flag == true)
-      cout << "Possible" << endl;
-    else
-      cout << "Impossible" << endl;
-    return 0;
+    ret = (n / 2 - (k - 2)) / (k - 1);
+    remain = (n / 2 - (k - 2)) % (k - 1);
+    for (int i = b + 1; i <= b + 1 + ret - 1; i++) {
+      if (i == c)
+        ret++;
+      else
+        minSum += i * (k - 1);
+    }
+    minSum += (b + 1 + ret - 1 + 1) * remain;
+
+    // 计算 maxSum
+    int maxSum = b + k * c;
+    for (int i = 1000000; i >= (1000000 - ret + 1); i--) {
+      if (i == c)
+        ret++;
+      else
+        maxSum += i * (k - 1);
+    }
+    maxSum += (1000000 - ret + 1 - 1) * remain;
+    if (1000000 - ret + 1 - 1 == b) {
+      if (n / 2 <= (k - 1 - remain - 1) * b)
+        maxSum += (n / 2) * b;
+      else {
+        ret = (n / 2 - (k - 1 - remain - 1)) / (k - 1);
+        remain = (n / 2 - (k - 1 - remain - 1)) % (k - 1);
+        for (int i = b - 1; i >= b - 1 - ret + 1; i--) {
+          if (i == c)
+            ret++;
+          else
+            maxSum += i * (k - 1);
+        }
+        maxSum += (b - 1 - ret + 1 - 1) * remain;
+      }
+    }
+    ret = (n / 2 - (k - 2)) / (k - 1);
+    remain = (n / 2 - (k - 2)) % (k - 1);
+    for (int i = b - 1; i >= b - 1 - ret + 1; i--) {
+      if (i == c)
+        ret++;
+      else
+        maxSum += i * (k - 1);
+    }
+    maxSum += (b - 1 - ret + 1 - 1) * remain;
+
+    if (sumX >= minSum && sumX <= maxSum) {
+      flag = true;
+      break;
+    }
   }
+
+  if (flag == true)
+    cout << "Possible" << endl;
+  else
+    cout << "Impossible" << endl;
   return 0;
 }
