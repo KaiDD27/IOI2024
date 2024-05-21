@@ -1,0 +1,15 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/dingkai/Code/IOI2024/NZOI/2019-3-2.gout'
+relocations:
+  - { offsetInCU: 0xBA, offset: 0xBA, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003BB8, symSize: 0x12C }
+  - { offsetInCU: 0x5111, offset: 0x5111, size: 0x8, addend: 0x0, symName: __ZStL8__ioinit, symObjAddr: 0x16778, symBinAddr: 0x100008000, symSize: 0x0 }
+  - { offsetInCU: 0x514B, offset: 0x514B, size: 0x8, addend: 0x0, symName: __Z4strSB5cxx11, symObjAddr: 0x16780, symBinAddr: 0x100008008, symSize: 0x0 }
+  - { offsetInCU: 0x52BA, offset: 0x52BA, size: 0x8, addend: 0x0, symName: __GLOBAL__sub_I_2019_3_2.cpp, symObjAddr: 0x228, symBinAddr: 0x100003DE0, symSize: 0x14 }
+  - { offsetInCU: 0x52DF, offset: 0x52DF, size: 0x8, addend: 0x0, symName: __Z41__static_initialization_and_destruction_0v, symObjAddr: 0x1C4, symBinAddr: 0x100003D7C, symSize: 0x64 }
+  - { offsetInCU: 0x52D4, offset: 0x52D4, size: 0x8, addend: 0x0, symName: __ZNK9__gnu_cxx17__normal_iteratorIPcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE4baseEv, symObjAddr: 0x1B0, symBinAddr: 0x100003D68, symSize: 0x14 }
+  - { offsetInCU: 0x52FC, offset: 0x52FC, size: 0x8, addend: 0x0, symName: __ZNK9__gnu_cxx17__normal_iteratorIPcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEdeEv, symObjAddr: 0x198, symBinAddr: 0x100003D50, symSize: 0x18 }
+  - { offsetInCU: 0x5324, offset: 0x5324, size: 0x8, addend: 0x0, symName: __ZN9__gnu_cxx17__normal_iteratorIPcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEppEv, symObjAddr: 0x170, symBinAddr: 0x100003D28, symSize: 0x28 }
+  - { offsetInCU: 0x534F, offset: 0x534F, size: 0x8, addend: 0x0, symName: __ZN9__gnu_cxxneIPcNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEbRKNS_17__normal_iteratorIT_T0_EESD_, symObjAddr: 0x12C, symBinAddr: 0x100003CE4, symSize: 0x44 }
+  - { offsetInCU: 0x53A1, offset: 0x53A1, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003BB8, symSize: 0x12C }
+...
