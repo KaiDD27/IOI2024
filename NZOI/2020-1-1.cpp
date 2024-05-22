@@ -23,7 +23,9 @@ int main() {
     int dist = MAX + 20;
     // 可以在超过1e9的地方有建筑
     dist = (d / gi + 1) * gi - d;
-    // 本题没有说明 0 处是否有三种建筑，这是出题不严谨处
+    // 本题没有说明 0
+    // 处是否有三种建筑，这是出题不严谨处，按照测试用例来看，应该是 0
+    // 处有三个建筑
     dist = min(dist, d - (d / gi) * gi);
     if (minDist == dist)
       flag = true;
