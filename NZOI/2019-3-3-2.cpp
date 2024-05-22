@@ -21,14 +21,12 @@ int main() {
     cin >> h;
     mpH[h]++;
   }
-
   // 求后缀和
   ll suffixSum = 0;
   for (auto it = mpH.rbegin(); it != mpH.rend(); it++) {
     suffixSum += it->second;
     mpHSuffix[it->first] = suffixSum;
   }
-
   // 从 1 开始到最高的树，看看每一层是否可以获得利润
   ll ans = 0;
   ll hi = 1;
