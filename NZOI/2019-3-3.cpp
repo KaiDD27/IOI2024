@@ -11,13 +11,13 @@ int main() {
   for (int j = 0; j < N; j++)
     cin >> hs[j];
 
-  sort(hs.begin(), hs.end(), std::greater<long long>());
+  sort(hs.begin(), hs.end(), greater<long long>());
 
   long long n_deployed = 0;
   for (int k = 0; k < N; k++) {
     int i = k + 1; // calculate first non-profitable height or the next
                    // tree height if all heights in between are profitable
-    long long h = std::max(c / (i * 5), hs[k + 1]);
+    long long h = max(c / (i * 5), hs[k + 1]);
 
     // add profitable heights between current height and h
     if (h < hs[k])
