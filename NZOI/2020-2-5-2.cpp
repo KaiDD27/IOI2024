@@ -10,7 +10,7 @@ using ll = long long;
 ll n, k;
 vector<ll> w;
 vector<ll> rowGap;
-map<ll, ll> mpWidth;
+map<ll, ll> mpGap;
 int main() {
   ios::sync_with_stdio(false); // Fast I/O
   cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
@@ -18,28 +18,23 @@ int main() {
   w.resize(n);
   for (auto &wi : w)
     cin >> wi;
-  mpWidth[0] = 0;
+  mpGap[0] = 0;
   rowGap.push_back(0);
   for (auto wi : w) {
-    auto it = mpWidth.lower_bound(wi);
-    ll layerToPack = --it->second + 1;
-    if (layerToPack == rowGap.size()) {
+    auto it = mpGap.lower_bound(wi);
+    ll layerToPack = prev(it)->second + 1;
+    if (it == mpGap.end()) {
       rowGap.push_back(k - wi);
-      mpWidth[k - wi] = rowGap.size() - 1;
-      while (prev(it)->first != k - wi)
-        mpWidth.erase(prev(it));
     } else {
       rowGap[layerToPack] -= wi;
-      if (layerToPack == it->second) {
-        mpWidth[rowGap[layerToPack]] = layerToPack;
-        while (prev(it)->first != rowGap[layerToPack])
-          mpWidth.erase(prev(it));
-        mpWidth.erase(it);
-      } else if (rowGap[layerToPack] < it->first) {
-        mpWidth[rowGap[layerToPack]] = layerToPack;
-        while (prev(it)->first != rowGap[layerToPack])
-          mpWidth.erase(prev(it));
-      }
+    }
+    if (it == mpGap.end() || rowGap[layerToPack] < it->first) {
+      mpGap[rowGap[layerToPack]] = layerToPack;
+      while (prev(it)->first != rowGap[layerToPack])
+        mpGap.erase(prev(it));
+    }
+    if (it != mpGap.end() && layerToPack == it->second) {
+      mpGap.erase(it);
     }
   }
   cout << rowGap.size() - 1 << endl;
