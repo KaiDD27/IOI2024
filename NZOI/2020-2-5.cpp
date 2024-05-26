@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <array>
 #include <iostream>
 #include <iterator>
@@ -10,7 +11,7 @@ using ll = long long;
 ll n, k;
 vector<ll> w;
 vector<ll> rowGap;
-map<ll, ll> mpGap;
+map<ll, ll> mpWidth;
 int main() {
   ios::sync_with_stdio(false); // Fast I/O
   cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
@@ -18,28 +19,24 @@ int main() {
   w.resize(n);
   for (auto &wi : w)
     cin >> wi;
-  mpGap[0] = 0;
+  // 大于等于 1 小于等于下一个 mp key 的都可以放在第1层.
+  mpWidth[1] = 1;
+  // 1-base,0做为墙
   rowGap.push_back(0);
   for (auto wi : w) {
-    auto it = mpGap.lower_bound(wi);
-    ll layerToPack = --it->second + 1;
-    if (layerToPack == rowGap.size()) {
+    // 小于等于 wi
+    ll layerToPack = prev(mpWidth.upper_bound(wi))->second;
+    if (layerToPack == rowGap.size())
       rowGap.push_back(k - wi);
-      mpGap[k - wi] = rowGap.size() - 1;
-      while (prev(it)->first != k - wi)
-        mpGap.erase(prev(it));
-    } else {
+    else
       rowGap[layerToPack] -= wi;
-      if (layerToPack == it->second) {
-        mpGap[rowGap[layerToPack]] = layerToPack;
-        while (prev(it)->first != rowGap[layerToPack])
-          mpGap.erase(prev(it));
-        mpGap.erase(it);
-      } else if (rowGap[layerToPack] < it->first) {
-        mpGap[rowGap[layerToPack]] = layerToPack;
-        while (prev(it)->first != rowGap[layerToPack])
-          mpGap.erase(prev(it));
-      }
+    // 看看是否需要更新 map
+    if (prev(mpWidth.upper_bound(rowGap[layerToPack] + 1))->second <
+        layerToPack + 1) {
+      mpWidth[rowGap[layerToPack] + 1] = layerToPack + 1;
+      auto it = mpWidth.find(rowGap[layerToPack] + 1);
+      while (next(it) != mpWidth.end() && next(it)->second <= layerToPack + 1)
+        mpWidth.erase(next(it));
     }
   }
   cout << rowGap.size() - 1 << endl;

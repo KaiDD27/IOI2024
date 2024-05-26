@@ -3,41 +3,45 @@
 #include <iterator>
 #include <map>
 #include <vector>
+
 using namespace std;
-
-int N, K, w, sol;
-vector<int> width;
-map<int, int> next_row;
-
-// Function to find the largest key in the map that is not larger than x
-int get_next_row(int x) { return (--next_row.upper_bound(x))->second; }
-
+using ll = long long;
+#define endl "\n"
+ll n, k;
+vector<ll> w;
+vector<ll> rowGap;
+map<ll, ll> mpWidth;
 int main() {
-  cin >> N >> K;
-  next_row[1] = 0; // Initialize the map with the starting position
-  width.resize(N + 1);
-  while (N--) {
-    cin >> w;                  // Read the width of the current item
-    int row = get_next_row(w); // Find the appropriate row for this item
-    width[row] += w;           // Update the total width used in this row
-    sol = max(
-        sol,
-        row + 1); // Update the solution with the highest row number used so far
-
-    int gap =
-        K - width[row]; // Calculate the remaining width in the current row
-
-    // Check if a new range needs to be added to the map
-    if (get_next_row(gap + 1) < row + 1) {
-      next_row[gap + 1] = row + 1; // Add a new range into the map
-
-      // Delete outdated ranges from the map
-      auto it = next_row.upper_bound(gap + 1);
-      while (it != next_row.end() && it->second <= row + 1) {
-        it = next_row.erase(it);
+  ios::sync_with_stdio(false); // Fast I/O
+  cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
+  cin >> n >> k;
+  w.resize(n);
+  for (auto &wi : w)
+    cin >> wi;
+  mpWidth[0] = 0;
+  rowGap.push_back(0);
+  for (auto wi : w) {
+    auto it = mpWidth.lower_bound(wi);
+    ll layerToPack = --it->second + 1;
+    if (layerToPack == rowGap.size()) {
+      rowGap.push_back(k - wi);
+      mpWidth[k - wi] = rowGap.size() - 1;
+      while (prev(it)->first != k - wi)
+        mpWidth.erase(prev(it));
+    } else {
+      rowGap[layerToPack] -= wi;
+      if (layerToPack == it->second) {
+        mpWidth[rowGap[layerToPack]] = layerToPack;
+        while (prev(it)->first != rowGap[layerToPack])
+          mpWidth.erase(prev(it));
+        mpWidth.erase(it);
+      } else if (rowGap[layerToPack] < it->first) {
+        mpWidth[rowGap[layerToPack]] = layerToPack;
+        while (prev(it)->first != rowGap[layerToPack])
+          mpWidth.erase(prev(it));
       }
     }
   }
-
-  cout << sol << '\n'; // Output the minimum number of rows required
+  cout << rowGap.size() - 1 << endl;
+  return 0;
 }
