@@ -25,20 +25,23 @@ int main() {
   rowGap.push_back(0);
   for (auto wi : w) {
     // 小于等于 wi
-    ll layerToPack = prev(mpWidth.upper_bound(wi))->second;
-    if (layerToPack == rowGap.size())
+    auto it = mpWidth.upper_bound(wi);
+    ll layerToPack = prev(it)->second;
+    if (it == mpWidth.end())
       rowGap.push_back(k - wi);
     else
       rowGap[layerToPack] -= wi;
-    // 看看是否需要更新 map
+    // 如果以前这么长的 box 是可以放到更低的层的，则需要修改下
     if (prev(mpWidth.upper_bound(rowGap[layerToPack] + 1))->second <
         layerToPack + 1) {
       mpWidth[rowGap[layerToPack] + 1] = layerToPack + 1;
       auto it = mpWidth.find(rowGap[layerToPack] + 1);
+      // 如果是当前长的 box，且放的层小于等于当前，这明显是不合理的，应该删除
       while (next(it) != mpWidth.end() && next(it)->second <= layerToPack + 1)
         mpWidth.erase(next(it));
     }
   }
+  // 1-base
   cout << rowGap.size() - 1 << endl;
   return 0;
 }
