@@ -16,17 +16,17 @@ int main() {
   s.resize(n);
   for (auto &bi : b)
     cin >> bi;
-  b.push_back(0);
   for (auto &si : s)
     cin >> si;
-  ll minBP = 100000, maxSP = 1;
-  for (int i = 1; i < n; i++) {
+  ll minBP = 100000;
+  //
+  for (int i = 0; i < n; i++) {
     minBP = min(minBP, b[i]);
-    maxSP = max(maxSP, s[i]);
-    if (minBP <= maxSP && b[i + 1] < maxSP) {
-      c += ((c / minBP) * (maxSP - minBP));
-      minBP = b[i + 1];
-      maxSP = 1;
+    // 虚拟卖出，先把可能的收益统计上，当后续 minBP
+    // 取到更小的值时，之前的一步就是真正卖出的时候
+    if (minBP < s[i]) {
+      c += ((c / minBP) * (s[i] - minBP));
+      minBP = s[i];
     }
   }
   cout << c << endl;
