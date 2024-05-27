@@ -38,8 +38,7 @@ int main() {
     sumRate += di;
   }
   // 拆环为线，注意不可以用
-  // difficulty.end()，因为end()是一个临时迭代器，不允许进行--操作，只能通过
-  // prev（）来操作
+  // difficulty.end()，可以进行--操作，也可以prev（）来操作
   difficulty.insert(difficulty.end(), difficulty.begin(),
                     prev(difficulty.end()));
   ll minSum = getMinSum(difficulty);
