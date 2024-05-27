@@ -25,10 +25,10 @@ ll calcPColor() {
   return ans;
 }
 int findCompressX(int ox) {
-  return lower_bound(xs.begin(), xs.end(), ox) - xs.begin();
+  return find(xs.begin(), xs.end(), ox) - xs.begin();
 }
 int findCompressY(int oy) {
-  return lower_bound(ys.begin(), ys.end(), oy) - ys.begin();
+  return find(ys.begin(), ys.end(), oy) - ys.begin();
 }
 int main() {
   ios::sync_with_stdio(false); // Fast I/O

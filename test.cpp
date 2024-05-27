@@ -20,10 +20,10 @@ int main() {
   for (auto &si : s)
     cin >> si;
   ll minBP = 100000, maxSP = 1;
-  for (int i = 1; i < n; i++) {
+  for (int i = 1; i < n - 1; i++) {
     minBP = min(minBP, b[i]);
     maxSP = max(maxSP, s[i]);
-    if (minBP <= maxSP && b[i + 1] < maxSP) {
+    if (minBP < maxSP && b[i + 1] < maxSP) {
       c += ((c / minBP) * (maxSP - minBP));
       minBP = b[i + 1];
       maxSP = 1;
