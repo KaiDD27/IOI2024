@@ -9,13 +9,14 @@ using namespace std;
 
 int r, c;
 vector<vector<int>> grid;
-set<int> unused_cols; // 未确定排序顺序/优先级的列
-vector<int> tied_rows;
-vector<int> asc_counts;
-vector<int> desc_counts;
-vector<int> next_rows;
+set<int> unusedCols; // 未确定排序顺序/优先级的列
+vector<int> tiedRows;
+vector<int> ascCounts;
+vector<int> descCounts;
 
 int main() {
+  ios::sync_with_stdio(false); // Fast I/O
+  cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
   // 读取输入
   cin >> r >> c;
   grid.resize(r, vector<int>(c));
@@ -25,61 +26,63 @@ int main() {
     }
   }
 
-  unused_cols.clear();
+  unusedCols.clear();
   for (int i = 0; i < c; i++) {
-    unused_cols.insert(i);
+    unusedCols.insert(i);
   }
 
-  tied_rows.clear();
+  tiedRows.clear();
   for (int i = 0; i < r - 1; i++) {
-    tied_rows.push_back(i);
+    tiedRows.push_back(i);
   }
 
-  asc_counts.resize(c);
-  desc_counts.resize(c);
+  ascCounts.resize(c);
+  descCounts.resize(c);
 
   // 初始化每行的升序/降序计数
   for (int ri = 0; ri < r - 1; ri++) {
     for (int ci = 0; ci < c; ci++) {
       if (grid[ri + 1][ci] > grid[ri][ci])
-        asc_counts[ci]++;
+        ascCounts[ci]++;
       if (grid[ri + 1][ci] < grid[ri][ci])
-        desc_counts[ci]++;
+        descCounts[ci]++;
     }
   }
 
-  while (!unused_cols.empty()) {
+  while (!unusedCols.empty()) {
     int col = -1;
     // 找到一个可以作为下一个键的列
-    for (int ci : unused_cols) {
-      if (desc_counts[ci] == 0) { // 没有降序对，所以列必须是升序的
+    // 一边计算一边输出，容易导致超时，可以考虑先存在一个 vectorstring
+    // 数组里面，最后统一输出
+    for (int ci : unusedCols) {
+      if (descCounts[ci] == 0) { // 没有降序对，所以列必须是升序的
         cout << ci + 1 << " asc" << endl;
         col = ci;
         break;
       }
-      if (asc_counts[ci] == 0) { // 没有升序对，所以列必须是降序的
+      if (ascCounts[ci] == 0) { // 没有升序对，所以列必须是降序的
         cout << ci + 1 << " desc" << endl;
         col = ci;
         break;
       }
     }
     // 因为保证有解所以必须能找到一个 col
-    unused_cols.erase(col);
-
-    for (int ri : tied_rows) {
+    unusedCols.erase(col);
+    vector<int> nextRows;
+    for (int ri : tiedRows) {
       // 如果仍然是相同的一对，将其添加到下一次迭代中必须检查的行中
       if (grid[ri + 1][col] == grid[ri][col]) {
-        next_rows.push_back(ri);
+        nextRows.push_back(ri);
       } else {
         // 因为不是相同的对，所以需要从下次迭代检查中去掉
-        for (int ci : unused_cols) {
+        for (int ci : unusedCols) {
           if (grid[ri + 1][ci] > grid[ri][ci])
-            asc_counts[ci]--; // 对是降序的，所以减少列的升序计数
+            ascCounts[ci]--; // 对是降序的，所以减少列的升序计数
           if (grid[ri + 1][ci] < grid[ri][ci])
-            desc_counts[ci]--; // 对是升序的，所以减少列的降序计数
+            descCounts[ci]--; // 对是升序的，所以减少列的降序计数
         }
       }
     }
-    tied_rows = next_rows;
+    tiedRows = nextRows;
   }
 }
