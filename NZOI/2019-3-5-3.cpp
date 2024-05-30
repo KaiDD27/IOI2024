@@ -45,9 +45,9 @@ int main() {
   }
 
   int maxWins = initialWins;
-  for (int wins = 1; wins <= k; wins++) {
-    if (ways[wins])
-      maxWins = max(maxWins, wins);
+  for (int r = 1; r <= k; r++) {
+    if (ways[r])
+      maxWins = max(maxWins, r);
   }
 
   if (initialWins == maxWins)
