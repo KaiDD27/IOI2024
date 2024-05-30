@@ -37,8 +37,7 @@ int main() {
     cin >> di;
     sumRate += di;
   }
-  // 拆环为线，注意不可以用
-  // difficulty.end()，可以进行--操作，也可以prev（）来操作
+  // 拆环为线difficulty.end()，可以进行--操作，也可以prev（）来操作
   difficulty.insert(difficulty.end(), difficulty.begin(),
                     prev(difficulty.end()));
   ll minSum = getMinSum(difficulty);
