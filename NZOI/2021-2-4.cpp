@@ -6,51 +6,43 @@
 using namespace std;
 using ll = long long;
 #define endl "\n"
+ll l, ans;
 string strW;
-ll ans;
-ll l;
 map<string, ll> mpAns;
 bool vowel(char c) {
-  if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u')
-    return true;
-  return false;
+  return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u');
 }
-ll decode() {
-  if (l >= 5 && strW.substr(l - 4) == "uack") {
-    if (vowel(strW[0])) {
-      for (int i = l - 5; i > 0; i--) {
-        if (!vowel(strW[i]))
-          mpAns["uack"]++;
-        else
-          break;
-      }
-    } else {
-      mpAns["uack"] = 1;
-      for (int i = 0; i <= l - 5; i++) {
-        if (vowel(strW[i])) {
-          mpAns["uack"] = 0;
-          break;
-        }
+void validDecodeMany(string endStr, bool flagVowel) {
+  ll len = endStr.length();
+  if (l >= len + 1 && strW.substr(l - len) == endStr) {
+    for (int i = l - len - 1; i > 0; i--) {
+      if (vowel(strW[i]) != flagVowel)
+        mpAns[endStr]++;
+      else
+        break;
+    }
+  }
+}
+void validDecodeSingle(string endStr, bool flagVowel) {
+  ll len = endStr.length();
+  if (l >= len + 1 && strW.substr(l - len) == endStr) {
+    mpAns[endStr] = 1;
+    for (int i = 0; i < l - len; i++) {
+      if (vowel(strW[i]) != flagVowel) {
+        mpAns[endStr] = 0;
+        break;
       }
     }
   }
-  if (l >= 3 && strW.substr(l - 2) == "ck") {
-    if (!vowel(strW[0])) {
-      for (int i = l - 3; i > 0; i--) {
-        if (vowel(strW[i]))
-          mpAns["ck"]++;
-        else
-          break;
-      }
-    } else {
-      mpAns["ck"] = 1;
-      for (int i = 0; i <= l - 3; i++) {
-        if (!vowel(strW[i])) {
-          mpAns["ck"] = 0;
-          break;
-        }
-      }
-    }
+}
+
+void decode() {
+  if (vowel(strW[0])) {
+    validDecodeMany("uack", true);
+    validDecodeSingle("ck", true);
+  } else {
+    validDecodeMany("ck", false);
+    validDecodeSingle("uack", false);
   }
   if (l >= 4 && strW.find("lf") != string::npos) {
     mpAns["lf"] = 1;
@@ -69,28 +61,21 @@ ll decode() {
         i++;
       }
     }
-    if (flagVowel == false)
+    if (!flagVowel)
       mpAns["lf"] = 0;
   }
-  if (l >= 4 && strW.substr(l - 3) == "onk") {
-    mpAns["onk"] = 1;
-    for (int i = 0; i <= l - 4; i++) {
-      if (vowel(strW[i])) {
-        mpAns["onk"] = 0;
-        break;
-      }
-    }
-  }
-  ll res = 0;
-  for (auto mi : mpAns)
-    res += mi.second;
-  return res;
+  validDecodeSingle("onk", false);
+  return;
 }
+
 int main() {
   ios::sync_with_stdio(false); // Fast I/O
   cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
   cin >> l;
   cin >> strW;
-  cout << decode() << endl;
+  decode();
+  for (auto mi : mpAns)
+    ans += mi.second;
+  cout << ans << endl;
   return 0;
 }
