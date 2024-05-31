@@ -9,14 +9,14 @@ using ll = long long;
 ll l, ans;
 string strW;
 map<string, ll> mpAns;
-bool vowel(char c) {
+bool isVowel(char c) {
   return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u');
 }
 void validDecodeMany(string endStr, bool flagVowel) {
   ll len = endStr.length();
   if (l >= len + 1 && strW.substr(l - len) == endStr) {
     for (int i = l - len - 1; i > 0; i--) {
-      if (vowel(strW[i]) != flagVowel)
+      if (isVowel(strW[i]) != flagVowel)
         mpAns[endStr]++;
       else
         break;
@@ -28,7 +28,7 @@ void validDecodeSingle(string endStr, bool flagVowel) {
   if (l >= len + 1 && strW.substr(l - len) == endStr) {
     mpAns[endStr] = 1;
     for (int i = 0; i < l - len; i++) {
-      if (vowel(strW[i]) != flagVowel) {
+      if (isVowel(strW[i]) != flagVowel) {
         mpAns[endStr] = 0;
         break;
       }
@@ -37,7 +37,7 @@ void validDecodeSingle(string endStr, bool flagVowel) {
 }
 
 void decode() {
-  if (vowel(strW[0])) {
+  if (isVowel(strW[0])) {
     validDecodeMany("uack", true);
     validDecodeSingle("ck", true);
   } else {
@@ -48,7 +48,7 @@ void decode() {
     mpAns["lf"] = 1;
     bool flagVowel = false;
     for (int i = 0; i < l;) {
-      if (vowel(strW[i])) {
+      if (isVowel(strW[i])) {
         flagVowel = true;
         if (i <= l - 4 && strW[i + 1] == 'l' && strW[i + 2] == 'f' &&
             strW[i + 3] == strW[i]) {
