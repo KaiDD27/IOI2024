@@ -2,17 +2,19 @@
 #include <array>
 #include <iostream>
 #include <iterator>
+#include <map>
 #include <set>
-#include <tuple>
+#include <utility>
 #include <vector>
 
 using namespace std;
 using ll = long long;
 #define endl "\n"
-vector<tuple<char, ll>> queryM;
-vector<bool> mpOfficial;
+vector<pair<char, ll>> queryM;
+set<int> stOfficialIntervalSum;
 vector<int> bitTree;
-set<ll> stNoOfficial;
+map<int, int> mpIdxToBitTree;
+
 void update(int i, int val) {
   while (i < bitTree.size()) {
     bitTree[i] += val;
@@ -36,25 +38,31 @@ int main() {
   queryM.resize(m);
   for (auto &[chM, idx] : queryM) {
     cin >> chM >> idx;
+    stOfficialIntervalSum.insert(idx);
   }
-  mpOfficial.resize(n + 1, true);
-  bitTree.resize(n + 1, 0);
-  for (int i = 1; i <= n; i++) {
-    update(i, 1);
+  bitTree.resize(stOfficialIntervalSum.size() + 1, 0);
+  int iTree = 1, prevSi = 0;
+  for (auto si : stOfficialIntervalSum) {
+    update(iTree, si - prevSi);
+    prevSi = si;
+    mpIdxToBitTree[si] = iTree;
+    iTree++;
   }
+  mpIdxToBitTree[0] = 0;
   for (auto [chM, idx] : queryM) {
     if (chM == 't') {
-      mpOfficial[idx] = !mpOfficial[idx];
-      if (mpOfficial[idx] == true)
-        update(idx, 1);
+      if ((query(mpIdxToBitTree[idx]) - query(mpIdxToBitTree[idx] - 1)) ==
+          (idx - prev(mpIdxToBitTree.find(idx))->first))
+        update(mpIdxToBitTree[idx], -1);
       else
-        update(idx, -1);
+        update(mpIdxToBitTree[idx], 1);
     }
     if (chM == 'o') {
-      if (mpOfficial[idx] == false)
+      if ((query(mpIdxToBitTree[idx]) - query(mpIdxToBitTree[idx] - 1)) !=
+          (idx - prev(mpIdxToBitTree.find(idx))->first))
         cout << "UNOFFICIAL" << endl;
       else {
-        cout << query(idx) << endl;
+        cout << query(mpIdxToBitTree[idx]) << endl;
       }
     }
   }
