@@ -10,7 +10,24 @@ using namespace std;
 using ll = long long;
 #define endl "\n"
 vector<tuple<char, ll>> queryM;
+vector<bool> official;
+vector<int> bitTree;
 set<ll> stNoOfficial;
+void update(int i, int val, int n) {
+  while (i <= n) {
+    bitTree[i] += val;
+    i += i & (-i);
+  }
+}
+int query(int i) {
+  int sum = 0;
+  while (i > 0) {
+    sum += bitTree[i];
+    i -= i & (-i);
+  }
+  return sum;
+}
+
 int main() {
   ios::sync_with_stdio(false); // Fast I/O
   cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
@@ -19,27 +36,25 @@ int main() {
   queryM.resize(m);
   for (auto &[chM, idx] : queryM) {
     cin >> chM >> idx;
-    // subtask5会超时，所以直接 return 退出好了。
-    if (chM == 'o' && idx > 50050 && m > 500)
-      return 0;
   }
-
+  official.resize(n + 1, true);
+  bitTree.resize(n + 1, 0);
+  for (int i = 1; i <= n; i++) {
+    update(i, 1, n);
+  }
   for (auto [chM, idx] : queryM) {
-    // 如果 m>500,则大于 50050 不处理了，这样可以解决subtask2，3
-    if (chM == 't' && (idx <= 50050 || m <= 500)) {
-      if (stNoOfficial.count(idx)) {
-        stNoOfficial.erase(idx);
-      } else {
-        stNoOfficial.insert(idx);
-      }
+    if (chM == 't') {
+      official[idx] = !official[idx];
+      if (official[idx] == true)
+        update(idx, 1, n);
+      else
+        update(idx, -1, n);
     }
     if (chM == 'o') {
-      if (stNoOfficial.count(idx))
+      if (official[idx] == false)
         cout << "UNOFFICIAL" << endl;
       else {
-        auto it = stNoOfficial.upper_bound(idx);
-        cout << idx - stNoOfficial.size() + distance(it, stNoOfficial.end())
-             << endl;
+        cout << query(idx) << endl;
       }
     }
   }
