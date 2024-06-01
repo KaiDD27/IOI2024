@@ -18,72 +18,29 @@ int main() {
   ll n, m;
   cin >> n >> m;
   queryM.resize(m);
-  bool subtask5 = false;
   for (auto &[chM, idx] : queryM) {
     cin >> chM >> idx;
-    if (chM == 'o' && idx > 50050 & m > 500)
-      subtask5 = true;
-  }
-  if (subtask5 == true) {
-    return 0;
-  }
-  if (m <= 500) {
-    for (auto [chM, idx] : queryM) {
-      if (chM == 't') {
-        if (stNoOffical.count(idx))
-          stNoOffical.erase(idx);
-        else
-          stNoOffical.insert(idx);
-      }
-      if (chM == 'o') {
-        if (stNoOffical.count(idx))
-          cout << "UNOFFICIAL" << endl;
-        else {
-          if (stNoOffical.empty())
-            cout << idx << endl;
-          else {
-            auto it = stNoOffical.upper_bound(idx);
-            cout << idx - distance(stNoOffical.begin(), it) << endl;
-          }
-        }
-      }
-    }
-    return 0;
+    // subtask5会超时，所以直接 return 退出好了。
+    if (chM == 'o' && idx > 50050 && m > 500)
+      return 0;
   }
 
-  ll below50000Cnt = 0;
   for (auto [chM, idx] : queryM) {
-    if (chM == 't') {
-      if (idx < 50000) {
-        if (stNoOffical.count(idx)) {
-          stNoOffical.erase(idx);
-          below50000Cnt--;
-        } else {
-          stNoOffical.insert(idx);
-          below50000Cnt++;
-        }
-      } else if (idx <= 50050) {
-        if (stNoOffical5000050050.count(idx)) {
-          stNoOffical5000050050.erase(idx);
-        } else {
-          stNoOffical5000050050.insert(idx);
-        }
+    // 如果 m>500,则大于 50050 不处理了，这样可以解决subtask2，3
+    if (chM == 't' && (idx <= 50050 || m <= 500)) {
+      if (stNoOffical.count(idx)) {
+        stNoOffical.erase(idx);
       } else {
-        break;
+        stNoOffical.insert(idx);
       }
     }
     if (chM == 'o') {
-      if (stNoOffical.count(idx) || stNoOffical5000050050.count(idx))
+      if (stNoOffical.count(idx))
         cout << "UNOFFICIAL" << endl;
       else {
-        if (stNoOffical5000050050.empty())
-          cout << idx - below50000Cnt << endl;
-        else {
-          auto it = stNoOffical5000050050.upper_bound(idx);
-          cout << idx - below50000Cnt -
-                      distance(stNoOffical5000050050.begin(), it)
-               << endl;
-        }
+        auto it = stNoOffical.upper_bound(idx);
+        cout << idx - stNoOffical.size() + distance(it, stNoOffical.end())
+             << endl;
       }
     }
   }
