@@ -11,7 +11,6 @@ using ll = long long;
 vector<tuple<char, ll>> queryM;
 vector<ll> cRank;
 set<ll> stNoOffical;
-set<ll> stNoOffical5000050050;
 int main() {
   ios::sync_with_stdio(false); // Fast I/O
   cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
