@@ -3,13 +3,12 @@
 #include <iostream>
 #include <iterator>
 #include <set>
-#include <tuple>
 #include <vector>
 
 using namespace std;
 using ll = long long;
 #define endl "\n"
-vector<tuple<char, ll>> queryM;
+vector<pair<char, ll>> queryM;
 set<ll> stNoOfficial;
 int main() {
   ios::sync_with_stdio(false); // Fast I/O

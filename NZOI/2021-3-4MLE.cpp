@@ -3,13 +3,12 @@
 #include <iostream>
 #include <iterator>
 #include <set>
-#include <tuple>
 #include <vector>
 
 using namespace std;
 using ll = long long;
 #define endl "\n"
-vector<tuple<char, ll>> queryM;
+vector<pair<char, ll>> queryM;
 vector<bool> mpOfficial;
 vector<int> bitTree;
 set<ll> stNoOfficial;
