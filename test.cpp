@@ -1,62 +1,98 @@
-#include <array>
 #include <iostream>
-#include <string>
+#include <set>
+#include <unordered_set>
+#include <vector>
 
 using namespace std;
 
-int main() {
-  int l;
-  cin >> l;
-  array<int, 4> ducks{};
-  int quackers_left = 0;
+vector<vector<int>> adj;
+unordered_set<int> stDeleted;
+vector<int> branchOfNode;
+vector<int> parentOfNode;
+vector<int> depthOfNode;
 
-  for (int i = 0; i < 4; ++i) {
-    cin >> ducks[i];
-    if (i != 3) {
-      quackers_left += ducks[i];
-    }
-  }
-
-  cin.ignore(); // Ignore the newline character after the last integer input
-  string wants;
-  getline(cin, wants);
-
-  int days = 0;
-  for (char type : wants) {
-    if (type != 'G' && quackers_left <= 0)
-      break;
-
-    if (type == 'R') {
-      if (ducks[0] < 1)
-        break;
-      --ducks[0];
-      --quackers_left;
-    } else if (type == 'P') {
-      if (ducks[1] < 1)
-        break;
-      --ducks[1];
-      --quackers_left;
-    } else if (type == 'D') {
-      if (ducks[2] < 1)
-        break;
-      --ducks[2];
-      --quackers_left;
-    } else if (type == 'G') {
-      // goose is not a duck
-      if (ducks[3] < 1)
-        break;
-      --ducks[3];
+// Compare nodes by their depths.
+// Extra condition when depths equal is to guarantee uniqueness within sets
+struct CmpNodes {
+  bool operator()(int a, int b) const {
+    if (depthOfNode[a] == depthOfNode[b]) {
+      return a > b;
     } else {
-      // wildcard
-      if (quackers_left < 1)
-        break;
-      --quackers_left;
+      return depthOfNode[a] > depthOfNode[b];
     }
-    ++days;
+  }
+};
+
+vector<set<int, CmpNodes>> stNodesOfBranch;
+set<int, CmpNodes> stDeepestInBranch;
+
+void updateNode(int branch, int cur, int parent, int depth) {
+  branchOfNode[cur] = branch;
+  parentOfNode[cur] = parent;
+  depthOfNode[cur] = depth;
+  stNodesOfBranch[branch].insert(cur);
+  for (auto neighbour : adj[cur]) {
+    if (neighbour != parent) {
+      updateNode(branch, neighbour, cur, depth + 1);
+    }
+  }
+}
+
+void deleteNode(int cur) {
+  stNodesOfBranch[branchOfNode[cur]].erase(cur);
+  stDeepestInBranch.erase(cur);
+  stDeleted.insert(cur);
+
+  for (auto neighbour : adj[cur]) {
+    if (neighbour != parentOfNode[cur] &&
+        stDeleted.find(neighbour) == stDeleted.end()) {
+      deleteNode(neighbour);
+    }
+  }
+}
+
+int twoDeepest() {
+  int answer = 0;
+  auto deepest = stDeepestInBranch.begin();
+  answer += depthOfNode[*deepest];
+  deepest++;
+  if (deepest != stDeepestInBranch.end()) {
+    answer += depthOfNode[*deepest];
+  }
+  return answer;
+}
+
+int main() {
+  int n, m, a, b, k;
+  cin >> n >> m;
+
+  adj.resize(n + 1); // Resize the vector to accommodate n nodes
+
+  for (int i = 0; i < n - 1; i++) {
+    cin >> a >> b;
+    adj[a].push_back(b);
+    adj[b].push_back(a);
   }
 
-  // Return number of days and number of ducks left (including geese)
-  cout << days << '\n' << quackers_left + ducks[3] << '\n';
+  branchOfNode.resize(n + 1);    // Resize the vector to accommodate n nodes
+  parentOfNode.resize(n + 1);    // Resize the vector to accommodate n nodes
+  depthOfNode.resize(n + 1);     // Resize the vector to accommodate n nodes
+  stNodesOfBranch.resize(n + 1); // Resize the vector to accommodate n nodes
 
-  return 0;
+  for (auto branch : adj[0]) {
+    updateNode(branch, branch, 0, 1);
+    stDeepestInBranch.insert(*stNodesOfBranch[branch].begin());
+  }
+
+  cout << twoDeepest() + 1 << endl;
+
+  for (int i = 0; i < m; i++) {
+    cin >> k;
+    deleteNode(k);
+    if (stNodesOfBranch[branchOfNode[k]].begin() !=
+        stNodesOfBranch[branchOfNode[k]].end()) {
+      stDeepestInBranch.insert(*stNodesOfBranch[branchOfNode[k]].begin());
+    }
+    cout << twoDeepest() + 1 << endl;
+  }
 }
