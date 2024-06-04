@@ -20,23 +20,17 @@ int main() {
   for (int i = 1; i <= m; i++) {
     cin >> mCnt[i];
   }
-  raft.resize(m + r);
-  for (int i = m + 1; i <= m + r - 1; i++) {
+  raft.resize(m + r + 1);
+  for (int i = m + 1; i <= m + r; i++) {
     cin >> raft[i].first;
     raft[i].second.resize(raft[i].first);
     for (auto &[ti, ai] : raft[i].second) {
       cin >> ti >> ai;
     }
   }
-  ll cLast;
-  cin >> cLast;
-  vector<ll> lastRaftNeed(m + r, 0);
-  for (int i = 0; i < cLast; i++) {
-    ll ti, ai;
-    cin >> ti >> ai;
-    lastRaftNeed[ti] = ai;
-  }
-  for (int i = m + r - 1; i > m; i--) {
+  vector<ll> lastRaftNeed(m + r + 1, 0);
+  lastRaftNeed[m + r] = 1;
+  for (int i = m + r; i > m; i--) {
     if (lastRaftNeed[i] == 0)
       continue;
     for (auto [ti, ai] : raft[i].second) {
