@@ -32,8 +32,8 @@ int main() {
     else
       rowGap[layerToPack] -= wi;
     // 如果以前这么长的 box 是可以放到更低的层的，则需要修改下
-    if (prev(mpWidth.upper_bound(rowGap[layerToPack] + 1))->second <
-        layerToPack + 1) {
+    if (prev(mpWidth.upper_bound(rowGap[layerToPack] + 1))->second <=
+        layerToPack) {
       mpWidth[rowGap[layerToPack] + 1] = layerToPack + 1;
       auto it = mpWidth.find(rowGap[layerToPack] + 1);
       // 如果是当前长的 box，且放的层小于等于当前，这明显是不合理的，应该删除

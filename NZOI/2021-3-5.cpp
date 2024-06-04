@@ -33,7 +33,7 @@ void deleteNode(int cur) {
   stNodesOfBranch[nodes[cur][BRANCH]].erase(nodes[cur]);
   stDeepestInBranch.erase(nodes[cur]);
   stDeleted.insert(cur);
-
+  // 以curr 为根的子树全部删除
   for (auto neighbour : adj[cur]) {
     if (neighbour != nodes[cur][PARENT] &&
         stDeleted.find(neighbour) == stDeleted.end()) {
