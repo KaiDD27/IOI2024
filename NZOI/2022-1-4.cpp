@@ -13,6 +13,29 @@ vector<ll> shoppers;
 vector<ll> distShopper;
 vector<ll> distStart;
 vector<queue<ll>> qs;
+
+bool bfsE() {
+  queue<ll> q;
+  distStart.resize(n, LLONG_MAX);
+  distStart[0] = 0;
+  q.push(0);
+  while (!q.empty()) {
+    auto a = q.front();
+    q.pop();
+    for (auto b : adj[a]) {
+      if (distStart[b] == LLONG_MAX && distShopper[b] >= m) {
+        distStart[b] = distStart[a] + 1;
+        if (b == n - 1) {
+          cout << distStart[n - 1] + 1 << endl;
+          return true;
+        }
+        q.push(b);
+      }
+    }
+  }
+  return false;
+}
+
 void bfsDist() {
   for (int i = 0; i < s; i++) {
     cin >> shoppers[i];
@@ -37,7 +60,6 @@ void bfsDist() {
       }
     }
   }
-
   return;
 }
 int main() {
@@ -75,7 +97,7 @@ int main() {
       }
     }
   }
-  cout << "SELF_ISOLATE" << endl;
-
+  if (bfsE() == false)
+    cout << "SELF_ISOLATE" << endl;
   return 0;
 }

@@ -12,6 +12,33 @@ vector<vector<ll>> adj;
 vector<ll> shoppers;
 vector<ll> distShopper;
 vector<ll> distStart;
+
+bool bfsE() {
+  vector<bool> processed(n, false);
+  priority_queue<array<ll, 2>> pq;
+  distStart.resize(n, LLONG_MAX);
+  distStart[0] = 0;
+  pq.push({0, 0});
+  while (!pq.empty()) {
+    auto [d, a] = pq.top();
+    pq.pop();
+    if (processed[a])
+      continue;
+    processed[a] = true;
+    for (auto b : adj[a]) {
+      if (distStart[b] == LLONG_MAX && distShopper[b] >= m) {
+        distStart[b] = distStart[a] + 1;
+        if (b == n - 1) {
+          cout << distStart[n - 1] + 1 << endl;
+          return true;
+        }
+        pq.push({-distStart[b], b});
+      }
+    }
+  }
+  return false;
+}
+
 void bfsDist(ll shopper) {
   vector<bool> processed(n);
   priority_queue<array<ll, 2>> pq;
@@ -52,29 +79,7 @@ int main() {
   for (auto si : shoppers) {
     bfsDist(si);
   }
-
-  vector<bool> processed(n, false);
-  priority_queue<array<ll, 2>> pq;
-  distStart.resize(n, LLONG_MAX);
-  distStart[0] = 0;
-  pq.push({0, 0});
-  while (!pq.empty()) {
-    auto [d, a] = pq.top();
-    pq.pop();
-    if (processed[a])
-      continue;
-    processed[a] = true;
-    for (auto b : adj[a]) {
-      if (distStart[b] == LLONG_MAX && distShopper[b] >= m) {
-        distStart[b] = distStart[a] + 1;
-        if (b == n - 1) {
-          cout << distStart[n - 1] + 1 << endl;
-          return 0;
-        }
-        pq.push({-distStart[b], b});
-      }
-    }
-  }
-  cout << "SELF_ISOLATE" << endl;
+  if (bfsE() == false)
+    cout << "SELF_ISOLATE" << endl;
   return 0;
 }
