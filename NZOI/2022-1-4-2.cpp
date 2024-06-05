@@ -12,7 +12,6 @@ vector<vector<ll>> adj;
 vector<ll> shoppers;
 vector<ll> distShopper;
 vector<ll> distStart;
-vector<queue<ll>> qs;
 
 bool bfsE() {
   queue<ll> q;
@@ -37,31 +36,24 @@ bool bfsE() {
 }
 
 void bfsDist() {
+  queue<ll> q;
   for (int i = 0; i < s; i++) {
     cin >> shoppers[i];
     distShopper[shoppers[i]] = 0;
-    qs[i].push(shoppers[i]);
+    q.push(shoppers[i]);
   }
-  bool flagAllEmpty = false;
-  while (flagAllEmpty == false) {
-    flagAllEmpty = true;
-    for (int i = 0; i < s; i++) {
-      if (!qs[i].empty()) {
-        auto a = qs[i].front();
-        qs[i].pop();
-        for (auto b : adj[a]) {
-          if (distShopper[a] + 1 < distShopper[b]) {
-            distShopper[b] = distShopper[a] + 1;
-            qs[i].push(b);
-          }
-        }
-        if (!qs[i].empty())
-          flagAllEmpty = false;
+  while (!q.empty()) {
+    auto a = q.front();
+    q.pop();
+    for (auto b : adj[a]) {
+      if (distShopper[a] + 1 < distShopper[b]) {
+        distShopper[b] = distShopper[a] + 1;
+        q.push(b);
       }
     }
   }
-  return;
 }
+
 int main() {
   ios::sync_with_stdio(false); // Fast I/O
   cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
@@ -76,7 +68,6 @@ int main() {
   }
   cin >> s >> m;
   shoppers.resize(s);
-  qs.resize(s);
   bfsDist();
   if (bfsE() == false)
     cout << "SELF_ISOLATE" << endl;
