@@ -1,0 +1,12 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/dingkai/Code/IOI2024/NZOI/2022-2-1.gout'
+relocations:
+  - { offsetInCU: 0xBA, offset: 0xBA, size: 0x8, addend: 0x0, symName: __ZSt3minIxERKT_S2_S2_, symObjAddr: 0x0, symBinAddr: 0x100003C10, symSize: 0x38 }
+  - { offsetInCU: 0x25D7, offset: 0x25D7, size: 0x8, addend: 0x0, symName: __ZStL8__ioinit, symObjAddr: 0xFBD8, symBinAddr: 0x100008000, symSize: 0x0 }
+  - { offsetInCU: 0x272D, offset: 0x272D, size: 0x8, addend: 0x0, symName: __GLOBAL__sub_I_2022_2_1.cpp, symObjAddr: 0x264, symBinAddr: 0x100003E74, symSize: 0x14 }
+  - { offsetInCU: 0x2752, offset: 0x2752, size: 0x8, addend: 0x0, symName: __Z41__static_initialization_and_destruction_0v, symObjAddr: 0x228, symBinAddr: 0x100003E38, symSize: 0x3C }
+  - { offsetInCU: 0x2749, offset: 0x2749, size: 0x8, addend: 0x0, symName: __ZSt3maxIxERKT_S2_S2_, symObjAddr: 0x1F0, symBinAddr: 0x100003E00, symSize: 0x38 }
+  - { offsetInCU: 0x2792, offset: 0x2792, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x38, symBinAddr: 0x100003C48, symSize: 0x1B8 }
+  - { offsetInCU: 0x2849, offset: 0x2849, size: 0x8, addend: 0x0, symName: __ZSt3minIxERKT_S2_S2_, symObjAddr: 0x0, symBinAddr: 0x100003C10, symSize: 0x38 }
+...
