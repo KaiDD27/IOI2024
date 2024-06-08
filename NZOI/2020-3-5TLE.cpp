@@ -27,18 +27,6 @@ int main() {
   for (int i = 0; i < c; i++) {
     stUnusedCols.insert(i);
   }
-
-  // 初始化每行的升序/降序计数
-
-  for (int ci = 0; ci < c; ci++) {
-    for (int ri = 0; ri < r - 1; ri++) {
-      if (grid[ri + 1][ci] > grid[ri][ci])
-        ascCounts[ci]++;
-      if (grid[ri + 1][ci] < grid[ri][ci])
-        descCounts[ci]++;
-    }
-  }
-
   // 左闭右开
   tieRowsIntervals.push_back({0, r});
   while (!stUnusedCols.empty()) {

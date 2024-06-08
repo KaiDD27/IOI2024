@@ -1,98 +1,94 @@
+#include <array>
+#include <chrono>
 #include <iostream>
+#include <iterator>
+#include <map>
 #include <set>
 #include <unordered_set>
 #include <vector>
-
 using namespace std;
-
-vector<vector<int>> adj;
-unordered_set<int> stDeleted;
-vector<int> branchOfNode;
-vector<int> parentOfNode;
-vector<int> depthOfNode;
-
-// Compare nodes by their depths.
-// Extra condition when depths equal is to guarantee uniqueness within sets
-struct CmpNodes {
-  bool operator()(int a, int b) const {
-    if (depthOfNode[a] == depthOfNode[b]) {
-      return a > b;
-    } else {
-      return depthOfNode[a] > depthOfNode[b];
-    }
-  }
-};
-
-vector<set<int, CmpNodes>> stNodesOfBranch;
-set<int, CmpNodes> stDeepestInBranch;
-
-void updateNode(int branch, int cur, int parent, int depth) {
-  branchOfNode[cur] = branch;
-  parentOfNode[cur] = parent;
-  depthOfNode[cur] = depth;
-  stNodesOfBranch[branch].insert(cur);
-  for (auto neighbour : adj[cur]) {
-    if (neighbour != parent) {
-      updateNode(branch, neighbour, cur, depth + 1);
-    }
-  }
-}
-
-void deleteNode(int cur) {
-  stNodesOfBranch[branchOfNode[cur]].erase(cur);
-  stDeepestInBranch.erase(cur);
-  stDeleted.insert(cur);
-
-  for (auto neighbour : adj[cur]) {
-    if (neighbour != parentOfNode[cur] &&
-        stDeleted.find(neighbour) == stDeleted.end()) {
-      deleteNode(neighbour);
-    }
-  }
-}
-
-int twoDeepest() {
-  int answer = 0;
-  auto deepest = stDeepestInBranch.begin();
-  answer += depthOfNode[*deepest];
-  deepest++;
-  if (deepest != stDeepestInBranch.end()) {
-    answer += depthOfNode[*deepest];
-  }
-  return answer;
-}
-
+using ll = long long;
+#define endl "\n"
+set<ll> columns;
+map<ll, vector<ll>> rows;
 int main() {
-  int n, m, a, b, k;
-  cin >> n >> m;
-
-  adj.resize(n + 1); // Resize the vector to accommodate n nodes
-
-  for (int i = 0; i < n - 1; i++) {
-    cin >> a >> b;
-    adj[a].push_back(b);
-    adj[b].push_back(a);
+  ios::sync_with_stdio(false); // Fast I/O
+  cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
+  ll r, c;
+  cin >> r >> c;
+  for (int i = 1; i <= c; i++) {
+    columns.insert(i);
   }
-
-  branchOfNode.resize(n + 1);    // Resize the vector to accommodate n nodes
-  parentOfNode.resize(n + 1);    // Resize the vector to accommodate n nodes
-  depthOfNode.resize(n + 1);     // Resize the vector to accommodate n nodes
-  stNodesOfBranch.resize(n + 1); // Resize the vector to accommodate n nodes
-
-  for (auto branch : adj[0]) {
-    updateNode(branch, branch, 0, 1);
-    stDeepestInBranch.insert(*stNodesOfBranch[branch].begin());
-  }
-
-  cout << twoDeepest() + 1 << endl;
-
-  for (int i = 0; i < m; i++) {
-    cin >> k;
-    deleteNode(k);
-    if (stNodesOfBranch[branchOfNode[k]].begin() !=
-        stNodesOfBranch[branchOfNode[k]].end()) {
-      stDeepestInBranch.insert(*stNodesOfBranch[branchOfNode[k]].begin());
+  for (int i = 1; i <= r; i++) {
+    vector<ll> row(c + 1);
+    for (int j = 1; j <= c; j++) {
+      cin >> row[j];
     }
-    cout << twoDeepest() + 1 << endl;
+    rows[i] = row;
   }
+
+  ll lastColumn = 0;
+  for (int i = 1; i <= c; i++) {
+    if (rows.size() == 0) {
+      for (auto ci : columns) {
+        cout << ci << " asc" << endl;
+      }
+      return 0;
+    }
+    for (auto column : columns) {
+      bool asc = true, desc = true;
+      for (auto it = next(rows.begin()); it != rows.end(); it++) {
+        if ((it->first == prev(it)->first + 1) &&
+            (it->second[lastColumn] == prev(it)->second[lastColumn]) &&
+            (it->second)[column] < (prev(it)->second)[column]) {
+          asc = false;
+          break;
+        }
+      }
+      for (auto it = next(rows.begin()); it != rows.end(); it++) {
+        if ((it->first == prev(it)->first + 1) &&
+            (it->second[lastColumn] == prev(it)->second[lastColumn]) &&
+            (it->second)[column] > (prev(it)->second)[column]) {
+          desc = false;
+          break;
+        }
+      }
+      if (asc == true) {
+        cout << column << " asc" << endl;
+        columns.erase(columns.find(column));
+        bool flagTie = false;
+        for (auto it = rows.begin(); next(it) != rows.end();) {
+          if (flagTie == true) {
+          }
+
+          if ((it->first == next(it)->first - 1) &&
+              it->second[column] != next(it)->second[column]) {
+            auto eraseIt = it;
+            it++;
+            rows.erase(eraseIt);
+          } else {
+            it++;
+          }
+        }
+        lastColumn = column;
+        break;
+      } else if (desc == true) {
+        cout << column << " desc" << endl;
+        columns.erase(columns.find(column));
+        for (auto it = next(rows.begin()); it != rows.end();) {
+          if (it->second[column] != prev(it)->second[column]) {
+            rows.erase(prev(it));
+            it++;
+          } else {
+            it++;
+            if (it != rows.end())
+              it++;
+          }
+        }
+        lastColumn = column;
+        break;
+      }
+    }
+  }
+  return 0;
 }
