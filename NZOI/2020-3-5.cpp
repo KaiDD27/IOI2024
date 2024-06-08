@@ -35,60 +35,93 @@ int main() {
     // 一边计算一边输出，容易导致超时，可以考虑先存在一个 vectorstring
     // 数组里面，最后统一输出
     for (int ci : stUnusedCols) {
-      bool flagAsc = true;
+      int flagAscOrDescOrNo = 1;
+      bool flagFirst = true;
       for (auto [rowBegin, rowEnd] : tieRowsIntervals) {
-        for (int i = rowBegin + 1; i < rowEnd; i++) {
-          if (grid[i][ci] < grid[i - 1][ci]) {
-            flagAsc = false;
-            break;
-          }
-        }
-        if (flagAsc == false)
-          break;
-      }
-      if (flagAsc == true) {
-        cout << ci + 1 << " asc" << endl;
-        col = ci;
-        break;
-      }
 
-      bool flagDsc = true;
-      for (auto [rowBegin, rowEnd] : tieRowsIntervals) {
-        for (int i = rowBegin + 1; i < rowEnd; i++) {
-          if (grid[i][ci] > grid[i - 1][ci]) {
-            flagDsc = false;
+        if (flagFirst == true) {
+          if (grid[it->first][ci] == grid[it->second][ci])
+            continue;
+          if (grid[it->first][ci] > grid[it->second][ci])
+            flagAscOrDescOrNo = 2;
+          else if (grid[it->first][ci] < grid[it->second][ci])
+            flagAscOrDescOrNo = 1;
+          flagFirst = false;
+        } else {
+          if (grid[it->first][ci] < grid[it->second][ci] &&
+              flagAscOrDescOrNo == 2) {
+            flagAscOrDescOrNo = 0;
+            break;
+          }
+          if (grid[it->first][ci] > grid[it->second][ci] &&
+              flagAscOrDescOrNo == 1) {
+            flagAscOrDescOrNo = 0;
             break;
           }
         }
-        if (flagDsc == false)
-          break;
-      }
-      if (flagDsc == true) {
-        cout << ci + 1 << " desc" << endl;
-        col = ci;
-        break;
-      }
-    }
-    // 因为保证有解所以必须能找到一个 col
-    stUnusedCols.erase(col);
-    vector<pair<int, int>> newTieRowsIntervals;
-    for (auto [rowBegin, rowEnd] : tieRowsIntervals) {
-      for (int i = rowBegin + 1, ni = rowBegin, ne = rowBegin + 1; i < rowEnd;
-           i++) {
-        if (grid[i][col] == grid[i - 1][col]) {
-          ne++;
-          if (ne == rowEnd) {
-            newTieRowsIntervals.push_back({ni, ne});
+
+        for (int i = rowBegin + 1; i < rowEnd; i++) {
+          if (flagFirst == true) {
+            if (grid[i][ci] == grid[i - 1][ci])
+              continue;
+            if (grid[i][ci] < grid[i - 1][ci])
+              flagAscOrDescOrNo = 2;
+            if (grid[i][ci] > grid[i - 1][ci]) {
+              flagAscOrDescOrNo = 1;
+            }
+            flagFirst = false;
+          } else {
+            if (grid[i][ci] < grid[i - 1][ci])
+              flagAscOrDescOrNo = 2;
+            if (grid[i][ci] > grid[i - 1][ci]) {
+              flagAscOrDescOrNo = 1;
+            }
+            if (flagAsc == false)
+              break;
           }
-        } else {
-          if (ne - ni > 1) {
-            newTieRowsIntervals.push_back({ni, ne});
+          if (flagAsc == true) {
+            cout << ci + 1 << " asc" << endl;
+            col = ci;
+            break;
           }
-          ni = ne;
-          ne++;
+
+          bool flagDsc = true;
+          for (auto [rowBegin, rowEnd] : tieRowsIntervals) {
+            for (int i = rowBegin + 1; i < rowEnd; i++) {
+              if (grid[i][ci] > grid[i - 1][ci]) {
+                flagDsc = false;
+                break;
+              }
+            }
+            if (flagDsc == false)
+              break;
+          }
+          if (flagDsc == true) {
+            cout << ci + 1 << " desc" << endl;
+            col = ci;
+            break;
+          }
         }
+        // 因为保证有解所以必须能找到一个 col
+        stUnusedCols.erase(col);
+        vector<pair<int, int>> newTieRowsIntervals;
+        for (auto [rowBegin, rowEnd] : tieRowsIntervals) {
+          for (int i = rowBegin + 1, ni = rowBegin, ne = rowBegin + 1;
+               i < rowEnd; i++) {
+            if (grid[i][col] == grid[i - 1][col]) {
+              ne++;
+              if (ne == rowEnd) {
+                newTieRowsIntervals.push_back({ni, ne});
+              }
+            } else {
+              if (ne - ni > 1) {
+                newTieRowsIntervals.push_back({ni, ne});
+              }
+              ni = ne;
+              ne++;
+            }
+          }
+        }
+        tieRowsIntervals = newTieRowsIntervals;
       }
     }
-    tieRowsIntervals = newTieRowsIntervals;
-  }
-}
