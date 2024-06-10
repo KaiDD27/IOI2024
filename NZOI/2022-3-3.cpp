@@ -64,33 +64,29 @@ int main() {
     if (size == 0)
       continue;                   // 如果组为空，跳过
     groupDP[g].resize(1 << size); // 调整当前组的动态规划表的大小
-
+    groupDP[g][0] = 1;            // dp初始化
     for (int mask = 0; mask < (1 << size); mask++) {
-      if (__builtin_popcount(mask) == 1) {
-        groupDP[g][mask] = 1; // 如果掩码中只有一个块，初始化为1
-      } else {
-        for (int i = 0; i < size; i++) {
-          if (mask & (1 << i)) {
-            // 先置为true
-            bool valid = true;
-            for (int j = 0; j < size; j++) {
-              if (mask & (1 << j)) {
-                // 看看j 是否存在通向 i 的非法路径，如果存在则说明i
-                // 不能放在最后
-                if (find(illegalAdj[groups[g][j]].begin(),
-                         illegalAdj[groups[g][j]].end(),
-                         groups[g][i]) != illegalAdj[groups[g][j]].end()) {
-                  valid = false; // 如果存在不合法的边，标记为无效
-                  break;
-                }
+      for (int i = 0; i < size; i++) {
+        if (mask & (1 << i)) {
+          // 先置为true
+          bool valid = true;
+          for (int j = 0; j < size; j++) {
+            if (mask & (1 << j)) {
+              // 看看j 是否存在通向 i 的非法路径，如果存在则说明i
+              // 不能放在最后
+              if (find(illegalAdj[groups[g][j]].begin(),
+                       illegalAdj[groups[g][j]].end(),
+                       groups[g][i]) != illegalAdj[groups[g][j]].end()) {
+                valid = false; // 如果存在不合法的边，标记为无效
+                break;
               }
             }
-            // 如果所有的j都可以放在i前面，则加上没有 i
-            // 的排序方式的数量，然后把i放在最后就行了。
-            if (valid) {
-              groupDP[g][mask] = groupDP[g][mask] +
-                                 groupDP[g][mask ^ (1 << i)]; // 更新动态规划表
-            }
+          }
+          // 如果所有的j都可以放在i前面，则加上没有 i
+          // 的排序方式的数量，然后把i放在最后就行了。
+          if (valid) {
+            groupDP[g][mask] = groupDP[g][mask] +
+                               groupDP[g][mask ^ (1 << i)]; // 更新动态规划表
           }
         }
       }
