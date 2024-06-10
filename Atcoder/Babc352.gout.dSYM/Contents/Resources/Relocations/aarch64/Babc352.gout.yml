@@ -1,0 +1,10 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/dingkai/Code/IOI2024/Atcoder/Babc352.gout'
+relocations:
+  - { offsetInCU: 0xBC, offset: 0xBC, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003CC8, symSize: 0x174 }
+  - { offsetInCU: 0x50E3, offset: 0x50E3, size: 0x8, addend: 0x0, symName: __ZStL8__ioinit, symObjAddr: 0x16120, symBinAddr: 0x100008013, symSize: 0x0 }
+  - { offsetInCU: 0x525B, offset: 0x525B, size: 0x8, addend: 0x0, symName: __GLOBAL__sub_I_Babc352.cpp, symObjAddr: 0x1B0, symBinAddr: 0x100003E78, symSize: 0x14 }
+  - { offsetInCU: 0x5281, offset: 0x5281, size: 0x8, addend: 0x0, symName: __Z41__static_initialization_and_destruction_0v, symObjAddr: 0x174, symBinAddr: 0x100003E3C, symSize: 0x3C }
+  - { offsetInCU: 0x527B, offset: 0x527B, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003CC8, symSize: 0x174 }
+...
