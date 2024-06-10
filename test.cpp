@@ -16,7 +16,7 @@ vector<char> c;                // 存储每个块的规则
 vector<ll> groupId;            // 存储每个块所属的组ID
 vector<vector<ll>> groups;     // 存储每个组中的块
 vector<vector<ll>> illegalAdj; // 非法邻接表
-vector<vector<ll>> groupDP;    // 每个组的动态规划表
+vector<vector<ll>> dp;         // 每个组的动态规划表
 
 int main() {
   cin >> n;             // 读取块的数量
@@ -56,7 +56,7 @@ int main() {
   }
   groupCnt++;              // 增加组计数器
   groups.resize(groupCnt); // 调整组的大小
-  groupDP.resize(groupCnt);
+  dp.resize(groupCnt);
   for (int i = 0; i < n; i++) {
     groups[groupId[i]].push_back(i); // 将每个块添加到其所属的组中
   }
@@ -64,12 +64,12 @@ int main() {
   for (int g = 0; g < groupCnt; g++) {
     int size = groups[g].size(); // 当前组的大小
     if (size == 0)
-      continue;                   // 如果组为空，跳过
-    groupDP[g].resize(1 << size); // 调整当前组的动态规划表的大小
+      continue;              // 如果组为空，跳过
+    dp[g].resize(1 << size); // 调整当前组的动态规划表的大小
 
     for (int mask = 0; mask < (1 << size); mask++) {
       if (__builtin_popcount(mask) == 1) {
-        groupDP[g][mask] = 1; // 如果掩码中只有一个块，初始化为1
+        dp[g][mask] = 1; // 如果掩码中只有一个块，初始化为1
       } else {
         for (int i = 0; i < size; i++) {
           if (mask & (1 << i)) {
@@ -90,14 +90,14 @@ int main() {
             // 如果所有的j都可以放在i前面，则加上没有 i
             // 的排序方式的数量，然后把i放在最后就行了。
             if (valid) {
-              groupDP[g][mask] = groupDP[g][mask] +
-                                 groupDP[g][mask ^ (1 << i)]; // 更新动态规划表
+              dp[g][mask] =
+                  dp[g][mask] + dp[g][mask ^ (1 << i)]; // 更新动态规划表
             }
           }
         }
       }
     }
-    ans *= groupDP[g][(1 << size) - 1];
+    ans *= dp[g][(1 << size) - 1];
     ans %= MOD;
   }
   cout << ans << endl; // 输出结果
