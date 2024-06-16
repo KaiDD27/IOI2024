@@ -51,7 +51,6 @@ int main() {
     presumIntensity[i + 1] = presumIntensity[i] + intensities[i];
   cin >> n >> m;
   adj.resize(n);
-
   for (int i = 0; i < m; i++) {
     int a, b, d;
     char chS;
