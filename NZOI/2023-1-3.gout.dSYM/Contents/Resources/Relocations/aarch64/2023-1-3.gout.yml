@@ -3,11 +3,11 @@ triple:          'arm64-apple-darwin'
 binary-path:     '/Users/dingkai/Code/IOI2024/NZOI/2023-1-3.gout'
 relocations:
   - { offsetInCU: 0xBB, offset: 0xBB, size: 0x8, addend: 0x0, symName: __ZN9__gnu_cxx5__ops16__iter_less_iterEv, symObjAddr: 0x0, symBinAddr: 0x100002264, symSize: 0x8 }
-  - { offsetInCU: 0x8D13, offset: 0x8D13, size: 0x8, addend: 0x0, symName: __ZStL8__ioinit, symObjAddr: 0x47468, symBinAddr: 0x100010170, symSize: 0x0 }
-  - { offsetInCU: 0x8E51, offset: 0x8E51, size: 0x8, addend: 0x0, symName: _kp, symObjAddr: 0x47470, symBinAddr: 0x100010178, symSize: 0x0 }
-  - { offsetInCU: 0x8F90, offset: 0x8F90, size: 0x8, addend: 0x0, symName: _pRemainderPerSum, symObjAddr: 0x47488, symBinAddr: 0x100010190, symSize: 0x0 }
-  - { offsetInCU: 0x8F97, offset: 0x8F97, size: 0x8, addend: 0x0, symName: _n, symObjAddr: 0x474A0, symBinAddr: 0x1000101A8, symSize: 0x0 }
-  - { offsetInCU: 0x8FAD, offset: 0x8FAD, size: 0x8, addend: 0x0, symName: _d, symObjAddr: 0x474A8, symBinAddr: 0x1000101B0, symSize: 0x0 }
+  - { offsetInCU: 0x8D13, offset: 0x8D13, size: 0x8, addend: 0x0, symName: __ZStL8__ioinit, symObjAddr: 0x47460, symBinAddr: 0x100010170, symSize: 0x0 }
+  - { offsetInCU: 0x8E51, offset: 0x8E51, size: 0x8, addend: 0x0, symName: _kp, symObjAddr: 0x47468, symBinAddr: 0x100010178, symSize: 0x0 }
+  - { offsetInCU: 0x8F90, offset: 0x8F90, size: 0x8, addend: 0x0, symName: _pRemainderPerSum, symObjAddr: 0x47480, symBinAddr: 0x100010190, symSize: 0x0 }
+  - { offsetInCU: 0x8F97, offset: 0x8F97, size: 0x8, addend: 0x0, symName: _n, symObjAddr: 0x47498, symBinAddr: 0x1000101A8, symSize: 0x0 }
+  - { offsetInCU: 0x8FAD, offset: 0x8FAD, size: 0x8, addend: 0x0, symName: _d, symObjAddr: 0x474A0, symBinAddr: 0x1000101B0, symSize: 0x0 }
   - { offsetInCU: 0x92E1, offset: 0x92E1, size: 0x8, addend: 0x0, symName: __GLOBAL__sub_I_2023_1_3.cpp, symObjAddr: 0x54D0, symBinAddr: 0x100007734, symSize: 0x14 }
   - { offsetInCU: 0x9324, offset: 0x9324, size: 0x8, addend: 0x0, symName: __ZNSt6vectorIS_IxSaIxEESaIS1_EED1Ev, symObjAddr: 0x5474, symBinAddr: 0x1000076D8, symSize: 0x5C }
   - { offsetInCU: 0x939C, offset: 0x939C, size: 0x8, addend: 0x0, symName: __ZNSt6vectorISt4pairIxxESaIS1_EED1Ev, symObjAddr: 0x5418, symBinAddr: 0x10000767C, symSize: 0x5C }

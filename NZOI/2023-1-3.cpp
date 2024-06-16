@@ -24,16 +24,16 @@ int main() {
     cin >> ki >> pi;
   }
   sort(kp.begin(), kp.end());
-  for (int ki = 1, kpi = 0; ki <= n; ki++) {
+  for (int i = 1, kpi = 0; i <= n; i++) {
     ll togglesCnt = 0;
-    while (kpi != d && kp[kpi].first == ki) {
+    while (kpi != d && kp[kpi].first == i) {
       auto [ki, pi] = kp[kpi];
       ll remain = ki % pi;
       pRemainderPerSum[pi][remain]++;
       kpi++;
     }
     for (int pi = 1; pi <= 50; pi++) {
-      ll remain = ki % pi;
+      ll remain = i % pi;
       togglesCnt += pRemainderPerSum[pi][remain];
     }
     cout << ((togglesCnt % 2 == 0) ? "OFF" : "ON") << endl;
