@@ -16,22 +16,23 @@ int cost(int time, bool flagShaded, int length) {
                     : presumIntensity[time + length] - presumIntensity[time];
 }
 int solve(int node, int time) {
-  // 因为更大的 time 不影响结果，反正都是用maxIntensity来算了。
+  // 因为更大的 time 不影响结果，反正都是后面的都用maxIntensity来算了。
   time = min(time, t);
   auto &result = dp[node][time];
-  if (result != -1)
-    return result;
+  if (dp[node][time] != -1)
+    return dp[node][time];
   if (node == n - 1)
-    return result = 0;
-  result = INT_MAX;
+    return dp[node][time] = 0;
+  dp[node][time] = INT_MAX;
   if (time < t)
-    result = solve(node, time + 1);
+    dp[node][time] = solve(node, time + 1);
   for (auto &[dest, length, flagShaded] : adj[node]) {
     int tmpRes = solve(dest, time + length);
     if (tmpRes == INT_MAX)
-      result = min(result, INT_MAX);
+      dp[node][time] = min(dp[node][time], INT_MAX);
     else
-      result = min(result, tmpRes + cost(time, flagShaded, length));
+      dp[node][time] =
+          min(dp[node][time], tmpRes + cost(time, flagShaded, length));
   }
   return result;
 }
