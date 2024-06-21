@@ -6,19 +6,18 @@
 using namespace std;
 using ll = long long;
 #define endl "\n"
-int maxIntensity, t, n, m;
-vector<int> intensities;
-vector<vector<tuple<int, int, bool>>> adj;
-vector<vector<int>> dp;
-vector<int> presumIntensity;
-int cost(int time, bool flagShaded, int length) {
+ll maxIntensity, t, n, m;
+vector<ll> intensities;
+vector<vector<tuple<ll, ll, bool>>> adj;
+vector<vector<ll>> dp;
+vector<ll> presumIntensity;
+int cost(ll time, bool flagShaded, ll length) {
   return flagShaded ? 0
                     : presumIntensity[time + length] - presumIntensity[time];
 }
-int solve(int node, int time) {
+int solve(ll node, ll time) {
   // 因为更大的 time 不影响结果，反正都是后面的都用maxIntensity来算了。
   time = min(time, t);
-  auto &result = dp[node][time];
   if (dp[node][time] != -1)
     return dp[node][time];
   if (node == n - 1)
@@ -27,14 +26,14 @@ int solve(int node, int time) {
   if (time < t)
     dp[node][time] = solve(node, time + 1);
   for (auto &[dest, length, flagShaded] : adj[node]) {
-    int tmpRes = solve(dest, time + length);
-    if (tmpRes == INT_MAX)
-      dp[node][time] = min(dp[node][time], INT_MAX);
+    ll tmpRes = solve(dest, time + length);
+    if (tmpRes == LLONG_MAX)
+      dp[node][time] = min(dp[node][time], LLONG_MAX);
     else
       dp[node][time] =
           min(dp[node][time], tmpRes + cost(time, flagShaded, length));
   }
-  return result;
+  return dp[node][time];
 }
 
 int main() {
@@ -53,11 +52,11 @@ int main() {
   cin >> n >> m;
   adj.resize(n);
   for (int i = 0; i < m; i++) {
-    int a, b, d;
+    ll a, b, d;
     char chS;
     cin >> a >> b >> d >> chS;
     adj[a].push_back({b, d, chS == 'S'});
   }
-  dp.resize(n + 1, vector<int>(t + 1, -1));
+  dp.resize(n + 1, vector<ll>(t + 1, -1));
   cout << solve(0, 0);
 }
