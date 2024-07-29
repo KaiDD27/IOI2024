@@ -15,7 +15,7 @@
       "type": "shell", // shell: 输入命令
       // The actual command to execute.
       // 因为g++已经在环境变量中了，所以我们这里写命令就行不用写g++的绝对路径
-      "command": "/opt/homebrew/bin/g++-13",
+      "command": "/opt/homebrew/bin/g++*",
       "args": [
         "-std=c++17",
         "-fdiagnostics-color=always",

@@ -170,7 +170,7 @@
 "C_Cpp.autocomplete": "disabled",
 //"clangd.path": "/Users/dingkai/Library/Application Support/Code/User/globalStorage/llvm-vs-code-extensions.vscode-clangd/install/17.0.3/clangd_17.0.3/bin/clangd",
 "clangd.path": "clangd",
-//"clangd.path":"/opt/homebrew/bin/g++-13",
+//"clangd.path":"/opt/homebrew/bin/g++*",
 "clangd.arguments": [
     // compile_commands.json 生成文件夹
     "--compile-commands-dir=build",
