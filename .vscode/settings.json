@@ -167,6 +167,7 @@
 "C_Cpp.errorSquiggles": "disabled",
 "C_Cpp.intelliSenseEngineFallback": "disabled",
 "C_Cpp.intelliSenseEngine": "disabled",
+"C_Cpp.autocomplete": "disabled",
 //"clangd.path": "/Users/dingkai/Library/Application Support/Code/User/globalStorage/llvm-vs-code-extensions.vscode-clangd/install/17.0.3/clangd_17.0.3/bin/clangd",
 "clangd.path": "clangd",
 //"clangd.path":"/opt/homebrew/bin/g++-13",
@@ -195,7 +196,7 @@
     // Clang-Tidy 静态检查的参数，指出按照哪些规则进行静态检查，详情见「与按照官方文档配置好的 VSCode 相比拥有的优势」
     // 参数后部分的*表示通配符
     // 在参数前加入-，如-modernize-use-trailing-return-type，将会禁用某一规则
-    "--clang-tidy-checks=cppcoreguidelines-*,performance-*,bugprone-*,portability-*,modernize-*,google-*",
+    "--clang-tidy-checks=cppcoreguidelines-*,performance-*,bugprone-*,-bugprone-unchecked-optional-access,portability-*,modernize-*,google-*",
     // 默认格式化风格: 谷歌开源项目代码指南
     // "--fallback-style=file",
     // 同时开启的任务数量
