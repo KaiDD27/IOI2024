@@ -20,7 +20,7 @@ int main() {
   pair<ll, ll> best = {k, 0};
 
   // Iterate through possible numbers of 'a' boxes
-  for (int iA = 0; iA < b; iA++) {
+  for (int iA = 0; iA < b && iA * a <= k + a; iA++) {
     // Calculate the lower bound for 'b' boxes
     ll lowB = max(0ll, (k - iA * a) / b);
     // Calculate the upper bound for 'b' boxes
