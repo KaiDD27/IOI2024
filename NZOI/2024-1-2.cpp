@@ -23,8 +23,8 @@ int main() {
   ll MultiDividA = miniMultiple / a;
   ll MultiDividB = miniMultiple / b;
 
-  for (ll i = 0; i * a <= miniMultiple; i++) {
-    for (ll j = 0; j * b <= miniMultiple; j++) {
+  for (ll i = 0; i <= MultiDividA; i++) {
+    for (ll j = 0; j <= MultiDividB; j++) {
       ll sum = i * a + j * b;
       if (sum == 0)
         continue;
