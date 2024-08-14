@@ -15,53 +15,29 @@ int gcd(int a, int b) { return b == 0 ? a : gcd(b, a % b); }
 int lcm(int a, int b) { return a * b / gcd(a, b); }
 
 int main() {
-  ios::sync_with_stdio(false);
-  cin.tie(nullptr);
-
   ll a, b, k;
   cin >> a >> b >> k;
 
-  // 确保 a 始终大于或等于 b
-  if (a < b)
+  // Ensure a is always the smaller value
+  if (a > b)
     swap(a, b);
 
-  ll miniDist = k, miniCnt = 0;
-  ll miniMultiple = lcm(a, b);       // 计算 a 和 b 的最小公倍数
-  ll MultiDividA = miniMultiple / a; // a 在最小公倍数中的倍数
-  ll MultiDividB = miniMultiple / b; // b 在最小公倍数中的倍数
+  // Initialize the best solution: {difference from target, number of boxes}
+  pair<ll, ll> best = {k, 0};
 
-  // 遍历所有可能的 a 和 b 的组合
-  for (ll i = 0; i <= MultiDividA; i++) {
-    for (ll j = 0; j <= MultiDividB; j++) {
-      ll sum = i * a + j * b;
-      if (sum == 0)
-        continue;
+  ll miniMultiple = lcm(a, b); // 计算 a 和 b 的最小公倍数
 
-      ll result, dist;
-      // 计算距离 k 的最小距离和所需的倍数
-      if ((k % sum) <= (sum - k % sum)) {
-        result = k / sum;
-        dist = (k % sum);
-      } else {
-        result = k / sum + 1;
-        dist = (sum - k % sum);
-      }
-
-      ll aCnt = i * result; // a 的总数
-      ll bCnt = j * result; // b 的总数
-
-      // 更新最小距离和最小数量
-      if (miniDist > dist) {
-        miniDist = dist;
-        miniCnt =
-            aCnt + bCnt % MultiDividB + (bCnt / MultiDividB) * MultiDividA;
-      } else if (miniDist == dist) {
-        miniCnt = min(miniCnt, aCnt + bCnt % MultiDividB +
-                                   (bCnt / MultiDividB) * MultiDividA);
-      }
+  // Iterate through possible numbers of 'a' boxes
+  for (int ai = 0; ai < miniMultiple / a; ai++) {
+    ll remain = k - ai * a;
+    if (remain > 0) {
+      best = min(best, {remain % b, ai + remain / b});
+      best = min(best, {b - remain % b, ai + remain / b + 1});
+    } else {
+      best = min(best, {-remain, ai});
     }
   }
 
-  cout << miniDist << " " << miniCnt << endl;
-  return 0;
+  // Output the best solution: difference from target and number of boxes
+  cout << best.first << " " << best.second << endl;
 }
