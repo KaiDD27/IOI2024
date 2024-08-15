@@ -1,82 +1,63 @@
 #include <algorithm>
-#include <array>
-#include <cstdlib>
 #include <iostream>
-#include <map>
-#include <utility>
 #include <vector>
+
 using namespace std;
-using ll = long long;
+using ll = long long; // 使用ll作为long long的别名
 #define endl "\n"
-vector<array<ll, 2>> posts;
-vector<ll> preSum;
-vector<array<ll, 4>> cows;
-vector<array<ll, 2>> indexToPost;
-array<array<vector<pair<ll, bool>>, 1000 + 1>, 1000 + 1> xyToIndex;
+const int MOD = 1e9 + 7; // 定义模数为1e9 + 7
+
 int main() {
-  ios::sync_with_stdio(false); // Fast I/O
-  cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
-  ll n, p;
-  cin >> n >> p;
-  posts.resize(p);
-  preSum.resize(p);
-  cows.resize(n);
-  indexToPost.resize(n);
-  for (auto &[x, y] : posts) {
-    cin >> x >> y;
+  int n, q;
+  cin >> n >> q;
+  vector<ll> height(n + 1); // 存储松果height
+  for (int i = 1; i <= n; i++)
+    cin >> height[i];
+  sort(height.begin(), height.end());
+  vector<ll> throwsSuffixSum(n + 2);    // 当前松果throws 的后缀和
+  vector<ll> heightsSuffixSum(n + 2);   // 当前松果heights后缀和
+  vector<ll> pineconesSuffixSum(n + 2); // 当前松果数量的后缀和
+  for (int i = n; i >= 1; i--) {
+    pineconesSuffixSum[i] = pineconesSuffixSum[i + 1] + 1;
+    throwsSuffixSum[i] = throwsSuffixSum[i + 1] +
+                         pineconesSuffixSum[i] * (height[i] - height[i - 1]);
+    heightsSuffixSum[i] =
+        pineconesSuffixSum[i] *
+        ((height[i] + height[i - 1] + 1) * (height[i] - height[i - 1]) / 2) %
+        MOD;
+    heightsSuffixSum[i] = (heightsSuffixSum[i] + heightsSuffixSum[i + 1]) % MOD;
   }
-  ll sum = 0;
-  for (int i = 1; i < p; i++) {
-    sum +=
-        abs(posts[i][0] - posts[i - 1][0]) + abs(posts[i][1] - posts[i - 1][1]);
-    preSum[i] = sum;
-  }
-  sum +=
-      abs(posts[0][0] - posts[p - 1][0]) + abs(posts[0][1] - posts[p - 1][1]);
-  for (int i = 0; i < n; i++) {
-    auto &[x1, y1, x2, y2] = cows[i];
-    cin >> x1 >> y1 >> x2 >> y2;
-    xyToIndex[x1][y1].push_back({i, false});
-    xyToIndex[x2][y2].push_back({i, true});
-  }
-  for (int i = 0; i < p; i++) {
-    ll nextPos = i + 1;
-    if (nextPos == p) {
-      nextPos = 0;
-    }
-    if (posts[i][0] == posts[nextPos][0]) {
-      for (int j = min(posts[i][1], posts[nextPos][1]);
-           j <= max(posts[i][1], posts[nextPos][1]); j++) {
-        for (auto [index, isEnd] : xyToIndex[posts[i][0]][j]) {
-          if (isEnd == true) {
-            indexToPost[index][1] = i;
-          } else {
-            indexToPost[index][0] = nextPos;
-          }
-        }
-      }
+  throwsSuffixSum[0] = throwsSuffixSum[1];
+  heightsSuffixSum[0] = heightsSuffixSum[1];
+  for (int i = 0; i < q; i++) {
+    ll t;
+    cin >> t;
+    if (t > throwsSuffixSum[0]) {
+      cout << heightsSuffixSum[0] << endl;
     } else {
-      for (int j = min(posts[i][0], posts[nextPos][0]);
-           j <= max(posts[i][0], posts[nextPos][0]); j++) {
-        for (auto [index, isEnd] : xyToIndex[j][posts[i][1]]) {
-          if (isEnd == true) {
-            indexToPost[index][1] = i;
-          } else {
-            indexToPost[index][0] = nextPos;
-          }
-        }
+      int lo_x = 0, hi_x = n + 1;
+      while (lo_x != hi_x) {
+        int m = (lo_x + hi_x) / 2;
+        if (throwsSuffixSum[m] <= t)
+          hi_x = m;
+        else
+          lo_x = m + 1;
       }
+      int x = lo_x;
+      ll remaining = t - throwsSuffixSum[x];
+      ll num_pinecones = pineconesSuffixSum[x] + 1;
+      ll base_height = height[x - 1];
+      ll full_lines = remaining / num_pinecones;
+      ll full_lines_extra =
+          num_pinecones *
+          ((base_height + base_height - full_lines + 1) * full_lines / 2) % MOD;
+
+      ll rem = remaining % num_pinecones;
+      ll ans = (heightsSuffixSum[x] % MOD + full_lines_extra +
+                (rem * (base_height - full_lines)) % MOD) %
+               MOD;
+      cout << ans << endl;
     }
-  }
-  for (int i = 0; i < n; i++) {
-    auto &[x1, y1, x2, y2] = cows[i];
-    ll ans = abs(preSum[indexToPost[i][0]] - preSum[indexToPost[i][1]]);
-    ans += abs(x1 - posts[indexToPost[i][0]][0]) +
-           abs(y1 - posts[indexToPost[i][0]][1]);
-    ans += abs(x2 - posts[indexToPost[i][1]][0]) +
-           abs(y2 - posts[indexToPost[i][1]][1]);
-    ans = min(ans, sum - ans);
-    cout << ans << endl;
   }
   return 0;
 }
