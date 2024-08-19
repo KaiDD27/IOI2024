@@ -1,37 +1,40 @@
 #include <algorithm>
 #include <iostream>
+#include <set>
 #include <vector>
 using namespace std;
-
-struct Square {
-  long long x1, x2, y1, y2;
-};
-
-long long intersect(const Square &a, const Square &b) {
-  return max(0LL, min(a.y2, b.y2) - max(a.y1, b.y1)) *
-         max(0LL, min(a.x2, b.x2) - max(a.x1, b.x1));
+using ll = long long;
+#define endl "\n"
+vector<ll> machines;
+int n, a;
+ll intersect(ll curr, ll prev) {
+  ll len = prev + a + 1 - max(0LL, curr - a);
+  if (len > 0)
+    return len * len;
+  else
+    return 0;
 }
 
-long long area(const Square &a) { return (a.y2 - a.y1) * (a.x2 - a.x1); }
+ll area(ll r) {
+  ll len = r + a + 1 - max(0LL, r - a);
+  return len * len;
+}
 
 int main() {
-  int N, A;
-  cin >> N >> A;
-  vector<Square> squares(N);
-  for (int i = 0; i < N; ++i) {
-    long long r, c;
+  cin >> n >> a;
+  machines.resize(n);
+  for (int i = 0; i < n; ++i) {
+    ll r, c;
     cin >> r >> c;
-    squares[i] = {max(0LL, c - A), c + A + 1, max(0LL, r - A), r + A + 1};
+    machines[i] = r;
   }
-  sort(squares.begin(), squares.end(), [](const Square &a, const Square &b) {
-    return a.x1 < b.x1 || (a.x1 == b.x1 && a.y1 < b.y1);
-  });
+  sort(machines.begin(), machines.end());
 
-  long long res = 0;
-  for (int i = 0; i < N; ++i) {
-    res += area(squares[i]);
+  ll res = 0;
+  for (int i = 0; i < n; ++i) {
+    res += area(machines[i]);
     if (i > 0) {
-      res -= intersect(squares[i], squares[i - 1]);
+      res -= intersect(machines[i], machines[i - 1]);
     }
   }
   cout << res << endl;
