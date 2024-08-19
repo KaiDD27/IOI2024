@@ -7,19 +7,17 @@
 using namespace std;
 using ll = long long;
 #define endl "\n"
-using namespace std;
-#define ll long long
-int N;
-ll A;
+int n;
+ll a;
 map<ll, vector<pair<ll, int>>> rows;
 int main() {
-  cin >> N >> A;
-  for (int i = 0; i < N; i++) {
+  cin >> n >> a;
+  for (int i = 0; i < n; i++) {
     ll r, c;
     cin >> r >> c;
-    for (ll ri = max(0LL, r - A); ri < r + A + 1; ri++) {
-      rows[ri].push_back({max(0LL, c - A), 1});
-      rows[ri].push_back({c + A + 1, -1});
+    for (ll ri = max(0LL, r - a); ri < r + a + 1; ri++) {
+      rows[ri].push_back({max(0LL, c - a), 1});
+      rows[ri].push_back({c + a + 1, -1});
     }
   }
   ll res = 0;

@@ -1,0 +1,39 @@
+#include <algorithm>
+#include <iostream>
+#include <vector>
+using namespace std;
+
+struct Square {
+  long long x1, x2, y1, y2;
+};
+
+long long intersect(const Square &a, const Square &b) {
+  return max(0LL, min(a.y2, b.y2) - max(a.y1, b.y1)) *
+         max(0LL, min(a.x2, b.x2) - max(a.x1, b.x1));
+}
+
+long long area(const Square &a) { return (a.y2 - a.y1) * (a.x2 - a.x1); }
+
+int main() {
+  int N, A;
+  cin >> N >> A;
+  vector<Square> squares(N);
+  for (int i = 0; i < N; ++i) {
+    long long r, c;
+    cin >> r >> c;
+    squares[i] = {max(0LL, c - A), c + A + 1, max(0LL, r - A), r + A + 1};
+  }
+  sort(squares.begin(), squares.end(), [](const Square &a, const Square &b) {
+    return a.x1 < b.x1 || (a.x1 == b.x1 && a.y1 < b.y1);
+  });
+
+  long long res = 0;
+  for (int i = 0; i < N; ++i) {
+    res += area(squares[i]);
+    if (i > 0) {
+      res -= intersect(squares[i], squares[i - 1]);
+    }
+  }
+  cout << res << endl;
+  return 0;
+}
