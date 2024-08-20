@@ -4,7 +4,7 @@
 #include <vector>
 
 using namespace std;
-using ll = long long;
+using ll = int;
 #define endl "\n"
 
 vector<pair<ll, ll>> cities;
@@ -15,7 +15,7 @@ vector<int> answers;
 int distance(const pair<ll, ll> &a, const pair<ll, ll> &b) {
   ll dx = a.first - b.first;
   ll dy = a.second - b.second;
-  return ceil(sqrtl(dx * dx + dy * dy));
+  return ceil(sqrt(dx * dx + dy * dy));
 }
 
 int main() {
@@ -34,8 +34,8 @@ int main() {
   }
 
   path.resize(M);
-  for (auto &stop : path) {
-    cin >> stop;
+  for (auto &pi : path) {
+    cin >> pi;
   }
 
   money.resize(M, 0);
@@ -44,7 +44,7 @@ int main() {
   }
 
   answers.resize(M);
-  for (int i = 0; i < M; i++) {
+  for (int i = 0; i < M - 1; i++) {
     int count = 0;
     for (int j = 0; j < N; j++) {
       if (j == path[i])
@@ -56,13 +56,7 @@ int main() {
   }
 
   for (int i = 0; i < M; i++) {
-    cout << answers[i];
-    if (i == M - 1) {
-      cout << endl;
-    } else {
-      cout << ' ';
-    }
+    cout << answers[i] << ' ';
   }
-
   return 0;
 }
