@@ -23,23 +23,19 @@ double distanceOfTowP(const array<double, 3> &a, const array<double, 3> &b) {
   else
     return 0;
 }
-// Dijkstra算法求解最短路径
+// BFS求解最短路径
 double shortestPath() {
   vector<double> dist(n + 2, 1e8);
   dist[0] = 0;
-  vector<bool> processed(n + 2, false);
-  priority_queue<pair<double, ll>> pq;
-  pq.push({dist[0], 0});
-  while (!pq.empty()) {
-    auto [disA, idA] = pq.top();
-    pq.pop();
-    if (processed[idA] == true)
-      continue;
-    processed[idA] = true;
+  queue<ll> q;
+  q.push(0);
+  while (!q.empty()) {
+    ll idA = q.front();
+    q.pop();
     for (auto [distAB, idB] : adj[idA]) {
       if (dist[idA] + distAB < dist[idB]) {
         dist[idB] = dist[idA] + distAB;
-        pq.push({-dist[idB], idB});
+        q.push(idB);
       }
     }
   }
