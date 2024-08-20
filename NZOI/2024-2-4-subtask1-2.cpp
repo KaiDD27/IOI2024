@@ -15,11 +15,6 @@ vector<int> answers;
 int distanceAB(const pair<ll, ll> &a, const pair<ll, ll> &b) {
   ll dx = a.first - b.first;
   ll dy = a.second - b.second;
-  // 这行代码计算两个城市之间的欧几里得距离
-  // dx * dx + dy * dy 计算距离的平方
-  // sqrtl 计算平方根，得到实际距离
-  // ceill 向上取整，确保距离是整数
-  // 返回值是两个城市之间的距离（整数）
   return ceill(sqrtl(dx * dx + dy * dy));
 }
 
