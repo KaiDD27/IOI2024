@@ -3,16 +3,16 @@
 #include <vector>
 
 using namespace std;
+using ll = long long; // 使用ll作为long long的别名
+#define endl "\n"
 
-const int MAXN = 1005; // Assuming N <= 1000 for Subtask 2
+ll N, M, K, U;
+vector<pair<ll, ll>> parent;
+vector<ll> troutCount;
 
-int N, M, K, U;
-vector<pair<int, int>> parent(MAXN, {-1, 0});
-vector<int> trout_count(MAXN, 0);
-
-void add_trout(int position, int distance) {
+void addTrout(ll position, ll distance) {
   while (distance >= 0) {
-    trout_count[position]++;
+    troutCount[position]++;
     if (position == 0)
       break;
     distance -= parent[position].second;
@@ -22,33 +22,36 @@ void add_trout(int position, int distance) {
 
 int main() {
   ios_base::sync_with_stdio(false);
-  cin.tie(NULL);
+  cin.tie(nullptr);
 
   cin >> N >> M >> K >> U;
 
-  for (int i = 0; i < N - 1; i++) {
-    int a, b, w;
+  parent.resize(N, {-1, 0});
+  troutCount.resize(N, 0);
+
+  for (ll i = 0; i < N - 1; i++) {
+    ll a, b, w;
     cin >> a >> b >> w;
     parent[b] = {a, w};
   }
 
-  for (int i = 0; i < M; i++) {
-    int L, D;
+  for (ll i = 0; i < M; i++) {
+    ll L, D;
     cin >> L >> D;
-    add_trout(L, D);
+    addTrout(L, D);
   }
 
-  for (int i = 0; i < K; i++) {
-    char query_type;
-    cin >> query_type;
-    if (query_type == 'Q') {
-      int q;
+  for (ll i = 0; i < K; i++) {
+    char queryType;
+    cin >> queryType;
+    if (queryType == 'Q') {
+      ll q;
       cin >> q;
-      cout << trout_count[q] << '\n';
+      cout << troutCount[q] << endl;
     } else {
-      int L, D;
+      ll L, D;
       cin >> L >> D;
-      add_trout(L, D);
+      addTrout(L, D);
     }
   }
 
