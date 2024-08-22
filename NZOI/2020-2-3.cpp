@@ -1,78 +1,57 @@
 #include <algorithm>
-#include <array>
 #include <iostream>
-#include <iterator>
-#include <map>
 #include <vector>
 
 using namespace std;
-using ll = long long;
+using ll = long long; // Using ll as an alias for long long
 #define endl "\n"
-ll n, t;
-map<ll, ll> mpX;
+
+ll N, T;
+vector<ll> boxes;
+vector<ll> counts(100001, 0);
+
 int main() {
-  ios::sync_with_stdio(false); // Fast I/O
-  cin.tie(nullptr); // Not safe to use cin/cout & scanf/printf together
-  cin >> n >> t;
-  if (n == 1) {
-    cout << 0 << endl;
-    return 0;
-  }
-  for (int i = 0; i < n; i++) {
-    ll xi;
-    cin >> xi;
-    mpX[xi]++;
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  cin >> N >> T;
+
+  boxes.resize(N);
+
+  for (ll i = 0; i < N; i++) {
+    cin >> boxes[i];
   }
 
-  while (t > 0) {
-    auto [smallest, smallestCnt] = *mpX.begin();
-    auto [bigest, bigestCnt] = *mpX.rbegin();
-    if (bigest - smallest <= 1) {
-      break;
-    }
-    // 这个剪枝没有必要
-    if (t < min(mpX.begin()->second, mpX.rbegin()->second))
-      break;
-
-    if (mpX.size() == 2) {
-      ll ret = (smallest * smallestCnt + bigest * bigestCnt) /
-               (smallestCnt + bigestCnt);
-      if (t >=
-          max((ret - smallest) * smallestCnt, (bigest - ret - 1) * bigestCnt)) {
-        if ((smallest * smallestCnt + bigest * bigestCnt) %
-                (smallestCnt + bigestCnt) ==
-            0)
-          cout << 0 << endl;
-        else
-          cout << 1 << endl;
-      } else {
-        cout << bigest - t / bigestCnt - (smallest + t / smallestCnt) << endl;
-      }
-      return 0;
-    }
-    auto secondSmallest = next(mpX.begin())->first;
-    // 倒序下一个，就是倒数第二大的
-    auto secondBigest = next(mpX.rbegin())->first;
-    ll needT = min((secondSmallest - smallest) * smallestCnt,
-                   (bigest - secondBigest) * bigestCnt);
-    ll usedT;
-    if (t >= needT) {
-      t -= needT;
-      usedT = needT;
-    } else {
-      t = 0;
-      usedT = t;
-    }
-    mpX.erase(smallest);
-    mpX.erase(bigest);
-    mpX[smallest + usedT / smallestCnt] += (smallestCnt - usedT % smallestCnt);
-    if (usedT % smallestCnt != 0)
-      mpX[smallest + usedT / smallestCnt + 1] += usedT % smallestCnt;
-    mpX[bigest - usedT / bigestCnt] += (bigestCnt - usedT % bigestCnt);
-    if (usedT % bigestCnt != 0)
-      mpX[bigest - usedT / bigestCnt - 1] += usedT % bigestCnt;
+  for (ll x : boxes) {
+    counts[x]++;
   }
-  ll ans = mpX.rbegin()->first - mpX.begin()->first;
-  cout << ans << endl;
+
+  ll time = T;
+  for (ll idx = 1; idx < 100000; idx++) {
+    ll delta = min(counts[idx], time);
+    counts[idx + 1] += delta;
+    counts[idx] -= delta;
+    time -= delta;
+  }
+
+  time = T - time; // we might not have used all of our time
+  for (ll idx = 100000; idx > 1; idx--) {
+    ll delta = min(counts[idx], time);
+    counts[idx - 1] += delta;
+    counts[idx] -= delta;
+    time -= delta;
+  }
+
+  // find the largest and smallest box sizes where count > 0
+  ll largest = 0, smallest = 100000;
+  for (ll idx = 1; idx <= 100000; idx++) {
+    if (counts[idx] > 0) {
+      largest = max(largest, idx);
+      smallest = min(smallest, idx);
+    }
+  }
+
+  cout << largest - smallest << endl;
+
   return 0;
 }

@@ -1,71 +1,57 @@
 #include <algorithm>
-#include <cmath>
 #include <iostream>
 #include <vector>
 
 using namespace std;
+using ll = long long; // Using ll as an alias for long long
+#define endl "\n"
 
-const int MAX_COORD = 500;
-const int MAX_COST = 708;
-
-struct City {
-  int x, y;
-};
-
-int distance(const City &a, const City &b) {
-  return ceil(sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2)));
-}
+ll N, T;
+vector<ll> boxes;
+vector<ll> counts(100001, 0);
 
 int main() {
-  int N, M;
-  cin >> N >> M;
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
 
-  vector<City> cities(N);
-  for (int i = 0; i < N; i++) {
-    cin >> cities[i].x >> cities[i].y;
+  cin >> N >> T;
+
+  boxes.resize(N);
+
+  for (ll i = 0; i < N; i++) {
+    cin >> boxes[i];
   }
 
-  vector<int> stops(M);
-  for (int i = 0; i < M; i++) {
-    cin >> stops[i];
+  for (ll x : boxes) {
+    counts[x]++;
   }
 
-  vector<int> unreachable(N);
-  for (int i = 0; i < N; i++) {
-    unreachable[i] = i;
+  ll time = T;
+  for (ll idx = 1; idx < 100000; idx++) {
+    ll delta = min(counts[idx], time);
+    counts[idx + 1] += delta;
+    counts[idx] -= delta;
+    time -= delta;
   }
 
-  vector<int> answers(M);
-  int money = 0;
+  time = T - time; // we might not have used all of our time
+  for (ll idx = 100000; idx > 1; idx--) {
+    ll delta = min(counts[idx], time);
+    counts[idx - 1] += delta;
+    counts[idx] -= delta;
+    time -= delta;
+  }
 
-  for (int i = M - 1; i >= 0; i--) {
-    int current_city = stops[i];
-    vector<int> new_unreachable;
-
-    for (int city : unreachable) {
-      if (city != current_city) {
-        int cost = distance(cities[current_city], cities[city]);
-        if (cost > money) {
-          new_unreachable.push_back(city);
-        }
-      }
-    }
-
-    answers[i] = N - new_unreachable.size() - 1;
-    unreachable = move(new_unreachable);
-
-    if (i > 0) {
-      money += distance(cities[stops[i]], cities[stops[i - 1]]);
-      if (money >= MAX_COST) {
-        fill(answers.begin(), answers.begin() + i, N - 1);
-        break;
-      }
+  // find the largest and smallest box sizes where count > 0
+  ll largest = 0, smallest = 100000;
+  for (ll idx = 1; idx <= 100000; idx++) {
+    if (counts[idx] > 0) {
+      largest = max(largest, idx);
+      smallest = min(smallest, idx);
     }
   }
 
-  for (int i = 0; i < M; i++) {
-    cout << answers[i] << (i == M - 1 ? '\n' : ' ');
-  }
+  cout << largest - smallest << endl;
 
   return 0;
 }
