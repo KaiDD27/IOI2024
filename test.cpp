@@ -3,55 +3,101 @@
 #include <vector>
 
 using namespace std;
-using ll = long long; // Using ll as an alias for long long
-#define endl "\n"
 
-ll N, T;
-vector<ll> boxes;
-vector<ll> counts(100001, 0);
-
-int main() {
-  ios_base::sync_with_stdio(false);
-  cin.tie(nullptr);
-
-  cin >> N >> T;
-
-  boxes.resize(N);
-
-  for (ll i = 0; i < N; i++) {
-    cin >> boxes[i];
+bool isSimple(const vector<int> &tiles) {
+  for (int tile : tiles) {
+    int num = tile % 10;
+    if (num == 1 || num == 9)
+      return false;
   }
+  return true;
+}
 
-  for (ll x : boxes) {
-    counts[x]++;
-  }
+bool canFormGroups(vector<int> &tiles) {
+  int size = tiles.size();
+  if (size % 3 != 0)
+    return false;
 
-  ll time = T;
-  for (ll idx = 1; idx < 100000; idx++) {
-    ll delta = min(counts[idx], time);
-    counts[idx + 1] += delta;
-    counts[idx] -= delta;
-    time -= delta;
-  }
+  vector<int> counts(30, 0);
+  for (int tile : tiles)
+    counts[tile]++;
 
-  time = T - time; // we might not have used all of our time
-  for (ll idx = 100000; idx > 1; idx--) {
-    ll delta = min(counts[idx], time);
-    counts[idx - 1] += delta;
-    counts[idx] -= delta;
-    time -= delta;
-  }
-
-  // find the largest and smallest box sizes where count > 0
-  ll largest = 0, smallest = 100000;
-  for (ll idx = 1; idx <= 100000; idx++) {
-    if (counts[idx] > 0) {
-      largest = max(largest, idx);
-      smallest = min(smallest, idx);
+  for (int i = 1; i < 30; i++) {
+    if (counts[i] >= 3)
+      counts[i] -= 3;
+    while (i <= 27 && counts[i] > 0 && counts[i + 1] > 0 && counts[i + 2] > 0) {
+      counts[i]--;
+      counts[i + 1]--;
+      counts[i + 2]--;
     }
   }
 
-  cout << largest - smallest << endl;
+  for (int i = 1; i < 30; i++) {
+    if (counts[i] != 0)
+      return false;
+  }
+
+  return true;
+}
+
+bool isComplete(vector<int> tiles) {
+  for (int i = 0; i < tiles.size() - 1; i++) {
+    if (tiles[i] == tiles[i + 1]) {
+      vector<int> remainingTiles;
+      for (int j = 0; j < tiles.size(); j++) {
+        if (j != i && j != i + 1)
+          remainingTiles.push_back(tiles[j]);
+      }
+      if (canFormGroups(remainingTiles))
+        return true;
+    }
+  }
+  return false;
+}
+
+int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  int pCnt, bCnt, cCnt;
+  cin >> pCnt >> bCnt >> cCnt;
+
+  vector<int> pbcCards;
+
+  for (int i = 0; i < pCnt; i++) {
+    int tile;
+    cin >> tile;
+    pbcCards.push_back(tile);
+  }
+
+  for (int i = 0; i < bCnt; i++) {
+    int tile;
+    cin >> tile;
+    pbcCards.push_back(tile + 10);
+  }
+
+  for (int i = 0; i < cCnt; i++) {
+    int tile;
+    cin >> tile;
+    pbcCards.push_back(tile + 20);
+  }
+
+  if (pbcCards.size() != 14) {
+    cout << "SAD" << endl;
+    return 0;
+  }
+
+  bool simple = isSimple(pbcCards);
+  bool complete = isComplete(pbcCards);
+
+  if (simple && complete)
+    cout << "WIN" << endl;
+  else if (complete)
+    cout << "COMPLETE" << endl;
+  else if (simple)
+    cout << "SIMPLE" << endl;
+  else
+    cout << "SAD" << endl;
 
   return 0;
 }

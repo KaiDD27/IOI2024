@@ -14,14 +14,9 @@ bool isSimple(const vector<int> &tiles) {
 }
 
 bool canFormGroups(vector<int> &tiles) {
-  int size = tiles.size();
-  if (size % 3 != 0)
-    return false;
-
   vector<int> counts(30, 0);
   for (int tile : tiles)
     counts[tile]++;
-
   for (int i = 1; i < 30; i++) {
     if (counts[i] >= 3)
       counts[i] -= 3;
@@ -30,24 +25,18 @@ bool canFormGroups(vector<int> &tiles) {
       counts[i + 1]--;
       counts[i + 2]--;
     }
-  }
-
-  for (int i = 1; i < 30; i++) {
     if (counts[i] != 0)
       return false;
   }
-
   return true;
 }
 
-bool isComplete(vector<int> tiles) {
+bool isComplete(vector<int> &tiles) {
   for (int i = 0; i < tiles.size() - 1; i++) {
     if (tiles[i] == tiles[i + 1]) {
-      vector<int> remainingTiles;
-      for (int j = 0; j < tiles.size(); j++) {
-        if (j != i && j != i + 1)
-          remainingTiles.push_back(tiles[j]);
-      }
+      vector<int> remainingTiles = tiles;
+      remainingTiles.erase(remainingTiles.begin() + i,
+                           remainingTiles.begin() + i + 2);
       if (canFormGroups(remainingTiles))
         return true;
     }
